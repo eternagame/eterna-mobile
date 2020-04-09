@@ -1,19 +1,18 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
-    mode: 'production',
+    mode: 'development',
     devtool: 'inline-source-map',
-    entry: './src/index.ts',
+    entry: './src/main.ts',
     output: {
-        path: path.resolve(__dirname, 'www/js'),
-        filename: 'index.js',
+        path: path.resolve(__dirname, 'www'),
+        filename: 'bundle.[hash].js',
+        chunkFilename: '[name].[hash].js',
     },
     resolve: {
         extensions: ['.ts', '.js', '.vue', '.json'],
-        alias: {
-            'vue$': 'vue/dist/vue.esm.js',
-        },
     },
     module: {
         rules: [
@@ -42,12 +41,18 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
-                  name: '[name].[ext]?[hash]',
+                  name: '[name].[hash].[ext]',
                 },
             },
         ],
     },
     plugins: [
+        new HtmlWebpackPlugin({
+            inject: false,
+            meta: {
+                viewport: 'initial-scale=1, width=device-width, viewport-fit=cover',
+            },
+        }),
         new VueLoaderPlugin(),
     ],
     devServer: {
