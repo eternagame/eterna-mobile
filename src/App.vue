@@ -36,7 +36,7 @@ export default Vue.extend({
     },
     data() {
         return {
-            title: 'Eterna Mobile',
+            title: 'Eterna Mobile!',
         }
     },
 });
