@@ -8,8 +8,8 @@ module.exports = {
     entry: './src/main.ts',
     output: {
         path: path.resolve(__dirname, 'www'),
-        filename: 'bundle.[hash].js',
-        chunkFilename: '[name].[hash].js',
+        filename: 'bundle.js?[hash]',
+        chunkFilename: '[name].js?[hash]',
     },
     resolve: {
         extensions: ['.ts', '.js', '.vue', '.json'],
@@ -41,7 +41,7 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
-                  name: '[name].[hash].[ext]',
+                  name: '[name].[ext]?[hash]',
                 },
             },
         ],
@@ -55,7 +55,4 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
     ],
-    devServer: {
-        contentBase: path.join(__dirname, 'www'),
-    },
 }
