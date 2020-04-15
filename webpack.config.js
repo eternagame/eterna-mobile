@@ -8,8 +8,8 @@ module.exports = {
     entry: './src/main.ts',
     output: {
         path: path.resolve(__dirname, 'www'),
-        filename: 'bundle.js?[hash]',
-        chunkFilename: '[name].js?[hash]',
+        filename: 'bundle.js?[chunkHash]',
+        chunkFilename: '[name].js?[chunkHash]',
     },
     resolve: {
         extensions: ['.ts', '.js', '.vue', '.json'],

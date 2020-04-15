@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "webpack",
     "watch": "webpack --watch"
   },
   "author": "Eat Create Sleep AB",
