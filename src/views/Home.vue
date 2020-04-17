@@ -1,6 +1,13 @@
 <template>
 <div id="home">
     <h1>{{ title }}</h1>
+    <div id="menu">
+        <input class="form-control" v-model="username" required="" type="username" placeholder="Username">
+        <input class="form-control" v-model="password" required="" type="password" placeholder="Password">
+        <button class="clickable-text" v-on:click="forgot">Forgot your password?</button>
+        <button class="button-enter" v-on:click="login">ENTER</button>
+        <button class="clickable-text" v-on:click="register">Register here</button>
+    </div>
     <div id="deviceready" class="blink">
         <p class="event listening">Connecting to Device</p>
         <p class="event received">Device is Ready</p>
@@ -39,9 +46,22 @@ export default Vue.extend({
     },
     data() {
         return {
-            title: 'Eterna Mobile!',
+            title: 'Eterna Mobile',
+            username: '',
+            password: ''
         }
     },
+    methods: {
+        login() {
+            console.log('login');
+        },
+        forgot() {
+            console.log('forgot password');
+        },
+        register() {
+            console.log('register')
+        }
+    }
 });
 </script>
 
@@ -105,4 +125,50 @@ export default Vue.extend({
     animation: fade 3000ms infinite;
     -webkit-animation: fade 3000ms infinite;
 }
+
+#menu {
+    display: block;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: #7b8a8b;
+    background-color: #00000057;
+    background-clip: padding-box;
+    border: 1px solid #597ea2;
+    border-radius: 0.25rem;
+}
+
+.button-enter {
+    color: #fff;
+    background-color: #53B64E;
+    border-color: #53B64E;
+    display: inline-block;
+    width: 100%;
+    margin: 0.5rem 0rem;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.clickable-text {
+    border: none;
+    background: none;
+    text-decoration: underline;
+    color: white;
+    padding: 0.1rem 0.85rem;
+    margin: 0.5rem 0rem;
+}
+
 </style>
