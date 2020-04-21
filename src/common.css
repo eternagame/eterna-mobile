@@ -1,0 +1,44 @@
+
+.btn-primary {
+    color: #fff;
+    cursor: pointer;
+    background-color: #53B64E;
+    border-color: #53B64E;
+    display: inline-block;
+    width: 10rem;
+    margin-top: 1rem;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+.clickable-text {
+    border: none;
+    background: none;
+    text-decoration: underline;
+    color: white;
+    padding: 0.1rem 0.85rem;
+    margin: 0.5rem 0rem;
+    cursor: pointer;
+}
+
+.form-control {
+    display: inline-block;
+    width: 15rem;
+    font-size: 0.9375rem;
+    margin-top: 0.5rem;
+    padding-left: 0.5em;
+    line-height: 1.5;
+    color: #7b8a8b;
+    background-color: #00000057;
+    background-clip: padding-box;
+    border: 1px solid #597ea2;
+    border-radius: 0.25rem;
+}
