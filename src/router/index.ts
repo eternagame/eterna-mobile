@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
+import About from '../views/About.vue';
+import Register from '../views/Register.vue';
+import ResetPassword from '../views/ResetPassword.vue';
 
 Vue.use(VueRouter);
 
@@ -13,17 +16,17 @@ const routes: Array<RouteConfig> = [
     {
         path: '/about',
         name: 'About',
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+        component: About,
     },
     {
         path: '/register',
         name: 'Register',
-        component: () => import('../views/Register.vue'),
+        component: Register,
     },
     {
         path: '/reset-password',
         name: 'Reset Password',
-        component: () => import('../views/ResetPassword.vue'),
+        component: ResetPassword,
     }
 ];
 
