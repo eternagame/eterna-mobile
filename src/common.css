@@ -37,8 +37,19 @@
     padding-left: 0.5em;
     line-height: 1.5;
     color: #7b8a8b;
-    background-color: #00000057;
+    background: #00000000;
     background-clip: padding-box;
     border: 1px solid #597ea2;
     border-radius: 0.25rem;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.form-control:focus {
+    color: #eee;
+    background: #00000057;
+    border-color: #ced4da;
+}
+
+.form-control::placeholder {
+    color: #7b8a8b;
 }
