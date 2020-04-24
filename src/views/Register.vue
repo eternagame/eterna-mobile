@@ -1,24 +1,23 @@
 <template>
-    <div class="container">
-        <h1>Create a New Account</h1>
+    <b-container>
+        <h3>Create a New Account</h3>
         <p>Register now to save your progress, engage in our community chat, and contribute solutions to science.</p>
-        <input class="form-control" type="username" placeholder="username">
-        <input class="form-control" type="email" placeholder="email">
-        <input class="form-control" type="password" placeholder="password">
-        <input class="form-control" type="password" placeholder="re-enter password">
-        <button class="btn-primary">Create Account</button>
-        <p>Terms & Conditions</p>
-    </div>
+        <b-form>
+            <b-form-input type="text" placeholder="username" required></b-form-input>
+            <b-form-input type="email" placeholder="email" required></b-form-input>
+            <b-form-input type="password" placeholder="password" required></b-form-input>
+            <b-form-input type="password" placeholder="re-enter password" required></b-form-input>
+            <b-btn variant="primary">Create Account</b-btn>
+            <b-form-group>
+                <router-link to="">Terms & Conditions</router-link>
+            </b-form-group>
+        </b-form>
+    </b-container>
 </template>
 
-<style lang="scss">
-
-@import 'src/common';
-
+<style scoped lang="scss">
 .container {
-    margin-top: 30%;
-    width: 100%;
+    width: 80%;
     text-align: center;
 }
-
 </style>

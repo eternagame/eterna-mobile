@@ -1,20 +1,17 @@
 <template>
-    <div class="container">
-        <h1>Reset password</h1>
+    <b-container>
+        <h3>Reset password</h3>
         <p>We'll send you an email with a link to reset your password</p>
-        <input class="form-control" type="email" placeholder="email">
-        <button class="btn-primary">Send Reset Email</button>
-    </div>
+        <b-form>
+            <b-form-input type="email" placeholder="email"></b-form-input>
+            <b-btn variant="primary">Send Reset Email</b-btn>
+        </b-form>
+    </b-container>
 </template>
 
-<style lang="scss">
-
-@import 'src/common';
-
+<style scoped lang="scss">
 .container {
-    margin-top: 30%;
-    width: 100%;
+    width: 80%;
     text-align: center;
 }
-
 </style>

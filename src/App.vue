@@ -1,7 +1,5 @@
 <template>
 <div id="app">
-    <router-link to="/">Home</router-link>
-    <router-link to="about">About</router-link>
     <router-view />
 </div>
 </template>
@@ -28,7 +26,6 @@ body {
     padding: 0px;
     /* Padding to avoid the "unsafe" areas behind notches in the screen */
     padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-right, 0px);
-    text-transform: uppercase;
     width: 100%;
 }
 

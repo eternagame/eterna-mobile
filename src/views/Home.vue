@@ -1,27 +1,31 @@
 <template>
-<div id="home">
-    <h1>{{ title }}</h1>
-    <div id="menu">
-        <input class="form-control" v-model.trim="username" required="" type="username" placeholder="username">
-        <input class="form-control" v-model="password" required="" type="password" placeholder="password">
-        <router-link to="reset-password">
-            <button class="clickable-text">Forgot your password?</button>
-        </router-link>
-        <button class="btn-primary" v-on:click="login">ENTER</button>
-        <router-link to="register">
-            <button class="clickable-text">Register here</button>
-        </router-link>
-    </div>
-    <div id="deviceready" class="blink">
-        <p class="event listening">Connecting to Device</p>
-        <p class="event received">Device is Ready</p>   
-    </div>
-</div>
+    <b-container>
+        <b-form>
+            <div class="logo"></div>
+            <b-form-input type="text" v-model="username" placeholder="username"></b-form-input>
+            <b-form-input type="password" v-model="password" placeholder="password"></b-form-input>
+            <b-form-group>
+                <router-link to="reset-password">Forgot your password?</router-link>
+            </b-form-group>
+            <b-button variant="primary" size="lg" v-on:click="login">Enter</b-button>
+            <b-form-group>
+                <router-link to="register">Register</router-link>
+            </b-form-group>
+        </b-form>
+        <div id="deviceready" class="blink">
+            <p class="event listening">Connecting to Device</p>
+            <p class="event received">Device is Ready</p>   
+        </div>
+    </b-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { BootstrapVue } from 'bootstrap-vue'
+
 import router from '../router';
+
+Vue.use(BootstrapVue);
 
 var app = {
     initialize: function() {
@@ -51,7 +55,7 @@ export default Vue.extend({
     },
     data() {
         return {
-            title: 'Eterna Mobile',
+            title: 'ETERNA MOBILE',
             username: '',
             password: '',
         }
@@ -65,8 +69,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@import 'src/styles/global.scss';
 
-@import 'src/common';
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss';
+
+@import 'src/styles/_bootswatch.scss';
+@import 'src/styles/custom.scss';
 
 /* Portrait layout (default) */
 #home {
@@ -123,15 +132,28 @@ export default Vue.extend({
     to { opacity: 1.0; }
 }
 
+#deviceready {
+    margin-top: 20px;
+}
+
 .blink {
     animation: fade 3000ms infinite;
     -webkit-animation: fade 3000ms infinite;
 }
 
-#menu {
-    display: block;
-    width: 100%;
+.logo {
+    background: url('../assets/logo_eterna.svg') no-repeat center top; /* 170px x 200px */
+    height: 170px;                   /* text area height */
+    width: 200px;                   /* text area width */
+    margin-top: 100px;
+}
+
+.container {
+    width: 80%;
     text-align: center;
 }
 
+.form-control {
+    margin-bottom: 10px;
+}
 </style>
