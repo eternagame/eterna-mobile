@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -54,5 +55,8 @@ module.exports = {
             },
         }),
         new VueLoaderPlugin(),
+        new CopyPlugin([
+            { context: 'eternajs/dist/dev/', from: '**/*', to: 'eternajs/'}
+        ]),
     ],
-}
+};

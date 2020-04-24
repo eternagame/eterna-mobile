@@ -1,9 +1,18 @@
 const webpack = require('webpack');
-const webpack_config = require('./webpack.config');
+const webpackConfig = require('./webpack.config');
+const runScript = require('@npmcli/run-script');
 
 module.exports = context => {
-    return new Promise((resolve, reject) => {
-        webpack(webpack_config).run((err, stats) => {
+    return new Promise(async (resolve, reject) => {
+        await runScript({
+            event: 'build:dev',
+            path: 'eternajs',
+        });
+        await runScript({
+            event: 'postbuild:dev',
+            path: 'eternajs',
+        })
+        webpack(webpackConfig).run((err, stats) => {
             if (err) {
                 console.error(err.stack || err);
                 reject();
