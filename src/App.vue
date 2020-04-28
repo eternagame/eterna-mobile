@@ -1,5 +1,8 @@
 <template>
 <div id="app">
+    <router-link to="/" exact>Home</router-link>
+    <router-link to="about">About</router-link>
+    <router-link to="game">Game</router-link>
     <router-view />
 </div>
 </template>
@@ -36,5 +39,9 @@ h1 {
     overflow: visible;
     padding: 0px;
     text-align: center;
+}
+
+.router-link-active {
+    color: yellow;
 }
 </style>

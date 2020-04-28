@@ -17,6 +17,19 @@
             <p class="event received">Device is Ready</p>   
         </div>
     </b-container>
+<!-- <div id="home">
+    <div id="menu">
+        <input class="form-control" v-model.trim="username" required="" type="username" placeholder="username">
+        <input class="form-control" v-model="password" required="" type="password" placeholder="password">
+        <router-link to="reset-password">
+            <button class="clickable-text">Forgot your password?</button>
+        </router-link>
+        <button class="btn-primary" v-on:click="login">ENTER</button>
+        <router-link to="register">
+            <button class="clickable-text">Register here</button>
+        </router-link>
+    </div>
+</div> -->
 </template>
 
 <script lang="ts">
@@ -50,9 +63,6 @@ var app = {
 };
 
 export default Vue.extend({
-    mounted() {
-        app.initialize();
-    },
     data() {
         return {
             title: 'ETERNA MOBILE',
@@ -150,8 +160,13 @@ export default Vue.extend({
 
 .container {
     width: 80%;
-    text-align: center;
 }
+
+// #menu {
+//     display: block;
+//     width: 100%;
+//     text-align: center;
+// }
 
 .form-control {
     margin-bottom: 10px;
