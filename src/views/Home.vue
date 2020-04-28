@@ -7,7 +7,9 @@
             <b-form-group>
                 <router-link to="reset-password">Forgot your password?</router-link>
             </b-form-group>
-            <b-button variant="primary" size="lg" v-on:click="login">Enter</b-button>
+            <router-link to="puzzles">
+                <b-button variant="primary" size="lg" v-on:click="login">Enter</b-button>
+            </router-link>
             <b-form-group>
                 <router-link to="register">Register</router-link>
             </b-form-group>
@@ -160,6 +162,7 @@ export default Vue.extend({
 
 .container {
     width: 80%;
+    text-align: center;
 }
 
 // #menu {

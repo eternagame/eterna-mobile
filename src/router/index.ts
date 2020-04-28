@@ -5,6 +5,7 @@ import About from '../views/About.vue';
 import Register from '../views/Register.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import Game from '../views/Game.vue';
+import PuzzleView from '../views/PuzzleView.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,11 @@ const routes: Array<RouteConfig> = [
         name: 'Game',
         component: Game,
     },
+    {
+        path: '/puzzles',
+        name: 'Puzzles',
+        component: PuzzleView,
+    }
 ];
 
 const router = new VueRouter({
