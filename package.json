@@ -18,6 +18,8 @@
     "cordova-plugin-navigationbar": "^1.0.31",
     "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-statusbar": "^2.4.3",
+    "cordova-plugin-wkwebview-engine": "^1.2.1",
+    "cordova-plugin-wkwebviewxhrfix": "git+https://github.com/TheMattRay/cordova-plugin-wkwebviewxhrfix.git",
     "es6-promise-plugin": "^4.2.2",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
@@ -48,7 +50,9 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-navigationbar": {},
-      "cordova-plugin-statusbar": {}
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-wkwebview-engine": {},
+      "cordova-plugin-wkwebviewxhrfix": {}
     },
     "platforms": [
       "android",
