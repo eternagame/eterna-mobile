@@ -14,10 +14,6 @@
                 <router-link to="register">Register</router-link>
             </b-form-group>
         </b-form>
-        <div id="deviceready" class="blink">
-            <p class="event listening">Connecting to Device</p>
-            <p class="event received">Device is Ready</p>   
-        </div>
     </b-container>
 <!-- <div id="home">
     <div id="menu">
@@ -41,28 +37,6 @@ import { BootstrapVue } from 'bootstrap-vue'
 import router from '../router';
 
 Vue.use(BootstrapVue);
-
-var app = {
-    initialize: function() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-    },
-    onDeviceReady: function() {
-        this.receivedEvent('deviceready');
-    },
-    receivedEvent: function(id: string) {
-        var parentElement = document.getElementById(id);
-        if (!parentElement) {
-            console.log('No parent element');
-        }
-        var listeningElement = parentElement?.querySelector('.listening');
-        var receivedElement = parentElement?.querySelector('.received');
-
-        listeningElement?.setAttribute('style', 'display:none;');
-        receivedElement?.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
-};
 
 export default Vue.extend({
     data() {
@@ -111,46 +85,6 @@ export default Vue.extend({
         margin: -90px 0px 0px -198px;  /* offset vertical: half of image height */
                                        /* offset horizontal: half of image width and text area width */
     }
-}
-
-.event {
-    border-radius: 4px;
-    -webkit-border-radius: 4px;
-    color: #FFFFFF;
-    font-size: 12px;
-    margin: 0px 30px;
-    padding: 2px 0px;
-}
-
-.event.listening {
-    background-color: #333333;
-    display: block;
-}
-
-.event.received {
-    background-color: #4B946A;
-    display: none;
-}
-
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
-
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
-
-#deviceready {
-    margin-top: 20px;
-}
-
-.blink {
-    animation: fade 3000ms infinite;
-    -webkit-animation: fade 3000ms infinite;
 }
 
 .logo {
