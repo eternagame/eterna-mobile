@@ -1,7 +1,8 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const DotEnv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     mode: 'development',
@@ -48,6 +49,11 @@ module.exports = {
         ],
     },
     plugins: [
+        new DotEnv({
+            defaults: './.env',
+            path: './.env.local',
+            silent: true,
+        }),
         new HtmlWebpackPlugin({
             inject: false,
             meta: {
@@ -56,7 +62,7 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
         new CopyPlugin([
-            { context: 'eternajs/dist/dev/', from: '**/*', to: 'eternajs/'}
+            { context: 'eternajs/dist/dev/', from: '**/*', to: 'eternajs/'},
         ]),
     ],
 };

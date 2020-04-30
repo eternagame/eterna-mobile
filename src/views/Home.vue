@@ -7,36 +7,18 @@
             <b-form-group>
                 <router-link to="reset-password">Forgot your password?</router-link>
             </b-form-group>
-            <router-link to="puzzles">
-                <b-button variant="primary" size="lg" v-on:click="login">Enter</b-button>
-            </router-link>
+            <b-button variant="primary" size="lg" v-on:click="doLogin">Enter</b-button>
             <b-form-group>
                 <router-link to="register">Register</router-link>
             </b-form-group>
         </b-form>
     </b-container>
-<!-- <div id="home">
-    <div id="menu">
-        <input class="form-control" v-model.trim="username" required="" type="username" placeholder="username">
-        <input class="form-control" v-model="password" required="" type="password" placeholder="password">
-        <router-link to="reset-password">
-            <button class="clickable-text">Forgot your password?</button>
-        </router-link>
-        <button class="btn-primary" v-on:click="login">ENTER</button>
-        <router-link to="register">
-            <button class="clickable-text">Register here</button>
-        </router-link>
-    </div>
-</div> -->
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { BootstrapVue } from 'bootstrap-vue'
-
 import router from '../router';
-
-Vue.use(BootstrapVue);
+import { Action } from '../store';
 
 export default Vue.extend({
     data() {
@@ -47,8 +29,9 @@ export default Vue.extend({
         }
     },
     methods: {
-        login() {
+        doLogin() {
             console.log('login');
+            this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password});
         }
     },
 });
@@ -98,12 +81,6 @@ export default Vue.extend({
     width: 80%;
     text-align: center;
 }
-
-// #menu {
-//     display: block;
-//     width: 100%;
-//     text-align: center;
-// }
 
 .form-control {
     margin-bottom: 10px;
