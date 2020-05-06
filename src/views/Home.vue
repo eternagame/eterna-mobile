@@ -1,13 +1,15 @@
 <template>
     <b-container>
         <b-form>
-            <div class="logo"></div>
+            <div class="logo" />
             <b-form-input type="text" v-model="username" placeholder="username"></b-form-input>
             <b-form-input type="password" v-model="password" placeholder="password"></b-form-input>
             <b-form-group>
                 <router-link to="reset-password">Forgot your password?</router-link>
             </b-form-group>
-            <b-button variant="primary" size="lg" v-on:click="doLogin">Enter</b-button>
+            <router-link to="puzzles">
+                <b-button variant="primary" size="lg" v-on:click="doLogin">Enter</b-button>
+            </router-link>
             <b-form-group>
                 <router-link to="register">Register</router-link>
             </b-form-group>
@@ -72,13 +74,12 @@ export default Vue.extend({
 
 .logo {
     background: url('../assets/logo_eterna.svg') no-repeat center top; /* 170px x 200px */
-    height: 170px;                   /* text area height */
-    width: 200px;                   /* text area width */
-    margin-top: 100px;
+    height: 15vmin;                   /* text area height */
+    margin-top: 10vmin;
+    margin-bottom: 10vmin;
 }
 
 .container {
-    width: 80%;
     text-align: center;
 }
 

@@ -1,29 +1,32 @@
 <template>
     <div class="container">
-        <h3>Complete these puzzles to unlock lab access!</h3>
-        <b-progress :value="1" :max="puzzles.length" variant="secondary"/>
-        <b-row id="puzzle-list">
-            <b-col v-for="puzzleImage in puzzles" :key="puzzleImage">
-                <b-img class="puzzle-item" :src="puzzleImage"/>
+        <b-row id="puzzle-view-header">
+            <b-col>
+                <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
+            </b-col>
+            <b-col style="align-items:center">
+                <b style="font-size:small">Complete these puzzles to unlock lab access!</b>
+            </b-col>
+            <b-col>
             </b-col>
         </b-row>
-        <b-button variant="primary">CONTINUE</b-button>
-        <b-button v-on:click="prevPuzzle">Prev</b-button>
-        <b-button v-on:click="nextPuzzle">Next</b-button>
-
-        <!-- <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#recipeCarousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a> -->
+        <b-container id="puzzle-scroll" v-on:scroll="onScroll">
+            <PuzzleCard
+                v-for="(puzzleImage, index) in puzzles"
+                :key="puzzleImage"
+                :highlight="index === unlockedPuzzleIndex"
+                :source="puzzleImage"
+                :state="index < unlockedPuzzleIndex ? 'completed' : index > unlockedPuzzleIndex ? 'locked' : 'unlocked'"
+            />
+        </b-container>
+        <ProgressBar />
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import ProgressBar from '../components/ProgressBar'
+import PuzzleCard from '../components/PuzzleCard'
 
 export default Vue.extend({
     data() {
@@ -35,29 +38,55 @@ export default Vue.extend({
                 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
                 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png',
                 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png',
+                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
             ],
-            puzzleIndex: 0,
+            focusedPuzzleIndex: -1,
+            unlockedPuzzleIndex: 2,
         }
     },
+    mounted() {
+        this.updatePuzzleIndex();
+    },
+    components: {
+        ProgressBar,
+        PuzzleCard,
+    },
     methods: {
-        nextPuzzle() {
-            this.modifyPuzzleList(+1);
+        clamp(x: number, min: number, max: number) {
+            return Math.max(min, Math.min(max, x));
         },
-        prevPuzzle() {
-            this.modifyPuzzleList(-1);
+        onScroll() {
+            this.updatePuzzleIndex();
         },
-        modifyPuzzleList(f: number) {
-            this.puzzleIndex = this.clamp(this.puzzleIndex + f, 0, this.puzzles.length - 1);
-
-            const list = document.getElementById('puzzle-list');
-            if (list === null)
+        updatePuzzleIndex() {
+            const scroll = document.getElementById('puzzle-scroll');
+            
+            if (scroll === null)
                 return;
 
-            const interval = 200;
-            list.style.marginLeft = (-this.puzzleIndex * interval) + "px";
+            const fraction = this.clamp(scroll.scrollLeft / (scroll.scrollWidth - 500), 0, this.puzzles.length);
+
+            const oldIndex = this.$data.focusedPuzzleIndex;
+            const newIndex = Math.floor(fraction * this.puzzles.length);
+
+            // update 
+            if (oldIndex !== newIndex)
+            {
+                this.$data.focusedPuzzleIndex = Math.floor(this.puzzles.length * fraction);
+
+                var cards = document.getElementsByClassName('puzzle-card-container') as HTMLCollectionOf<HTMLElement>;
+                // for (var i = 0; i < cards.length; i++) {
+                //     if (i === oldIndex) {
+                //         cards[i].style.transform = "scale(1)";
+                //     }
+                //     else if (i === newIndex) {
+                //         cards[i].style.transform = "scale(1, 1.1)";
+                //     }
+                // }
+            }
         },
-        clamp(x: number, min: number, max: number) {
-            return x < min ? min : x > max ? max : x;
+        play() {
+            console.log(this.$data.unlockedPuzzleIndex);
         }
     }
 });
@@ -67,21 +96,31 @@ export default Vue.extend({
 .container {
     width: 100%;
     height: 100%;
+    text-align: center;
 }
 
-#puzzle-list {
-    flex-wrap: nowrap;
-    overflow: hidden;
-    margin-left: 0px;
-    transition: margin-left 0.5s;
+#puzzle-view-header {
+    height: 30vh;
+    padding: 4vmin;
 }
 
-.puzzle-item {
-    position: relative;
-    background: #21508c;
-    padding: 0px;
-    margin: 10px;
-    width: 150px;
-    height: 150px;
+#puzzle-scroll {
+    white-space: nowrap;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    padding-right: 50%;
+    padding-left: 50%;
+    margin-top: 2vmin;
+    margin-bottom: 4vmin;
+    width: 100%;
+    align-content: center;
+}
+
+#puzzle-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.puzzle-card-container {
+    transition: transform 0.5s;
 }
 </style>
