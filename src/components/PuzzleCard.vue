@@ -18,12 +18,6 @@
 <script lang="ts">
 import Vue from 'vue'
 
-enum State {
-    Locked,
-    Unlocked,
-    Completed,
-}
-
 export default Vue.component('puzzle-card', {
     props: {
         highlight: {
@@ -39,10 +33,6 @@ export default Vue.component('puzzle-card', {
             default: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png'
         }
     },
-    data() {
-        return {
-        } 
-    },
     mounted() {
         const el = this.$el as HTMLElement;
         const data = this.$data;
@@ -52,7 +42,7 @@ export default Vue.component('puzzle-card', {
 
         switch (props.state) {
             case 'locked': {
-                el.style.opacity = "50%";
+                el.style.opacity = '50%';
             }
             break;
             case 'unlocked':{}
@@ -62,7 +52,7 @@ export default Vue.component('puzzle-card', {
         }
 
         if (props.highlight) {
-            el.style.boxShadow = '0px 0px 2vmin 1vmin #50b2dc';
+            el.style.boxShadow = '0px 0px 2vmin 1vmin rgb(21, 194, 231)';
         }
     }
 })
@@ -79,8 +69,8 @@ export default Vue.component('puzzle-card', {
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
 }
 
 .image {

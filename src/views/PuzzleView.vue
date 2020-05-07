@@ -16,10 +16,9 @@
                 :key="puzzleImage"
                 :highlight="index === unlockedPuzzleIndex"
                 :source="puzzleImage"
-                :state="index < unlockedPuzzleIndex ? 'completed' : index > unlockedPuzzleIndex ? 'locked' : 'unlocked'"
-            />
+                :state="index < unlockedPuzzleIndex ? 'completed' : index > unlockedPuzzleIndex ? 'locked' : 'unlocked'" />
         </b-container>
-        <ProgressBar />
+        <ProgressBar :value="unlockedPuzzleIndex" />
     </div>
 </template>
 
@@ -72,15 +71,15 @@ export default Vue.extend({
             // update 
             if (oldIndex !== newIndex)
             {
-                this.$data.focusedPuzzleIndex = Math.floor(this.puzzles.length * fraction);
+                this.$data.focusedPuzzleIndex = newIndex;
 
-                var cards = document.getElementsByClassName('puzzle-card-container') as HTMLCollectionOf<HTMLElement>;
+                // var cards = document.getElementsByClassName('puzzle-card-container') as HTMLCollectionOf<HTMLElement>;
                 // for (var i = 0; i < cards.length; i++) {
                 //     if (i === oldIndex) {
                 //         cards[i].style.transform = "scale(1)";
                 //     }
                 //     else if (i === newIndex) {
-                //         cards[i].style.transform = "scale(1, 1.1)";
+                //         cards[i].style.transform = "scale(1.1)";
                 //     }
                 // }
             }
@@ -111,9 +110,7 @@ export default Vue.extend({
     padding-right: 50%;
     padding-left: 50%;
     margin-top: 2vmin;
-    margin-bottom: 4vmin;
-    width: 100%;
-    align-content: center;
+    margin-bottom: 10vmin;
 }
 
 #puzzle-scroll::-webkit-scrollbar {
@@ -121,6 +118,6 @@ export default Vue.extend({
 }
 
 .puzzle-card-container {
-    transition: transform 0.5s;
+    transition: transform 0.2s;
 }
 </style>
