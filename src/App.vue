@@ -20,7 +20,7 @@ body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color: rgb(7, 55, 99);
+    background-image: radial-gradient(circle, rgb(4, 51, 95) 0%, rgb(3, 40, 75) 100%);
     color: #FFFFFF;
     font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
     font-size: 12px;

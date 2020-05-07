@@ -52,7 +52,7 @@ export default Vue.component('puzzle-card', {
         }
 
         if (props.highlight) {
-            el.style.boxShadow = '0px 0px 2vmin 1vmin rgb(21, 194, 231)';
+            el.style.boxShadow = '0px 0px 2.5vmin 0.25vmin rgb(21, 194, 231)';
         }
     }
 })
@@ -64,7 +64,7 @@ export default Vue.component('puzzle-card', {
     height: 45vmin;
     display: inline-block;
     border-radius: 2vmin;
-    background-color: #ffffff10;
+    background-color: #1888ff1a;
     scroll-snap-align: center;
     text-align: center;
     margin-top: 10px;
