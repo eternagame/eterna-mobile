@@ -6,9 +6,7 @@
         <b-form-group>
             <router-link to="reset-password">Forgot your password?</router-link>
         </b-form-group>
-        <router-link to="puzzles">
-            <b-button variant="primary" :disabled="isLoading" size="lg" v-on:click="doLogin">Enter</b-button>
-        </router-link>
+        <b-button variant="primary" :disabled="isLoading" size="lg" v-on:click="doLogin">Enter</b-button>
         <b-form-group>
             <router-link to="register">Register</router-link>
         </b-form-group>
@@ -91,12 +89,15 @@ export default Vue.extend({
 }
 
 #home-container {
+    width: 100vw;
     text-align: center;
-    padding: 15%;
     padding-top: 10vh !important;
 }
 
 .form-control {
+    margin: 0 auto;
     margin-bottom: 10px;
+    width: 80vw;
+    max-width: 300px;
 }
 </style>

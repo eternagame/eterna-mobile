@@ -1,6 +1,5 @@
 <template>
     <div class="puzzle-view-container">
-        <router-link to="login" v-if="!loggedIn">Login</router-link>
         <b-row id="puzzle-view-header">
             <b-col>
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
@@ -16,8 +15,8 @@
                     <div style="width:12vmin;height:12vmin;background-color:white;" />
                 </b-row>
                 <b-row v-else style="justify-content:flex-end">
-                    <b-button variant="primary" style="margin-right:3vmin">Log in</b-button>
-                    <b-button variant="secondary">Register</b-button>
+                    <b-button variant="primary" style="margin-right:3vmin" to="login">Log in</b-button>
+                    <b-button variant="secondary" to="register">Register</b-button>
                 </b-row>
             </b-col>
         </b-row>
@@ -49,12 +48,6 @@ import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
 
 export default Vue.extend({
-    props: {
-        loggedIn: {
-            type: Boolean,
-            default: false,
-        }
-    },
     data() {
         return {
             puzzles: [
