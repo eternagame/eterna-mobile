@@ -1,9 +1,9 @@
 <template>
     <div class="puzzle-card-container">
-        <b-img  class="image" :src="source" />
+        <b-img  class="puzzle-card-image" :src="source" />
         <div>
-            <b-button v-if="state === 'unlocked'" class="button" size="sm" variant="primary">
-                CONTINUE
+            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary">
+                <b style="font-size:80%"> CONTINUE </b>
             </b-button>
             <p v-else-if="state === 'locked'">
                 Locked
@@ -73,14 +73,16 @@ export default Vue.component('puzzle-card', {
     margin-right: 3px;
 }
 
-.image {
+.puzzle-card-image {
     height: 65%;
     margin-top: 14%;
 }
 
-.button {
-    margin-top: 5%;
-    width: 60%;
-    height: 7%;
+.puzzle-card-button {
+    margin-top: 3%;
+    padding: 0;
+    width: 45%;
+    height: 1.3rem;
+    line-height: 0;
 }
 </style>
