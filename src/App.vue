@@ -1,11 +1,6 @@
 <template>
 <div id="app">
     <router-view />
-    <div id="menu">
-        <router-link to="/" exact>Home</router-link>
-        <router-link to="about">About</router-link>
-        <router-link to="game">Game</router-link>
-    </div>
 </div>
 </template>
 
@@ -45,11 +40,5 @@ h1 {
 
 .router-link-active {
     color: yellow;
-}
-
-#menu {
-    position:absolute;
-    top: 10px;
-    left: 10px;
 }
 </style>
