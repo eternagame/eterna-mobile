@@ -2,14 +2,12 @@
     <b-container>
         <b-form>
             <div class="logo" />
-            <b-form-input type="text" v-model="username" placeholder="username"></b-form-input>
-            <b-form-input type="password" v-model="password" placeholder="password"></b-form-input>
+            <b-form-input type="text" :disabled="isLoading" v-model="username" placeholder="username"></b-form-input>
+            <b-form-input type="password" :disabled="isLoading" v-model="password" placeholder="password"></b-form-input>
             <b-form-group>
                 <router-link to="reset-password">Forgot your password?</router-link>
             </b-form-group>
-            <router-link to="puzzles">
-                <b-button variant="primary" size="lg" v-on:click="doLogin">Enter</b-button>
-            </router-link>
+            <b-button variant="primary" size="lg" :disabled="isLoading" v-on:click="doLogin">Enter</b-button>
             <b-form-group>
                 <router-link to="register">Register</router-link>
             </b-form-group>
@@ -25,15 +23,28 @@ import { Action } from '../store';
 export default Vue.extend({
     data() {
         return {
-            title: 'ETERNA MOBILE',
             username: '',
             password: '',
+        };
+    },
+    computed: {
+        isLoading(): boolean {
+            return this.$store.state.isLoading;
+        },
+        loggedIn(): boolean {
+            return this.$store.state.loggedIn;
         }
     },
     methods: {
         doLogin() {
-            console.log('login');
-            this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password});
+            if (this.username.length > 0 && this.password.length > 0) {
+                this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password})
+                    .then(() => {
+                        if (this.loggedIn) {
+                            this.$router.push('puzzles');
+                        }
+                    });
+            }
         }
     },
 });

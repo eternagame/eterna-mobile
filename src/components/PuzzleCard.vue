@@ -2,7 +2,7 @@
     <div class="puzzle-card-container">
         <b-img  class="puzzle-card-image" :src="source" />
         <div>
-            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary">
+            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" to="game/6502944">
                 <b style="font-size:80%"> CONTINUE </b>
             </b-button>
             <p v-else-if="state === 'locked'">
