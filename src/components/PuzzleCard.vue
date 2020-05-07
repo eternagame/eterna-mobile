@@ -60,8 +60,8 @@ export default Vue.component('puzzle-card', {
 
 <style lang="scss" scoped>
 .puzzle-card-container {
-    width:  40vmin;
-    height: 40vmin;
+    width:  45vmin;
+    height: 45vmin;
     display: inline-block;
     border-radius: 2vmin;
     background-color: #ffffff10;

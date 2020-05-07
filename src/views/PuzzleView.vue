@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="puzzle-view-container">
         <b-row id="puzzle-view-header">
             <b-col>
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
@@ -92,9 +92,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.container {
-    width: 100%;
-    height: 100%;
+.puzzle-view-container {
+    padding: 0;
+    margin: 0;
     text-align: center;
 }
 
@@ -109,8 +109,8 @@ export default Vue.extend({
     scroll-snap-type: x mandatory;
     padding-right: 50%;
     padding-left: 50%;
-    margin-top: 2vmin;
-    margin-bottom: 10vmin;
+    margin-top: 0vmin;
+    margin-bottom: 8vmin;
 }
 
 #puzzle-scroll::-webkit-scrollbar {
