@@ -86,15 +86,13 @@ export default Vue.component('puzzle-card', {
     padding: 0;
     width: 49%;
     height: 5.5vmin;
-    line-height: 0;
-    position: initial;
     border-radius: 1vmin;
 }
 
 .puzzle-card-button-text {
     font-size: 3.2vmin;
     text-align: center;
-    line-height: 0;
+    vertical-align: text-top;
 }
 
 .puzzle-card-text {
