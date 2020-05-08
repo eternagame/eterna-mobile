@@ -1,16 +1,14 @@
 <template>
     <b-container>
         <b-progress max="9" class="puzzle-progress-bar">
-            <b-progress-bar :value="lerp(0.45, 9 - 0.45, value / 7)" style="background-color: rgb(21, 194, 231);"/>
+            <b-progress-bar :value="lerp(0.6, 9 - 0.6, value / 7)" style="background-color: rgb(21, 194, 231);"/>
         </b-progress>
         <b-row class="puzzle-progress-bar-circles">
             <b-col v-for="n in 9" :key="n">
                 <div class="circle">
-                    <div>
                         <div v-if="n == 1" class="inner-circle" /> 
                         <b v-else-if="n == 9">A</b>
                         <b v-else>{{ n - 1 }}</b>
-                    </div>
                 </div>
             </b-col>
         </b-row>
@@ -47,8 +45,8 @@ export default Vue.component('puzzle-view-progress-bar', {
     overflow: visible;
     background-color: rgb(204, 204, 204);
     height: 2.8vmin;
-    margin-left: 4%;
-    margin-right: 4%;
+    margin-left: 3vmin;
+    margin-right: 3vmin;
 }
 
 .puzzle-progress-bar-circles {
@@ -63,8 +61,9 @@ export default Vue.component('puzzle-view-progress-bar', {
     width:  7vmin;
     background-color: rgb(204, 204, 204);
     border-radius: 50%;
-    display: inline-block;
+    position: absolute;
     overflow: visible;
+    left: 4.5vmin;
 }
 
 .inner-circle {

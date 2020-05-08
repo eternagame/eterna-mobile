@@ -4,10 +4,18 @@
             <b-col>
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
             </b-col>
-            <b-col style="align-items:center">
+            <b-col>
                 <b style="font-size:small">Complete these puzzles to unlock lab access!</b>
             </b-col>
             <b-col>
+                <b-row v-if="loggedIn" style="justify-content:flex-end">
+                    <b>PlayerOne</b>
+                    <div style="width:12vmin;height:12vmin;background-color:white;" />
+                </b-row>
+                <b-row v-else style="justify-content:flex-end">
+                    <b-button variant="primary" style="margin-right:3vmin">Log in</b-button>
+                    <b-button variant="secondary">Register</b-button>
+                </b-row>
             </b-col>
         </b-row>
         <b-container id="puzzle-scroll" v-on:scroll="onScroll">
@@ -18,7 +26,17 @@
                 :source="puzzleImage"
                 :state="index < unlockedPuzzleIndex ? 'completed' : index > unlockedPuzzleIndex ? 'locked' : 'unlocked'" />
         </b-container>
-        <ProgressBar :value="unlockedPuzzleIndex" />
+        <b-row id="puzzle-view-footer">
+            <b-col></b-col>
+            <b-col class="col-8">
+                <ProgressBar :value="unlockedPuzzleIndex" />
+            </b-col>
+            <b-col>
+                <b-row style="justify-content:flex-end;align-items:flex-end;">
+                    <b-button style="width:15vmin;height:8vmin;line-height:0;">Chat</b-button>
+                </b-row>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
@@ -28,6 +46,12 @@ import ProgressBar from '../components/ProgressBar'
 import PuzzleCard from '../components/PuzzleCard'
 
 export default Vue.extend({
+    props: {
+        loggedIn: {
+            type: Boolean,
+            default: true,
+        }
+    },
     data() {
         return {
             puzzles: [
@@ -40,7 +64,7 @@ export default Vue.extend({
                 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
             ],
             focusedPuzzleIndex: -1,
-            unlockedPuzzleIndex: 2,
+            unlockedPuzzleIndex: 5,
         }
     },
     mounted() {
@@ -100,7 +124,9 @@ export default Vue.extend({
 
 #puzzle-view-header {
     height: 30vh;
-    padding: 4vmin;
+    padding-top: 3vmin;
+    margin-left: 3vmin;
+    margin-right: 3vmin;
 }
 
 #puzzle-scroll {
@@ -110,11 +136,17 @@ export default Vue.extend({
     padding-right: 50%;
     padding-left: 50%;
     margin-top: 0vmin;
-    margin-bottom: 8vmin;
+    margin-bottom: 6vmin;
 }
 
 #puzzle-scroll::-webkit-scrollbar {
     display: none;
+}
+
+#puzzle-view-footer {
+    // padding-bottom: 3vmin;
+    margin-left: 3vmin;
+    margin-right: 3vmin;
 }
 
 .puzzle-card-container {

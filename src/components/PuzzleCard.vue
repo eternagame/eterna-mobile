@@ -64,7 +64,7 @@ export default Vue.component('puzzle-card', {
     height: 45vmin;
     display: inline-block;
     border-radius: 2vmin;
-    background-color: #1888ff1a;
+    background-color: #008cff15;
     scroll-snap-align: center;
     text-align: center;
     margin-top: 10px;
