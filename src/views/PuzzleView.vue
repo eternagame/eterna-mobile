@@ -1,5 +1,6 @@
 <template>
     <div class="puzzle-view-container">
+        <router-link to="login" v-if="!loggedIn">Login</router-link>
         <b-row id="puzzle-view-header">
             <b-col>
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
@@ -23,7 +24,7 @@
         <b-container id="puzzle-scroll" v-on:scroll="onScroll">
             <PuzzleCard
                 v-for="(puzzleImage, index) in puzzles"
-                :key="puzzleImage"
+                :key="index"
                 :highlight="index === unlockedPuzzleIndex"
                 :source="puzzleImage"
                 :state="index < unlockedPuzzleIndex ? 'completed' : index > unlockedPuzzleIndex ? 'locked' : 'unlocked'" />
@@ -44,8 +45,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ProgressBar from '../components/ProgressBar'
-import PuzzleCard from '../components/PuzzleCard'
+import ProgressBar from '../components/ProgressBar.vue'
+import PuzzleCard from '../components/PuzzleCard.vue'
 
 export default Vue.extend({
     props: {
@@ -76,6 +77,11 @@ export default Vue.extend({
         ProgressBar,
         PuzzleCard,
     },
+    computed: {
+        loggedIn(): boolean {
+            return this.$store.state.loggedIn;
+        },
+    },
     methods: {
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
@@ -85,7 +91,7 @@ export default Vue.extend({
         },
         updatePuzzleIndex() {
             const scroll = document.getElementById('puzzle-scroll');
-            
+
             if (scroll === null)
                 return;
 
@@ -94,7 +100,7 @@ export default Vue.extend({
             const oldIndex = this.$data.focusedPuzzleIndex;
             const newIndex = Math.floor(fraction * this.puzzles.length);
 
-            // update 
+            // update
             if (oldIndex !== newIndex)
             {
                 this.$data.focusedPuzzleIndex = newIndex;
