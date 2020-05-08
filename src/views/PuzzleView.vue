@@ -5,11 +5,13 @@
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
             </b-col>
             <b-col>
-                <b style="font-size:small">Complete these puzzles to unlock lab access!</b>
+                <b-row>
+                    <b style="font-size:4vmin;line-height:5.0vmin">Complete these puzzles to unlock lab access!</b>
+                </b-row>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end">
-                    <b>PlayerOne</b>
+                    <b style="font-size:3vmin">PlayerOne</b>
                     <div style="width:12vmin;height:12vmin;background-color:white;" />
                 </b-row>
                 <b-row v-else style="justify-content:flex-end">
@@ -33,7 +35,7 @@
             </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <b-button style="width:15vmin;height:8vmin;line-height:0;">Chat</b-button>
+                    <b-button style="width:15vmin;height:8vmin;line-height:0;font-size:3vmin;">Chat</b-button>
                 </b-row>
             </b-col>
         </b-row>
@@ -49,7 +51,7 @@ export default Vue.extend({
     props: {
         loggedIn: {
             type: Boolean,
-            default: true,
+            default: false,
         }
     },
     data() {
@@ -64,7 +66,7 @@ export default Vue.extend({
                 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
             ],
             focusedPuzzleIndex: -1,
-            unlockedPuzzleIndex: 5,
+            unlockedPuzzleIndex: 1,
         }
     },
     mounted() {

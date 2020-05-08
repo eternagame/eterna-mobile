@@ -1,5 +1,5 @@
 <template>
-    <b-container>
+    <b-container id="reset-password-container">
         <h3>Reset password</h3>
         <p>We'll send you an email with a link to reset your password</p>
         <b-form>
@@ -10,8 +10,9 @@
 </template>
 
 <style scoped lang="scss">
-.container {
+#reset-password-container {
     width: 80%;
     text-align: center;
+    padding-top: 25vh;
 }
 </style>

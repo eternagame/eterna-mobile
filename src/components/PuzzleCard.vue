@@ -1,16 +1,18 @@
 <template>
     <div class="puzzle-card-container">
         <b-img  class="puzzle-card-image" :src="source" />
-        <div>
+        <div style="justify-content:center;align-items:center">
             <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary">
-                <b style="font-size:80%"> CONTINUE </b>
+                <b class="puzzle-card-button-text">
+                    CONTINUE
+                </b>
             </b-button>
-            <p v-else-if="state === 'locked'">
+            <b v-else-if="state === 'locked'" class="puzzle-card-text">
                 Locked
-            </p>
-            <p v-else-if="state === 'completed'">
-                Completed
-            </p>
+            </b>
+            <b v-else-if="state === 'completed'" class="puzzle-card-text">
+                COMPLETED!
+            </b>
         </div>
     </div>
 </template>
@@ -60,7 +62,7 @@ export default Vue.component('puzzle-card', {
 
 <style lang="scss" scoped>
 .puzzle-card-container {
-    width:  45vmin;
+    width: 45vmin;
     height: 45vmin;
     display: inline-block;
     border-radius: 2vmin;
@@ -69,20 +71,36 @@ export default Vue.component('puzzle-card', {
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 3px;
-    margin-right: 3px;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
 }
 
 .puzzle-card-image {
     height: 65%;
     margin-top: 14%;
+    margin-bottom: 1vh;
 }
 
 .puzzle-card-button {
     margin-top: 3%;
     padding: 0;
-    width: 45%;
-    height: 1.3rem;
+    width: 49%;
+    height: 5.5vmin;
+    line-height: 0;
+    position: initial;
+    border-radius: 1vmin;
+}
+
+.puzzle-card-button-text {
+    font-size: 3.2vmin;
+    text-align: center;
+    line-height: 0;
+}
+
+.puzzle-card-text {
+    font-size: 2.5vmin;
+    text-align: center;
+    transform: translateY(3.5vmin);
     line-height: 0;
 }
 </style>

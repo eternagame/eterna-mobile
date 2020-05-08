@@ -1,5 +1,5 @@
 <template>
-    <b-container>
+    <b-container id="register-container">
         <h3>Create a New Account</h3>
         <p>Register now to save your progress, engage in our community chat, and contribute solutions to science.</p>
         <b-form>
@@ -16,7 +16,7 @@
 </template>
 
 <style scoped lang="scss">
-.container {
+#register-container {
     width: 80%;
     text-align: center;
 }
