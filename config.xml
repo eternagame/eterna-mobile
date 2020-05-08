@@ -18,6 +18,7 @@
         <param name="ios-package" value="CDVWKWebViewEngine" />
     </feature>
     <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+    <preference name="WKWebViewOnly" value="true" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
