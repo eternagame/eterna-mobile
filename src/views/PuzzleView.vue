@@ -1,6 +1,5 @@
 <template>
     <div class="puzzle-view-container">
-        <router-link to="login" v-if="!loggedIn">Login</router-link>
         <b-row id="puzzle-view-header">
             <b-col>
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
@@ -16,8 +15,12 @@
                     <div style="width:12vmin;height:12vmin;background-color:white;" />
                 </b-row>
                 <b-row v-else style="justify-content:flex-end">
-                    <b-button variant="primary" style="margin-right:3vmin">Log in</b-button>
-                    <b-button variant="secondary">Register</b-button>
+                    <router-link to="login">
+                        <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin">Log in</b-button>
+                    </router-link>
+                    <router-link to="register">
+                        <b-button class="puzzle-view-button" variant="secondary">Register</b-button>
+                    </router-link>
                 </b-row>
             </b-col>
         </b-row>
@@ -144,7 +147,7 @@ export default Vue.extend({
     padding-right: 50%;
     padding-left: 50%;
     margin-top: 0vmin;
-    margin-bottom: 6vmin;
+    margin-bottom: 7vmin;
 }
 
 #puzzle-scroll::-webkit-scrollbar {
@@ -152,12 +155,15 @@ export default Vue.extend({
 }
 
 #puzzle-view-footer {
-    // padding-bottom: 3vmin;
     margin-left: 3vmin;
     margin-right: 3vmin;
 }
 
 .puzzle-card-container {
     transition: transform 0.2s;
+}
+
+.puzzle-view-button {
+    font-size: 3.5vmin;
 }
 </style>
