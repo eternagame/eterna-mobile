@@ -109,8 +109,8 @@ export default Vue.extend({
                 // }
             }
         },
-        play(id : number) {
-            console.log('play ' + id);
+        play(id: number) {
+            this.$router.push(`game/${id}`);
         },
         openChat() {
             console.log('open chat');
