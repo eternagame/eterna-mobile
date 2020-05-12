@@ -9,7 +9,7 @@
             <b-form-input type="password" placeholder="re-enter password" required></b-form-input>
             <b-btn variant="primary">Create Account</b-btn>
             <b-form-group>
-                <router-link to="">Terms & Conditions</router-link>
+                <a href="https://eternagame.org/web/news/15121/" target="_blank">Terms &amp; Conditions</a>
             </b-form-group>
         </b-form>
     </b-container>

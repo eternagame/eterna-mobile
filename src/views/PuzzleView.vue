@@ -13,12 +13,8 @@
                     <div class="puzzle-view-icon-people" />
                 </b-row>
                 <b-row v-else style="justify-content:flex-end">
-                    <router-link to="login">
-                        <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin">Log in</b-button>
-                    </router-link>
-                    <router-link to="register">
-                        <b-button class="puzzle-view-button" variant="secondary">Register</b-button>
-                    </router-link>
+                    <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin" to="login">Log in</b-button>
+                    <b-button class="puzzle-view-button" variant="secondary" to="register">Register</b-button>
                 </b-row>
             </b-col>
         </b-row>
