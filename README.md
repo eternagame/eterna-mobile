@@ -4,7 +4,8 @@ Port of the Eterna puzzle progression for Android and iOS.
 ## Setup dev environment
 - Make sure you have the Cordova CLI installed globally (`npm install -g cordova`)
 - Checkout the eternajs submodule.
-- Run `npm install` in both the EternaMobile project and the eternajs submodule.
+- Run `npm install` in both the top-most folder and the eternajs submodule.
+- Create a folder called `www` in the top-most folder.
 - Run `cordova prepare` to install the Cordova plugins and platforms.
 - If you're using Visual Studio Code, make sure you have the Cordova Tools extension installed.
 - Run `npm run build` at least once, which should also build eternajs.
