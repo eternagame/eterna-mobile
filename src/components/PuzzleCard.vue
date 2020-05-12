@@ -1,18 +1,15 @@
 <template>
     <div class="puzzle-card-container">
-        <b-img  class="puzzle-card-image" :src="source" />
+        <b-img  class="puzzle-card-image" :src="imgSrc" />
         <div style="justify-content:center;align-items:center">
-            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" to="game/6502944">
-                <b class="puzzle-card-button-text">
-                    CONTINUE
-                </b>
+            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" v-on:click="$emit('play')">
+                <b>PLAY</b>
             </b-button>
-            <b v-else-if="state === 'locked'" class="puzzle-card-text">
-                Locked
-            </b>
-            <b v-else-if="state === 'completed'" class="puzzle-card-text">
-                COMPLETED!
-            </b>
+            <div v-else-if="state === 'locked'" class="puzzle-card-icon-lock" />
+            <b-row v-else-if="state === 'completed'" class="puzzle-card-text" style="justify-content:center;align-items:center;">
+                <b-col-2 class="puzzle-card-icon-checkmark" />
+                <b>COMPLETED!</b>
+            </b-row>
         </div>
     </div>
 </template>
@@ -30,7 +27,7 @@ export default Vue.component('puzzle-card', {
             type: String,
             default: 'unlocked'
         },
-        source: {
+        imgSrc: {
             type: String,
             default: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png'
         }
@@ -77,30 +74,47 @@ export default Vue.component('puzzle-card', {
 
 .puzzle-card-image {
     height: 65%;
-    margin-top: 14%;
+    margin-top: 12%;
     margin-bottom: 1vh;
 }
 
 .puzzle-card-button {
-    margin-top: 3%;
+    margin-top: 1%;
     padding: 0;
     width: 49%;
     height: 5.5vmin;
-    line-height: 0;
-    position: initial;
     border-radius: 1vmin;
-}
-
-.puzzle-card-button-text {
-    font-size: 3.2vmin;
     text-align: center;
-    line-height: 0;
+    font-size: 3.2vmin;
+    line-height: 5.2vmin;
 }
 
 .puzzle-card-text {
     font-size: 2.5vmin;
     text-align: center;
-    transform: translateY(3.5vmin);
+    transform: translateY(2.5vmin);
     line-height: 0;
+}
+
+.puzzle-card-icon-lock {
+    background-image: url('../assets/noun_lock_lg.png');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    width: 4.0vmin;
+    height: 5.8vmin;
+    margin-top: 1vmin;
+    display: inline-block;
+}
+
+.puzzle-card-icon-checkmark {
+    background-image: url('../assets/noun_checkmark_lg.png');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    width: 3.5vmin;
+    height: 2.5vmin;
+    margin-right: 1vmin;
+    display: inline-block;
 }
 </style>

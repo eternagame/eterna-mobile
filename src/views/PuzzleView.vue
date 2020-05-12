@@ -5,14 +5,12 @@
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
             </b-col>
             <b-col>
-                <b-row>
-                    <b style="font-size:4vmin;line-height:5.0vmin">Complete these puzzles to unlock lab access!</b>
-                </b-row>
+                <b style="font-size:4vmin;line-height:5.0vmin;">Complete these puzzles to unlock lab access!</b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end">
-                    <b style="font-size:3vmin">PlayerOne</b>
-                    <div style="width:12vmin;height:12vmin;background-color:white;" />
+                    <b style="font-size:3.5vmin;line-height:6vmin;margin-right:2vmin;">{{ playerName }} </b>
+                    <div class="puzzle-view-icon-people" />
                 </b-row>
                 <b-row v-else style="justify-content:flex-end">
                     <router-link to="login">
@@ -26,20 +24,21 @@
         </b-row>
         <b-container id="puzzle-scroll" v-on:scroll="onScroll">
             <PuzzleCard
-                v-for="(puzzleImage, index) in puzzles"
+                v-for="(puzzle, index) in puzzles"
                 :key="index"
-                :highlight="index === unlockedPuzzleIndex"
-                :source="puzzleImage"
-                :state="index < unlockedPuzzleIndex ? 'completed' : index > unlockedPuzzleIndex ? 'locked' : 'unlocked'" />
+                :highlight="index === playablePuzzleIndex"
+                :imgSrc="puzzle.imgSrc"
+                v-on:play="play(puzzle.id)"
+                :state="index < playablePuzzleIndex ? 'completed' : index > playablePuzzleIndex ? 'locked' : 'unlocked'" />
         </b-container>
         <b-row id="puzzle-view-footer">
             <b-col></b-col>
             <b-col class="col-8">
-                <ProgressBar :value="unlockedPuzzleIndex" />
+                <ProgressBar :value="playablePuzzleIndex" />
             </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <b-button style="width:15vmin;height:8vmin;line-height:0;font-size:3vmin;">Chat</b-button>
+                    <button v-on:click="openChat" class="puzzle-view-chat-button" />
                 </b-row>
             </b-col>
         </b-row>
@@ -52,25 +51,20 @@ import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
 
 export default Vue.extend({
-    props: {
-        loggedIn: {
-            type: Boolean,
-            default: false,
-        }
-    },
     data() {
         return {
             puzzles: [
-                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
-                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png',
-                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png',
-                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
-                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png',
-                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png',
-                'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
+                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png' },
+                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png' },
+                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png' },
+                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png' },
+                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png' },
+                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png' },
+                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png' },
             ],
             focusedPuzzleIndex: -1,
-            unlockedPuzzleIndex: 1,
+            playablePuzzleIndex: 1,
+            playerName: 'PlayerOne',
         }
     },
     mounted() {
@@ -119,8 +113,11 @@ export default Vue.extend({
                 // }
             }
         },
-        play() {
-            console.log(this.$data.unlockedPuzzleIndex);
+        play(id : number) {
+            console.log('play ' + id);
+        },
+        openChat() {
+            console.log('open chat');
         }
     }
 });
@@ -147,7 +144,7 @@ export default Vue.extend({
     padding-right: 50%;
     padding-left: 50%;
     margin-top: 0vmin;
-    margin-bottom: 7vmin;
+    margin-bottom: 6vmin;
 }
 
 #puzzle-scroll::-webkit-scrollbar {
@@ -165,5 +162,24 @@ export default Vue.extend({
 
 .puzzle-view-button {
     font-size: 3.5vmin;
+}
+
+.puzzle-view-chat-button {
+    background: url('../assets/Chat.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    width: 9vmin;
+    height: 8vmin;
+}
+
+.puzzle-view-icon-people {
+    background-image: url('../assets/DefaultIcon.svg');
+    background-position: center top; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 6vmin;
+    display: inline-block;
 }
 </style>

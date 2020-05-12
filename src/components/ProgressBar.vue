@@ -7,7 +7,7 @@
             <b-col v-for="n in 9" :key="n">
                 <b-row class="circle">
                         <div v-if="n == 1" class="inner-circle" /> 
-                        <b v-else-if="n == 9">A</b>
+                        <div v-else-if="n == 9" class="puzzle-progress-bar-icon-test-tube" />
                         <b v-else>{{ n - 1 }}</b>
                 </b-row>
             </b-col>
@@ -77,5 +77,15 @@ export default Vue.component('puzzle-view-progress-bar', {
     border-radius: 50%;
     display: inline-block;
     overflow: visible;
+}
+
+.puzzle-progress-bar-icon-test-tube {
+    background-image: url('../assets/test-tube.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    width: 3.7vmin;
+    height: 3.7vmin;
+    display: inline-block;
 }
 </style>
