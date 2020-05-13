@@ -9,7 +9,7 @@
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end">
-                    <b style="font-size:3.5vmin;line-height:6vmin;margin-right:2vmin;">{{ playerName }} </b>
+                    <b style="font-size:3.5vmin;line-height:6vmin;margin-right:2vmin;">{{ username }} </b>
                     <div class="puzzle-view-icon-people" />
                 </b-row>
                 <b-row v-else style="justify-content:flex-end">
@@ -18,13 +18,13 @@
                 </b-row>
             </b-col>
         </b-row>
-        <b-container id="puzzle-scroll" v-on:scroll="onScroll">
+        <b-container id="puzzle-scroll">
             <PuzzleCard
                 v-for="(puzzle, index) in roadmap"
                 :key="index"
-                :highlight="index === playablePuzzleIndex"
+                :highlight="index === Math.trunc(playablePuzzleIndex)"
                 :imgSrc="getAbsUrl(puzzle.image)"
-                v-on:play="play(puzzle.current_puzzle)"
+                @play="play(puzzle.current_puzzle)"
                 :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
                 v-b-popover.click.blur.top.html="{
                     content: puzzle.desc,
@@ -41,7 +41,7 @@
             </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <button v-on:click="openChat" class="puzzle-view-chat-button" />
+                    <button @click="openChat" class="puzzle-view-chat-button" />
                 </b-row>
             </b-col>
         </b-row>
@@ -57,52 +57,39 @@ import { Action, Achievement } from '../store';
 export default Vue.extend({
     data() {
         return {
-            focusedPuzzleIndex: -1,
             playablePuzzleIndex: 0,
-            playerName: 'PlayerOne',
         }
     },
-    mounted() {
-        this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP)
-            .then(() => {
-                this.setProgressFromRoadmap();
-                this.updatePuzzleIndex();
-            });
+    async mounted() {
+        await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+        this.setProgressFromRoadmap();
     },
     components: {
         ProgressBar,
         PuzzleCard,
     },
     computed: {
+        isLoading(): boolean {
+            return this.$store.getters.isLoading;
+        },
         loggedIn(): boolean {
             return this.$store.state.loggedIn;
+        },
+        username(): string {
+            return this.$store.state.username;
         },
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
         },
     },
     methods: {
+        async logout() {
+            await this.$store.dispatch(Action.LOGOUT);
+            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            this.setProgressFromRoadmap();
+        },
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
-        },
-        onScroll() {
-            this.updatePuzzleIndex();
-        },
-        updatePuzzleIndex() {
-            const scroll = document.getElementById('puzzle-scroll');
-
-            if (scroll === null)
-                return;
-
-            const fraction = this.clamp(scroll.scrollLeft / (scroll.scrollWidth - 500), 0, this.roadmap.length);
-
-            const oldIndex = this.$data.focusedPuzzleIndex;
-            const newIndex = Math.floor(fraction * this.roadmap.length);
-
-            // update
-            if (oldIndex !== newIndex) {
-                this.$data.focusedPuzzleIndex = newIndex;
-            }
         },
         play(id: number) {
             this.$router.push(`game/${id}`);
@@ -118,7 +105,6 @@ export default Vue.extend({
             for (const [index, a] of this.roadmap.entries()) {
                 if (a.level - 1 <= a.current_level && a.to_next < 1) {
                     this.$data.playablePuzzleIndex = index + a.to_next;
-                    console.log('Level:', this.$data.playablePuzzleIndex);
                     break;
                 }
             }

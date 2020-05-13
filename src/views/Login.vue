@@ -11,6 +11,11 @@
         <b-form-group>
             <router-link to="register">Register</router-link>
         </b-form-group>
+        <div class="alert-container">
+            <b-alert v-model="showError" variant="danger" dismissable>
+                {{error}}
+            </b-alert>
+        </div>
     </b-form>
 </template>
 
@@ -24,25 +29,31 @@ export default Vue.extend({
         return {
             username: '',
             password: '',
+            error: null,
+            showError: false,
         };
     },
     computed: {
         isLoading(): boolean {
-            return this.$store.state.isLoading;
+            return this.$store.getters.isLoading;
         },
         loggedIn(): boolean {
             return this.$store.state.loggedIn;
         }
     },
     methods: {
-        doLogin() {
+        async doLogin() {
             if (this.username.length > 0 && this.password.length > 0) {
-                this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password})
-                    .then(() => {
-                        if (this.loggedIn) {
-                            this.$router.push('puzzles');
-                        }
-                    });
+                const data = await this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password});
+                console.log('Logged in:', this.loggedIn);
+                if (data.error) {
+                    console.log('Error:', data.error);
+                    this.error = data.error;
+                    this.showError = true;
+                }
+                if (this.loggedIn) {
+                    this.$router.push('puzzles');
+                }
             }
         },
         back() {
@@ -71,6 +82,12 @@ export default Vue.extend({
     margin-bottom: 10px;
     width: 80vw;
     max-width: 300px;
+}
+
+.alert-container {
+    width: 80vw;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .back-button {

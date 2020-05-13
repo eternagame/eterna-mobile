@@ -4,6 +4,16 @@
 </div>
 </template>
 
+<script lang="ts">
+import Vue from 'vue'
+import { Action } from './store'
+export default Vue.extend({
+    mounted() {
+        this.$store.dispatch(Action.AUTHENTICATE);
+    },
+});
+</script>
+
 <style lang="scss">
 @import 'src/styles/global.scss';
 

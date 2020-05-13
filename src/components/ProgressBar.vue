@@ -27,10 +27,10 @@ export default Vue.component('puzzle-view-progress-bar', {
         }
     },
     mounted() {
-        var circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
+        let circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
 
-        var glowingCircles = Math.max(0, Math.min(circles.length, this.value >= this.max ? circles.length : this.value));
-        for (var i = 0; i <= glowingCircles; i++) {
+        let glowingCircles = Math.max(0, Math.min(circles.length - 1, this.value >= this.max ? circles.length - 1 : this.value));
+        for (let i = 0; i <= glowingCircles; i++) {
             circles[i].style.backgroundColor = "rgb(21, 194, 231)";
             circles[i].style.boxShadow = '0vmin 0vmin 4vmin 0.5vmin rgb(21, 194, 231)';
             circles[i].style.zIndex = (circles.length - i).toString();
