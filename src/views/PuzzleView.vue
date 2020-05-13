@@ -63,6 +63,7 @@ export default Vue.extend({
     async mounted() {
         await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
         this.setProgressFromRoadmap();
+        this.scrollToPuzzleIndex(this.playablePuzzleIndex);
     },
     components: {
         ProgressBar,
@@ -108,7 +109,13 @@ export default Vue.extend({
                     break;
                 }
             }
-        }
+        },
+        scrollToPuzzleIndex(index : number) {
+            var scroll = document.getElementById('puzzle-scroll');
+            if (scroll !== null) {
+                scroll.scrollLeft = index * (scroll.scrollWidth / (this.roadmap.length + 2));
+            }
+        },
     }
 });
 </script>
