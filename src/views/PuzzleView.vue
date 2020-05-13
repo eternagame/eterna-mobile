@@ -1,5 +1,8 @@
 <template>
-    <div class="puzzle-view-container">
+    <div v-if="isLoading">
+        <b-spinner class="loading-spinner" />
+    </div>
+    <div v-else class="puzzle-view-container">
         <b-row id="puzzle-view-header">
             <b-col>
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
@@ -22,7 +25,7 @@
             <PuzzleCard
                 v-for="(puzzle, index) in roadmap"
                 :key="index"
-                :highlight="index === Math.trunc(playablePuzzleIndex)"
+                :highlight="index === Math.floor(playablePuzzleIndex)"
                 :imgSrc="getAbsUrl(puzzle.image)"
                 @play="play(puzzle.current_puzzle)"
                 :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
@@ -88,6 +91,7 @@ export default Vue.extend({
             await this.$store.dispatch(Action.LOGOUT);
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             this.setProgressFromRoadmap();
+            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
         },
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
@@ -109,11 +113,12 @@ export default Vue.extend({
                     break;
                 }
             }
+            this.$forceUpdate();
         },
         scrollToPuzzleIndex(index : number) {
             var scroll = document.getElementById('puzzle-scroll');
             if (scroll !== null) {
-                scroll.scrollLeft = index * (scroll.scrollWidth / (this.roadmap.length + 2));
+                scroll.scrollLeft = Math.floor(index) * (scroll.scrollWidth / (this.roadmap.length + 2));
             }
         },
     }
@@ -121,6 +126,15 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.loading-spinner {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
 .puzzle-view-container {
     padding: 0;
     margin: 0;

@@ -1,12 +1,12 @@
 <template>
     <b-container style="padding:0">
-        <b-progress :max="circleCount()" class="puzzle-progress-bar">
-            <b-progress-bar :value="progressBarFill()" style="background-color: rgb(21, 194, 231);"/>
+        <b-progress :max="circleCount" class="puzzle-progress-bar">
+            <b-progress-bar :value="progressBarFill" style="background-color: rgb(21, 194, 231);"/>
         </b-progress>
         <b-row class="puzzle-progress-bar-circles">
-            <div v-for="n in circleCount()" :key="n" class="circle" :class="{'circle-glow': n - 1 <= value}">
+            <div v-for="n in circleCount" :key="n" class="circle" :class="{'circle-glow': (n - 1) <= value}">
                 <div v-if="n === 1" class="inner-circle" />
-                <div v-else-if="n === circleCount()" class="puzzle-progress-bar-icon-test-tube" />
+                <div v-else-if="n === circleCount" class="puzzle-progress-bar-icon-test-tube" />
                 <b v-else>{{ n - 1 }}</b>
             </div>
         </b-row>
@@ -26,45 +26,29 @@ export default Vue.component('puzzle-view-progress-bar', {
             default: 7,
         }
     },
+    computed: {
+        circleCount(): number {
+            return this.max + 2;
+        },
+        progressBarFill(): number {
+            const t = this.clamp(this.value / this.max, 0, 1);
+            return this.lerp(0.6, this.circleCount - 0.6, t);
+        },
+    },
     mounted() {
         let circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
         for (var i = 0; i < circles.length; i++) {
             circles[i].style.zIndex = (circles.length - i).toString();
         }
-
-        this.updateCircleGlow();
     },
     methods: {
         lerp(a : number, b : number, t : number) {
             return a + t * (b - a);
         },
-        circleCount() {
-            return this.max + 2;
+        clamp(x: number, min: number, max: number) {
+            return Math.max(min, Math.min(max, x));
         },
-        progressBarFill() {
-            return this.value >= this.max ?
-                this.circleCount() :
-                this.lerp(0.6, this.circleCount() - 0.6, this.value / this.max);
-        },
-        updateCircleGlow() {
-            var circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
-            var glowingCircles = Math.min(circles.length, (this.value >= this.max ? circles.length : this.value) + 1);
-
-            for (var i = 0; i < circles.length; i++) {
-                var glow = i < glowingCircles;
-                circles[i].style.backgroundColor = glow ? 'rgb(21, 194, 231)' : 'rgb(204, 204, 204)';
-                circles[i].style.boxShadow = glow ? '0vmin 0vmin 4vmin 0.5vmin rgb(21, 194, 231)' : 'none';
-            }
-        }
     },
-    watch: {
-        value() {
-            this.updateCircleGlow();
-        },
-        max() {
-            this.updateCircleGlow();
-        }
-    }
 })
 </script>
 
