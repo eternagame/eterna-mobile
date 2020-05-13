@@ -70,6 +70,7 @@
 			"target": "chrome",
 			"simulatePort": 8000,
 			"livereload": true,
+			"corsproxy": false,
 			"sourceMaps": true,
 			"cwd": "${workspaceFolder}"
 		},
@@ -81,6 +82,7 @@
 			"target": "chrome",
 			"simulatePort": 8000,
 			"livereload": true,
+			"corsproxy": false,
 			"sourceMaps": true,
 			"cwd": "${workspaceFolder}"
 		},
@@ -92,6 +94,7 @@
 			"target": "chrome",
 			"simulatePort": 8000,
 			"livereload": true,
+			"corsproxy": false,
 			"sourceMaps": true,
 			"cwd": "${workspaceFolder}"
 		}

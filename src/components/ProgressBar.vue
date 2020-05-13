@@ -27,10 +27,11 @@ export default Vue.component('puzzle-view-progress-bar', {
         }
     },
     mounted() {
-        var circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
+        let circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
         for (var i = 0; i < circles.length; i++) {
             circles[i].style.zIndex = (circles.length - i).toString();
         }
+
         this.updateCircleGlow();
     },
     methods: {

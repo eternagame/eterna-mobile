@@ -2,7 +2,7 @@
     <b-button id="puzzle-card-container">
         <b-img  class="puzzle-card-image" :src="imgSrc" />
         <div style="justify-content:center;align-items:center">
-            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" v-on:click="$emit('play')">
+            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" @click="$emit('play')">
                 <b>PLAY</b>
             </b-button>
             <div v-else-if="state === 'locked'" class="puzzle-card-icon-lock" />

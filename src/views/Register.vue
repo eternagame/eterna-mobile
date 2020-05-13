@@ -1,5 +1,6 @@
 <template>
     <b-container id="register-container">
+        <b-button class="back-button" @click="back">Back</b-button>
         <h3>Create a New Account</h3>
         <p>Register now to save your progress, engage in our community chat, and contribute solutions to science.</p>
         <b-form>
@@ -15,9 +16,34 @@
     </b-container>
 </template>
 
-<style scoped lang="scss">
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+    methods: {
+        back() {
+            this.$router.back();
+        },
+    },
+})
+</script>
+
+<style lang="scss" scoped>
 #register-container {
-    width: 80%;
+    width: 100vw;
     text-align: center;
+    padding-top: 10vh !important;
+}
+
+.form-control {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 80vw;
+    max-width: 300px;
+}
+
+.back-button {
+    position: absolute;
+    left: 10px;
+    top: 10px;
 }
 </style>
