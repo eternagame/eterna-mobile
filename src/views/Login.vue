@@ -1,12 +1,13 @@
 <template>
     <b-form id="home-container">
+        <b-button class="back-button" @click="back">Back</b-button>
         <div class="logo" />
         <b-form-input type="text" :disabled="isLoading" v-model="username" placeholder="username"></b-form-input>
         <b-form-input type="password" :disabled="isLoading" v-model="password" placeholder="password"></b-form-input>
         <b-form-group>
             <router-link to="reset-password">Forgot your password?</router-link>
         </b-form-group>
-        <b-button variant="primary" :disabled="isLoading" size="lg" v-on:click="doLogin">Enter</b-button>
+        <b-button variant="primary" :disabled="isLoading" size="lg" @click="doLogin">Enter</b-button>
         <b-form-group>
             <router-link to="register">Register</router-link>
         </b-form-group>
@@ -43,44 +44,15 @@ export default Vue.extend({
                         }
                     });
             }
-        }
+        },
+        back() {
+            this.$router.back();
+        },
     },
 });
 </script>
 
-<style lang="scss">
-@import 'src/styles/global.scss';
-
-@import '~bootstrap/scss/bootstrap.scss';
-@import '~bootstrap-vue/src/index.scss';
-
-@import 'src/styles/_bootswatch.scss';
-@import 'src/styles/custom.scss';
-
-/* Portrait layout (default) */
-#home {
-    background: url('../assets/logo_eterna.svg') no-repeat center top; /* 170px x 200px */
-    position: absolute;             /* position in the center of the screen */
-    left: 50%;
-    top: 50%;
-    height: 50px;                   /* text area height */
-    width: 225px;                   /* text area width */
-    text-align: center;
-    padding: 180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin: -115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
-                                    /* offset horizontal: half of text area width */
-}
-
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    #home {
-        background-position: left center;
-        padding: 75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin: -90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                       /* offset horizontal: half of image width and text area width */
-    }
-}
-
+<style lang="scss" scoped>
 .logo {
     background: url('../assets/logo_eterna.svg') no-repeat center top; /* 170px x 200px */
     height: 15vmin;                   /* text area height */
@@ -99,5 +71,11 @@ export default Vue.extend({
     margin-bottom: 10px;
     width: 80vw;
     max-width: 300px;
+}
+
+.back-button {
+    position: absolute;
+    left: 10px;
+    top: 10px;
 }
 </style>

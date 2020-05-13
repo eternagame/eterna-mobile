@@ -5,6 +5,14 @@
 </template>
 
 <style lang="scss">
+@import 'src/styles/global.scss';
+
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss';
+
+@import 'src/styles/_bootswatch.scss';
+@import 'src/styles/custom.scss';
+
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
