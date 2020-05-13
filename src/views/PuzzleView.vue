@@ -25,7 +25,14 @@
                 :highlight="index === playablePuzzleIndex"
                 :imgSrc="puzzle.imgSrc"
                 v-on:play="play(puzzle.id)"
-                :state="index < playablePuzzleIndex ? 'completed' : index > playablePuzzleIndex ? 'locked' : 'unlocked'" />
+                :state="index < playablePuzzleIndex ? 'completed' : index > playablePuzzleIndex ? 'locked' : 'unlocked'"
+                v-b-popover.click.blur.top.html="{
+                    content: puzzle.info,
+                    fallbackPlacement: ['top'],
+                    customClass: 'puzzle-card-popover',
+                    boundary: 'viewport'
+                }"
+            />
         </b-container>
         <b-row id="puzzle-view-footer">
             <b-col></b-col>
@@ -50,13 +57,41 @@ export default Vue.extend({
     data() {
         return {
             puzzles: [
-                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png' },
-                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png' },
-                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png' },
-                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png' },
-                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png' },
-                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png' },
-                { id: 0, imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png' },
+                {
+                    id: 0,
+                    imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
+                    info: '<strong>Thermocyclers</strong> use the polymerase chain reaction to amplify DNA templates from the Gene Synthesizer into sufficient quantities to create RNA molecules and test if they will be useful for medicine.'
+                },
+                {
+                    id: 0,
+                    imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png',
+                    info: 'This is some information'
+                },
+                {
+                    id: 0,
+                    imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png',
+                    info: 'This is some information'
+                },
+                {
+                    id: 0,
+                    imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
+                    info: 'This is some information'
+                },
+                {
+                    id: 0,
+                    imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/6A70A1E1-9A81-4BA0-B765-A12B8F821300.png',
+                    info: 'This is some information'
+                },
+                {
+                    id: 0,
+                    imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/E280848F-6347-4CC5-A215-F08B1F55ED1B.png',
+                    info: 'This is some information'
+                },
+                {
+                    id: 0,
+                    imgSrc: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png',
+                    info: 'This is some information'
+                },
             ],
             focusedPuzzleIndex: -1,
             playablePuzzleIndex: 1,
@@ -177,5 +212,11 @@ export default Vue.extend({
     width: 6vmin;
     height: 6vmin;
     display: inline-block;
+}
+
+.puzzle-card-popover {
+    background: black;
+    font-size: 3vmin;
+    max-width: 70vw;
 }
 </style>

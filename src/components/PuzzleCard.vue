@@ -1,5 +1,5 @@
 <template>
-    <div class="puzzle-card-container">
+    <b-button id="puzzle-card-container">
         <b-img  class="puzzle-card-image" :src="imgSrc" />
         <div style="justify-content:center;align-items:center">
             <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" v-on:click="$emit('play')">
@@ -7,11 +7,11 @@
             </b-button>
             <div v-else-if="state === 'locked'" class="puzzle-card-icon-lock" />
             <b-row v-else-if="state === 'completed'" class="puzzle-card-text" style="justify-content:center;align-items:center;">
-                <b-col-2 class="puzzle-card-icon-checkmark" />
+                <div class="puzzle-card-icon-checkmark" />
                 <b>COMPLETED!</b>
             </b-row>
         </div>
-    </div>
+    </b-button>
 </template>
 
 <script lang="ts">
@@ -50,15 +50,15 @@ export default Vue.component('puzzle-card', {
             break;
         }
 
-        if (props.highlight) {
-            el.style.boxShadow = '0px 0px 2.5vmin 0.25vmin rgb(21, 194, 231)';
-        }
+        el.style.boxShadow = props.highlight ?
+            '0px 0px 2.5vmin 0.25vmin rgb(21, 194, 231)' :
+            'none';
     }
 })
 </script>
 
 <style lang="scss" scoped>
-.puzzle-card-container {
+#puzzle-card-container {
     width: 45vmin;
     height: 45vmin;
     display: inline-block;
@@ -66,15 +66,17 @@ export default Vue.component('puzzle-card', {
     background-color: #008cff15;
     scroll-snap-align: center;
     text-align: center;
-    margin-top: 2.5vmin;
-    margin-bottom: 2.5vmin;
+    margin-top: 3vmin;
+    margin-bottom: 3vmin;
     margin-left: 1vmin;
     margin-right: 1vmin;
+    padding: 0;
+    border: none;
 }
 
 .puzzle-card-image {
     height: 65%;
-    margin-top: 12%;
+    margin-top: 0%;
     margin-bottom: 1vh;
 }
 
@@ -112,8 +114,8 @@ export default Vue.component('puzzle-card', {
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
-    width: 3.5vmin;
-    height: 2.5vmin;
+    width: 0.8 * 4.9vmin;
+    height: 0.8 * 3.7vmin;
     margin-right: 1vmin;
     display: inline-block;
 }
