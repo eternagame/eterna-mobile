@@ -45,9 +45,8 @@ export default Vue.extend({
         async doLogin() {
             if (this.username.length > 0 && this.password.length > 0) {
                 const data = await this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password});
-                console.log('Logged in:', this.loggedIn);
                 if (data.error) {
-                    console.log('Error:', data.error);
+                    console.error('Error:', data.error);
                     this.error = data.error;
                     this.showError = true;
                 }
