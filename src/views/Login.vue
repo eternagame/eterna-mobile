@@ -29,7 +29,7 @@ export default Vue.extend({
         return {
             username: '',
             password: '',
-            error: null,
+            error: <string | null>null,
             showError: false,
         };
     },
@@ -39,7 +39,7 @@ export default Vue.extend({
         },
         loggedIn(): boolean {
             return this.$store.state.loggedIn;
-        }
+        },
     },
     methods: {
         async doLogin() {
@@ -51,7 +51,7 @@ export default Vue.extend({
                     this.showError = true;
                 }
                 if (this.loggedIn) {
-                    this.$router.push('puzzles');
+                    this.$router.replace('puzzles');
                 }
             }
         },

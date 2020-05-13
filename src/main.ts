@@ -7,7 +7,6 @@ import router from './router';
 import createStore from './store';
 
 Vue.use(BootstrapVue);
-Vue.use(VueAxios, Axios)
 
 Vue.config.devtools = true;
 
@@ -15,6 +14,7 @@ const http = Axios.create({
     baseURL: process.env.APP_SERVER_URL,
     withCredentials: true,
 });
+Vue.use(VueAxios, http);
 
 new Vue({
     router,
