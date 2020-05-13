@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "cd eternajs && npm run build:dev",
-    "build": "webpack",
+    "prebuild:dev": "cd eternajs && npm run build:dev",
+    "build:dev": "webpack",
+    "prebuild:prod": "cd eternajs && npm run build:prod",
+    "build:prod": "webpack",
     "watch": "webpack --watch"
   },
   "author": "Eat Create Sleep AB",
