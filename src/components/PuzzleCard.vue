@@ -81,10 +81,10 @@ export default Vue.component('puzzle-card', {
 }
 
 .puzzle-card-button {
-    margin-top: 1%;
+    margin-top: 3%;
     padding: 0;
     width: 49%;
-    height: 5.5vmin;
+    height: 6.5vmin;
     border-radius: 1vmin;
     text-align: center;
     font-size: 3.2vmin;

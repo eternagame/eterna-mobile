@@ -24,8 +24,8 @@
                 :key="index"
                 :highlight="index === playablePuzzleIndex"
                 :imgSrc="puzzle.imgSrc"
-                v-on:play="play(puzzle.id)"
                 :state="index < playablePuzzleIndex ? 'completed' : index > playablePuzzleIndex ? 'locked' : 'unlocked'"
+                v-on:play="play(puzzle.id)"
                 v-b-popover.click.blur.top.html="{
                     content: puzzle.info,
                     fallbackPlacement: ['top'],
@@ -36,7 +36,7 @@
         </b-container>
         <b-row id="puzzle-view-footer">
             <b-col></b-col>
-            <b-col class="col-8">
+            <b-col class="col-8" style="padding:0">
                 <ProgressBar :value="playablePuzzleIndex" />
             </b-col>
             <b-col>
@@ -94,7 +94,7 @@ export default Vue.extend({
                 },
             ],
             focusedPuzzleIndex: -1,
-            playablePuzzleIndex: 1,
+            playablePuzzleIndex: 0,
             playerName: 'PlayerOne',
         }
     },
@@ -129,8 +129,7 @@ export default Vue.extend({
             const newIndex = Math.floor(fraction * this.puzzles.length);
 
             // update
-            if (oldIndex !== newIndex)
-            {
+            if (oldIndex !== newIndex) {
                 this.$data.focusedPuzzleIndex = newIndex;
 
                 // var cards = document.getElementsByClassName('puzzle-card-container') as HTMLCollectionOf<HTMLElement>;
@@ -176,6 +175,7 @@ export default Vue.extend({
     padding-left: 50%;
     margin-top: 0vmin;
     margin-bottom: 6vmin;
+    scroll-behavior: smooth;
 }
 
 #puzzle-scroll::-webkit-scrollbar {

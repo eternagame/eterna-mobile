@@ -1,16 +1,14 @@
 <template>
-    <b-container>
+    <b-container style="padding:0">
         <b-progress max="9" class="puzzle-progress-bar">
-            <b-progress-bar :value="lerp(0.4, 9 - 0.4, value / 7)" style="background-color: rgb(21, 194, 231);"/>
+            <b-progress-bar :value="lerp(0.6, 9 - 0.6, value / 7)" style="background-color: rgb(21, 194, 231);"/>
         </b-progress>
         <b-row class="puzzle-progress-bar-circles">
-            <b-col v-for="n in 9" :key="n">
-                <b-row class="circle">
-                        <div v-if="n == 1" class="inner-circle" /> 
-                        <div v-else-if="n == 9" class="puzzle-progress-bar-icon-test-tube" />
-                        <b v-else>{{ n - 1 }}</b>
-                </b-row>
-            </b-col>
+            <div v-for="n in 9" :key="n" class="circle">
+                <div v-if="n == 1" class="inner-circle" />
+                <div v-else-if="n == 9" class="puzzle-progress-bar-icon-test-tube" />
+                <b v-else>{{ n - 1 }}</b>
+            </div>
         </b-row>
     </b-container>
 </template>
@@ -42,18 +40,15 @@ export default Vue.component('puzzle-view-progress-bar', {
 
 <style lang="scss" scoped>
 .puzzle-progress-bar {
-    overflow: visible;
     background-color: rgb(204, 204, 204);
     height: 2.8vmin;
-    margin-left: 3vmin;
-    margin-right: 3vmin;
 }
 
 .puzzle-progress-bar-circles {
-    position:relative;
-    top: -4.8vmin;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: nowrap;
+    top: -4.9vmin;
+    position: relative;
 }
 
 .circle {
@@ -61,22 +56,19 @@ export default Vue.component('puzzle-view-progress-bar', {
     width:  7vmin;
     background-color: rgb(204, 204, 204);
     border-radius: 50%;
-    position: absolute;
     overflow: visible;
-    left: 50%;
-    justify-content: center;
-    align-content: center;
+    display: inline-block;
     font-size: 4vmin;
-    line-height: 0.3rem;
+    padding-top: 0.5vmin;
 }
 
 .inner-circle {
-    height: 50%;
-    width: 50%;
-    background-color: white;
+    height: 4vmin;
+    width:  4vmin;
     border-radius: 50%;
+    background-color: white;
     display: inline-block;
-    overflow: visible;
+    margin-top: 1.0vmin;
 }
 
 .puzzle-progress-bar-icon-test-tube {
@@ -87,5 +79,6 @@ export default Vue.component('puzzle-view-progress-bar', {
     width: 3.7vmin;
     height: 3.7vmin;
     display: inline-block;
+    margin-top: 1.0vmin;
 }
 </style>
