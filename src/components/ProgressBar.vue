@@ -1,12 +1,12 @@
 <template>
     <b-container style="padding:0">
-        <b-progress max="9" class="puzzle-progress-bar">
-            <b-progress-bar :value="lerp(0.6, 9 - 0.6, value / 7)" style="background-color: rgb(21, 194, 231);"/>
+        <b-progress :max="circleCount()" class="puzzle-progress-bar">
+            <b-progress-bar :value="progressBarFill()" style="background-color: rgb(21, 194, 231);"/>
         </b-progress>
         <b-row class="puzzle-progress-bar-circles">
-            <div v-for="n in 9" :key="n" class="circle">
+            <div v-for="n in circleCount()" :key="n" class="circle">
                 <div v-if="n == 1" class="inner-circle" />
-                <div v-else-if="n == 9" class="puzzle-progress-bar-icon-test-tube" />
+                <div v-else-if="n == circleCount()" class="puzzle-progress-bar-icon-test-tube" />
                 <b v-else>{{ n - 1 }}</b>
             </div>
         </b-row>
@@ -20,19 +20,33 @@ export default Vue.component('puzzle-view-progress-bar', {
         value: {
             type: Number,
             default: 0,
+        },
+        max: {
+            type: Number,
+            default: 7,
         }
     },
     mounted() {
         var circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
 
-        for (var i = 0; i <= this.value; i++) {
+        var glowingCircles = Math.max(0, Math.min(circles.length, this.value >= this.max ? circles.length : this.value));
+        for (var i = 0; i <= glowingCircles; i++) {
             circles[i].style.backgroundColor = "rgb(21, 194, 231)";
             circles[i].style.boxShadow = '0vmin 0vmin 4vmin 0.5vmin rgb(21, 194, 231)';
+            circles[i].style.zIndex = (circles.length - i).toString();
         }
     },
     methods: {
         lerp(a : number, b : number, t : number) {
             return a + t * (b - a);
+        },
+        circleCount() {
+            return this.max + 2;
+        },
+        progressBarFill() {
+            return this.value >= this.max ?
+                this.circleCount() :
+                this.lerp(0.6, this.circleCount() - 0.6, this.value / this.max);
         }
     }
 })
@@ -63,12 +77,12 @@ export default Vue.component('puzzle-view-progress-bar', {
 }
 
 .inner-circle {
-    height: 4vmin;
-    width:  4vmin;
+    height: 3.5vmin;
+    width:  3.5vmin;
     border-radius: 50%;
     background-color: white;
     display: inline-block;
-    margin-top: 1.0vmin;
+    margin-top: 1.2vmin;
 }
 
 .puzzle-progress-bar-icon-test-tube {
