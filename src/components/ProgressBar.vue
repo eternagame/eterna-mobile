@@ -28,13 +28,10 @@ export default Vue.component('puzzle-view-progress-bar', {
     },
     mounted() {
         var circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
-
-        var glowingCircles = Math.max(0, Math.min(circles.length, this.value >= this.max ? circles.length : this.value));
-        for (var i = 0; i <= glowingCircles; i++) {
-            circles[i].style.backgroundColor = "rgb(21, 194, 231)";
-            circles[i].style.boxShadow = '0vmin 0vmin 4vmin 0.5vmin rgb(21, 194, 231)';
+        for (var i = 0; i < circles.length; i++) {
             circles[i].style.zIndex = (circles.length - i).toString();
         }
+        this.updateCircleGlow();
     },
     methods: {
         lerp(a : number, b : number, t : number) {
@@ -47,6 +44,24 @@ export default Vue.component('puzzle-view-progress-bar', {
             return this.value >= this.max ?
                 this.circleCount() :
                 this.lerp(0.6, this.circleCount() - 0.6, this.value / this.max);
+        },
+        updateCircleGlow() {
+            var circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
+            var glowingCircles = Math.min(circles.length, (this.value >= this.max ? circles.length : this.value) + 1);
+
+            for (var i = 0; i < circles.length; i++) {
+                var glow = i < glowingCircles;
+                circles[i].style.backgroundColor = glow ? 'rgb(21, 194, 231)' : 'rgb(204, 204, 204)';
+                circles[i].style.boxShadow = glow ? '0vmin 0vmin 4vmin 0.5vmin rgb(21, 194, 231)' : 'none';
+            }
+        }
+    },
+    watch: {
+        value() {
+            this.updateCircleGlow();
+        },
+        max() {
+            this.updateCircleGlow();
         }
     }
 })
@@ -61,28 +76,29 @@ export default Vue.component('puzzle-view-progress-bar', {
 .puzzle-progress-bar-circles {
     justify-content: space-between;
     flex-wrap: nowrap;
-    top: -4.9vmin;
+    top: -4.4vmin;
     position: relative;
 }
 
 .circle {
-    height: 7vmin;
-    width:  7vmin;
+    height: 6vmin;
+    width: 6vmin;
     background-color: rgb(204, 204, 204);
     border-radius: 50%;
     overflow: visible;
     display: inline-block;
-    font-size: 4vmin;
-    padding-top: 0.5vmin;
+    font-size: 3.5vmin;
+    padding-top: 0.4vmin;
+    z-index: 0;
 }
 
 .inner-circle {
     height: 3.5vmin;
-    width:  3.5vmin;
+    width: 3.5vmin;
     border-radius: 50%;
     background-color: white;
     display: inline-block;
-    margin-top: 1.2vmin;
+    margin-top: 0.9vmin;
 }
 
 .puzzle-progress-bar-icon-test-tube {
@@ -93,6 +109,6 @@ export default Vue.component('puzzle-view-progress-bar', {
     width: 3.7vmin;
     height: 3.7vmin;
     display: inline-block;
-    margin-top: 1.0vmin;
+    margin-top: 0.4vmin;
 }
 </style>
