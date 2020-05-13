@@ -4,9 +4,9 @@
             <b-progress-bar :value="progressBarFill()" style="background-color: rgb(21, 194, 231);"/>
         </b-progress>
         <b-row class="puzzle-progress-bar-circles">
-            <div v-for="n in circleCount()" :key="n" class="circle">
-                <div v-if="n == 1" class="inner-circle" />
-                <div v-else-if="n == circleCount()" class="puzzle-progress-bar-icon-test-tube" />
+            <div v-for="n in circleCount()" :key="n" class="circle" :class="{'circle-glow': n - 1 <= value}">
+                <div v-if="n === 1" class="inner-circle" />
+                <div v-else-if="n === circleCount()" class="puzzle-progress-bar-icon-test-tube" />
                 <b v-else>{{ n - 1 }}</b>
             </div>
         </b-row>
@@ -24,16 +24,6 @@ export default Vue.component('puzzle-view-progress-bar', {
         max: {
             type: Number,
             default: 7,
-        }
-    },
-    mounted() {
-        let circles = this.$el.getElementsByClassName('circle') as HTMLCollectionOf<HTMLElement>;
-
-        let glowingCircles = Math.max(0, Math.min(circles.length - 1, this.value >= this.max ? circles.length - 1 : this.value));
-        for (let i = 0; i <= glowingCircles; i++) {
-            circles[i].style.backgroundColor = "rgb(21, 194, 231)";
-            circles[i].style.boxShadow = '0vmin 0vmin 4vmin 0.5vmin rgb(21, 194, 231)';
-            circles[i].style.zIndex = (circles.length - i).toString();
         }
     },
     methods: {
@@ -74,6 +64,11 @@ export default Vue.component('puzzle-view-progress-bar', {
     display: inline-block;
     font-size: 4vmin;
     padding-top: 0.5vmin;
+}
+
+.circle-glow {
+    background-color: rgb(21, 194, 231);
+    box-shadow: 0vmin 0vmin 4vmin 0.5vmin rgb(21, 194, 231);
 }
 
 .inner-circle {

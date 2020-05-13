@@ -1,5 +1,5 @@
 <template>
-    <b-button id="puzzle-card-container">
+    <b-button id="puzzle-card-container" :class="{'puzzle-card-locked': state === 'locked', 'puzzle-card-highlight': highlight}">
         <b-img  class="puzzle-card-image" :src="imgSrc" />
         <div style="justify-content:center;align-items:center">
             <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" @click="$emit('play')">
@@ -32,28 +32,6 @@ export default Vue.component('puzzle-card', {
             default: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png'
         }
     },
-    mounted() {
-        const el = this.$el as HTMLElement;
-        const data = this.$data;
-        const props = this.$props;
-
-        const state = data.state;
-
-        switch (props.state) {
-            case 'locked': {
-                el.style.opacity = '50%';
-            }
-            break;
-            case 'unlocked':{}
-            break;
-            case 'completed': {}
-            break;
-        }
-
-        el.style.boxShadow = props.highlight ?
-            '0px 0px 2.5vmin 0.25vmin rgb(21, 194, 231)' :
-            'none';
-    }
 })
 </script>
 
@@ -72,6 +50,14 @@ export default Vue.component('puzzle-card', {
     margin-right: 1vmin;
     padding: 0;
     border: none;
+}
+
+.puzzle-card-locked {
+    opacity: 0.5;
+}
+
+.puzzle-card-highlight {
+    box-shadow: 0px 0px 2.5vmin 0.25vmin rgb(21, 194, 231);
 }
 
 .puzzle-card-image {
