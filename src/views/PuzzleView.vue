@@ -67,7 +67,9 @@ export default Vue.extend({
             .then(() => {
                 this.setProgressFromRoadmap();
                 this.updatePuzzleIndex();
+                this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             });
+        this.scrollToPuzzleIndex(this.playablePuzzleIndex);
     },
     components: {
         ProgressBar,
@@ -102,6 +104,12 @@ export default Vue.extend({
             // update
             if (oldIndex !== newIndex) {
                 this.$data.focusedPuzzleIndex = newIndex;
+            }
+        },
+        scrollToPuzzleIndex(index : number) {
+            var scroll = document.getElementById('puzzle-scroll');
+            if (scroll !== null) {
+                scroll.scrollLeft = index * (scroll.scrollWidth / (this.roadmap.length + 2));
             }
         },
         play(id: number) {
