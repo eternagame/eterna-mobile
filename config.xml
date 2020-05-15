@@ -4,7 +4,7 @@
   version="1.0.2"
   ios-CFBundleIdentifier="eterna"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>EternaMobile</name>
+    <name>Eterna</name>
     <author email="contact@eatcreatesleep.net" href="https://eatcreatesleep.net">
         Eat Create Sleep AB
     </author>
