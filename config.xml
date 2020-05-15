@@ -17,6 +17,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <icon src="res/eterna_icon_144.png" />
     <hook type="before_prepare" src="./run-webpack.js" />
     <feature name="CDVWKWebViewEngine">
         <param name="ios-package" value="CDVWKWebViewEngine" />
@@ -24,9 +25,14 @@
     <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
     <preference name="WKWebViewOnly" value="true" />
     <platform name="android">
+        <icon density="mdpi" background="res/eterna_icon_48_bg.png" foreground="res/eterna_icon_48_fg.png" src="res/eterna_icon_48.png" />
+        <icon density="xxhdpi" background="res/eterna_icon_144_bg.png" foreground="res/eterna_icon_144_fg.png" src="res/eterna_icon_144.png" />
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
+        <icon src="res/eterna_icon_152.png" width="152" height="152" />
+        <icon src="res/eterna_icon_120.png" width="120" height="120" />
+        <icon src="res/eterna_icon_76.png" width="76" height="76" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
