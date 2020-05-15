@@ -36,23 +36,19 @@ body {
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-image: radial-gradient(circle, rgb(4, 51, 95) 0%, rgb(3, 37, 70) 90%);
-    color: #FFFFFF;
-    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
-    font-size: 12px;
     height: 100vh;
-    margin: 0px;
-    padding: 0px;
+    width: 100vw;
+    margin: 0;
     /* Padding to avoid the "unsafe" areas behind notches in the screen */
-    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-right, 0px);
-    width: 100%;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
 }
 
 h1 {
     font-size: 24px;
     font-weight: normal;
-    margin: 0px;
+    margin: 0;
     overflow: visible;
-    padding: 0px;
+    padding: 0;
     text-align: center;
 }
 
