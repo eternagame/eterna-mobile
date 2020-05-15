@@ -4,20 +4,14 @@
         <h3>Create a New Account</h3>
         <p>Register now to save your progress, engage in our community chat, and contribute solutions to science.</p>
         <b-form>
-            <b-form-input type="text" v-model="username" placeholder="username" required></b-form-input>
-            <b-form-input type="email" v-model="email" placeholder="email" required></b-form-input>
-            <b-form-input type="password" v-model="password" placeholder="password" required></b-form-input>
-            <b-form-input type="password" v-model="passwordConfirm" placeholder="re-enter password" required></b-form-input>
-            <vue-recaptcha
-                sitekey="6LcFwUsUAAAAAOQ9szhauSNv2bJuBOUtw_pGrRnd"
-                :loadRecaptchaScript="true"
-                @verify="captchaResponse = $event"
-                class="captcha"
-            />
+            <b-form-input type="text" v-model="username" :disabled="isLoading" placeholder="username" required></b-form-input>
+            <b-form-input type="email" v-model="email" :disabled="isLoading" placeholder="email" required></b-form-input>
+            <b-form-input type="password" v-model="password" :disabled="isLoading" placeholder="password" required></b-form-input>
+            <b-form-input type="password" v-model="passwordConfirm" :disabled="isLoading" placeholder="re-enter password" required></b-form-input>
+            <b-form-checkbox v-model="acceptedTerms" :disabled="isLoading" required>
+                I accept the <a href="https://eternagame.org/about/terms" target="_blank">Terms &amp; Conditions</a>
+            </b-form-checkbox>
             <b-btn variant="primary" :disabled="isLoading" @click="doRegister">Create Account</b-btn>
-            <b-form-group>
-                <a href="https://eternagame.org/web/news/15121/" target="_blank">Terms &amp; Conditions</a>
-            </b-form-group>
         </b-form>
         <div class="alert-container">
             <b-alert v-model="showError" variant="danger" dismissable>
@@ -29,19 +23,15 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import VueRecaptcha from 'vue-recaptcha';
 import { Action } from '../store';
 export default Vue.extend({
-    components: {
-        VueRecaptcha,
-    },
     data() {
         return {
             username: '',
             email: '',
             password: '',
             passwordConfirm: '',
-            captchaResponse: '',
+            acceptedTerms: false,
             error: <string | null>null,
             showError: false,
         };
@@ -56,13 +46,13 @@ export default Vue.extend({
     },
     methods: {
         async doRegister() {
-            if (this.username.length > 0 && this.email.length > 0 && this.password.length > 0 && this.password === this.passwordConfirm && this.captchaResponse.length > 0) {
+            if (this.username.length > 0 && this.email.length > 0 && this.password.length > 0 && this.password === this.passwordConfirm && this.acceptedTerms) {
                 const params = new URLSearchParams({
                     type: 'create',
                     name: this.username,
                     pass: this.password,
                     mail: this.email,
-                    captcha_response: this.captchaResponse,
+                    captcha_response: 'et3rn4lP4Ss',
                 });
                 const {data} = (await this.$http.post('/login/', params)).data;
                 if (data.success) {
@@ -106,11 +96,6 @@ export default Vue.extend({
     margin-bottom: 10px;
     width: 80vw;
     max-width: 300px;
-}
-
-.captcha {
-    margin: 0 auto;
-    margin-bottom: 10px;
 }
 
 .alert-container {
