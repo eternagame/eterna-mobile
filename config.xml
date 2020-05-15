@@ -32,9 +32,12 @@
         <allow-intent href="market:*" />
     </platform>
     <platform name="ios">
+        <icon src="res/eterna_icon_1024.png" width="1024" height="1024" />
+        <icon src="res/eterna_icon_167.png" width="167" height="167" />
         <icon src="res/eterna_icon_152.png" width="152" height="152" />
         <icon src="res/eterna_icon_120.png" width="120" height="120" />
         <icon src="res/eterna_icon_76.png" width="76" height="76" />
+        <icon src="res/eterna_icon_40.png" width="40" height="40" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
