@@ -7,9 +7,9 @@
             <b-col>
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
             </b-col>
-            <b-col>
-                <b v-if="lab_access" style="font-size:4vmin;line-height:5.0vmin;text-transform:uppercase;">You did it!</b>
-                <b v-else style="font-size:4vmin;line-height:5.0vmin;">Complete these puzzles to unlock lab access!</b>
+            <b-col style="display:flex;">
+                <b v-if="lab_access" style="margin:auto;font-size:8vmin;line-height:5.0vmin;text-transform:uppercase;">You did it!</b>
+                <b v-else style="margin:auto;font-size:4vmin;line-height:5.0vmin;">Complete these puzzles to unlock lab access!</b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end">
