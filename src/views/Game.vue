@@ -20,7 +20,7 @@ export default Vue.extend({
         gameUrl() {
             const puzzle = this.$route.params.puzzle;
             if (puzzle) {
-                return 'eternajs/index.html?puzzle=' + this.$route.params.puzzle;
+                return 'eternajs/index.html?puzzle=' + puzzle;
             } else {
                 return 'eternajs/index.html';
             }

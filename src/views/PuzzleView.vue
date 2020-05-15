@@ -8,7 +8,8 @@
                 <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
             </b-col>
             <b-col>
-                <b style="font-size:4vmin;line-height:5.0vmin;">Complete these puzzles to unlock lab access!</b>
+                <b v-if="lab_access" style="font-size:4vmin;line-height:5.0vmin;text-transform:uppercase;">You did it!</b>
+                <b v-else style="font-size:4vmin;line-height:5.0vmin;">Complete these puzzles to unlock lab access!</b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end">
@@ -41,6 +42,19 @@
                     boundary: 'viewport'
                 }"
             />
+            <PuzzleCard
+                key="lab"
+                :highlight="lab_access"
+                :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
+                :state="lab_access ? 'completed' : 'locked'"
+            />
+            <div class="finish-card" v-if="lab_access">
+                <div>
+                    <b>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</b>
+                    <br/>
+                    <b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button>
+                </div>
+            </div>
         </b-container>
         <b-row id="puzzle-view-footer">
             <b-col></b-col>
@@ -90,6 +104,9 @@ export default Vue.extend({
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
         },
+        lab_access(): boolean {
+            return this.playablePuzzleIndex === this.roadmap.length + 1;
+        }
     },
     methods: {
         async logout() {
@@ -111,10 +128,10 @@ export default Vue.extend({
             return process.env.APP_SERVER_URL + relUrl;
         },
         setProgressFromRoadmap() {
-            this.$data.playablePuzzleIndex = 0;
+            this.playablePuzzleIndex = this.roadmap.length + 1;
             for (const [index, a] of this.roadmap.entries()) {
                 if (a.level - 1 <= a.current_level && a.to_next < 1) {
-                    this.$data.playablePuzzleIndex = index + a.to_next;
+                    this.playablePuzzleIndex = index + a.to_next;
                     break;
                 }
             }
@@ -123,7 +140,7 @@ export default Vue.extend({
         scrollToPuzzleIndex(index : number) {
             var scroll = document.getElementById('puzzle-scroll');
             if (scroll !== null) {
-                scroll.scrollLeft = Math.floor(index) * (scroll.scrollWidth / (this.roadmap.length + 2));
+                scroll.scrollLeft = Math.floor(index) * (scroll.scrollWidth / (this.roadmap.length + 1));
             }
         },
     }
@@ -204,5 +221,23 @@ export default Vue.extend({
 .puzzle-card-popover {
     font-size: 3vmin;
     max-width: 70vw;
+}
+
+.finish-card {
+    display: inline-flex;
+    width: 45vmin;
+    height: 45vmin;
+    margin: 3vmin 1vmin 3vmin 1vmin;
+    text-align: center;
+    white-space: normal;
+    vertical-align: middle;
+
+    > div {
+        margin: auto;
+
+        > b {
+            font-size: 4vmin;
+        }
+    }
 }
 </style>

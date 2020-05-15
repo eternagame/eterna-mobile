@@ -28,11 +28,11 @@ export default Vue.component('puzzle-view-progress-bar', {
     },
     computed: {
         circleCount(): number {
-            return this.max + 2;
+            return this.max + 1;
         },
         progressBarFill(): number {
             const t = this.clamp(this.value / this.max, 0, 1);
-            return this.lerp(0.6, this.circleCount - 0.6, t);
+            return this.lerp(0, this.circleCount, t);
         },
     },
     mounted() {
