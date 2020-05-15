@@ -14,7 +14,7 @@
                 <b-row v-if="loggedIn" style="justify-content:flex-end">
                     <b-dropdown right variant="link" toggle-class="text-decoration-none" no-caret>
                         <template #button-content>
-                            <b style="font-size:3.5vmin;line-height:6vmin;margin-right:2vmin;vertical-align:bottom;color:white;">{{ username }}</b>
+                            <b style="font-size:3.5vmin;line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
                             <div class="puzzle-view-icon-people" />
                         </template>
                         <b-dropdown-item @click="logout">Logout</b-dropdown-item>
@@ -202,7 +202,6 @@ export default Vue.extend({
 }
 
 .puzzle-card-popover {
-    background: black;
     font-size: 3vmin;
     max-width: 70vw;
 }
