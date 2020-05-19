@@ -51,8 +51,4 @@ h1 {
     padding: 0;
     text-align: center;
 }
-
-.router-link-active {
-    color: yellow;
-}
 </style>
