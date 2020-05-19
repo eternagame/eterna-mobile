@@ -8,8 +8,6 @@ import createStore from './store';
 
 Vue.use(BootstrapVue);
 
-Vue.config.devtools = true;
-
 const http = Axios.create({
     baseURL: process.env.APP_SERVER_URL,
     withCredentials: true,
