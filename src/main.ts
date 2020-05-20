@@ -27,7 +27,6 @@ declare global {
 }
 
 document.addEventListener('deviceready', () => {
-    window.screen.orientation.lock('landscape');
     window.navigationbar.setUp(true);
     StatusBar.hide();
 });

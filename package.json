@@ -20,7 +20,6 @@
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-navigationbar": "^1.0.31",
-    "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-wkwebview-engine": "^1.2.1",
@@ -59,7 +58,6 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-screen-orientation": {},
       "cordova-plugin-navigationbar": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-wkwebview-engine": {},
