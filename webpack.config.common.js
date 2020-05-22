@@ -58,7 +58,7 @@ module.exports = function(mode, eternajs_copy) {
             new HtmlWebpackPlugin({
                 inject: false,
                 meta: {
-                    viewport: 'initial-scale=1, width=device-width, viewport-fit=cover',
+                    viewport: 'initial-scale=1, maximum-scale=1, user-scalable=0, width=device-width, viewport-fit=cover',
                 },
             }),
             new VueLoaderPlugin(),
