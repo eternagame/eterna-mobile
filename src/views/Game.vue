@@ -1,7 +1,5 @@
 <template>
-<div id="game-container">
-    <iframe id="game" title="Game" :src="gameUrl"></iframe>
-</div>
+<iframe id="game" title="Game" :src="gameUrl"></iframe>
 </template>
 
 <script lang="ts">
@@ -31,6 +29,9 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 #game {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     border: 0;
