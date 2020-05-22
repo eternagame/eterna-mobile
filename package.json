@@ -25,6 +25,7 @@
     "cordova-plugin-wkwebview-engine": "^1.2.1",
     "cordova-plugin-wkwebviewxhrfix": "git+https://github.com/TheMattRay/cordova-plugin-wkwebviewxhrfix.git",
     "es6-promise-plugin": "^4.2.2",
+    "eterna-chat-wrapper": "github:eternagame/eterna-chat-wrapper",
     "jquery": "^3.5.1",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",

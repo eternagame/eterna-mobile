@@ -63,10 +63,11 @@
             </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <button @click="openChat" class="puzzle-view-chat-button" />
+                    <div @click="openChat" class="puzzle-view-chat-button" />
                 </b-row>
             </b-col>
         </b-row>
+        <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 
@@ -75,17 +76,20 @@ import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
 import { Action, Achievement } from '../store';
+import ChatManager from '../ChatManager';
 
 export default Vue.extend({
     data() {
         return {
             playablePuzzleIndex: 0,
+            chat: <ChatManager | null>null,
         }
     },
     async mounted() {
         await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
         this.setProgressFromRoadmap();
         this.scrollToPuzzleIndex(this.playablePuzzleIndex);
+        this.chat = new ChatManager('chat-container', this.$store)
     },
     components: {
         ProgressBar,
@@ -122,7 +126,9 @@ export default Vue.extend({
             this.$router.push(`game/${id}`);
         },
         openChat() {
-            console.log('open chat');
+            if (this.chat) {
+                this.chat.toggleVisibility();
+            }
         },
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;
@@ -147,7 +153,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .loading-spinner {
     position: absolute;
     margin: auto;
@@ -239,5 +245,40 @@ export default Vue.extend({
             font-size: 4vmin;
         }
     }
+}
+
+.chat {
+    text-align: left;
+    box-sizing: content-box;
+    width: 230px;
+    height: 340px;
+    position: absolute;
+    top: 140px;
+    right: 10px;
+    border: 1px solid rgba(47, 148, 209, 0.9);
+    border-radius: 5px;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+
+    * {
+        box-sizing: content-box;
+    }
+    button, img {
+        padding: 0;
+    }
+}
+
+@media (max-height: 510px) {
+    .chat {
+        width: 30%;
+        min-width: 230px;
+        height: 85%;
+        top: 5px;
+        right: 5px;
+    }
+}
+.hidden{
+  opacity:0;
 }
 </style>
