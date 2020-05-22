@@ -180,11 +180,12 @@ export default Vue.extend({
     white-space: nowrap;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
-    padding-right: 50%;
-    padding-left: 50%;
+    padding-right: calc(50% - 22.5vmin);
+    padding-left: calc(50% - 22.5vmin);
     margin-top: 0vmin;
     margin-bottom: 6vmin;
     scroll-behavior: smooth;
+    max-width: unset;
 }
 
 #puzzle-scroll::-webkit-scrollbar {
