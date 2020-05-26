@@ -2,6 +2,14 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"type": "firefox",
+			"request": "launch",
+			"reAttach": true,
+			"name": "Launch EternaJS",
+			"url": "http://localhost:63343/?puzzle=6502942",
+			"webRoot": "${workspaceFolder}/eternajs"
+		},
+		{
 			"name": "Run Android on device",
 			"type": "cordova",
 			"request": "launch",
@@ -9,7 +17,7 @@
 			"target": "device",
 			"port": 9222,
 			"sourceMaps": true,
-			"cwd": "${workspaceFolder}",
+			"cwd": "${workspaceFolder}"
 		},
 		{
 			"name": "Run iOS on device",
@@ -50,7 +58,7 @@
 			"target": "emulator",
 			"port": 9222,
 			"sourceMaps": true,
-			"cwd": "${workspaceFolder}",
+			"cwd": "${workspaceFolder}"
 		},
 		{
 			"name": "Attach to running android on emulator",
