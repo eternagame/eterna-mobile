@@ -41,7 +41,7 @@ module.exports = function(mode, eternajs_copy) {
                     loader: 'vue-loader',
                 },
                 {
-                    test: /\.(png|jpg|gif|svg)$/,
+                    test: /\.(png|jpg|gif|svg|mp4)$/,
                     loader: 'file-loader',
                     options: {
                     name: '[name].[ext]?[hash]',

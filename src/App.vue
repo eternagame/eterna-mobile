@@ -51,4 +51,10 @@ h1 {
     padding: 0;
     text-align: center;
 }
+
+.close-button {
+    background: url('assets/close-button.png') no-repeat;
+    width: 13px;
+    height: 13px;
+}
 </style>

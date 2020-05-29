@@ -5,7 +5,7 @@
     <div v-else class="puzzle-view-container">
         <b-row id="puzzle-view-header">
             <b-col>
-                <b-img src="https://eternagame.org/home/img/logo_eterna.svg" />
+                <b-img :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
                 <b v-if="lab_access" style="margin:auto;font-size:8vmin;line-height:5.0vmin;text-transform:uppercase;">You did it!</b>
@@ -57,7 +57,13 @@
             </div>
         </b-container>
         <b-row id="puzzle-view-footer">
-            <b-col></b-col>
+            <b-col>
+                <b-row style="justify-content:flex-start;align-items:flex-start;">
+                    <router-link to="about">
+                        <div class="puzzle-view-about-button" />
+                    </router-link>
+                </b-row>
+            </b-col>
             <b-col class="col-8" style="padding:0">
                 <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
             </b-col>
@@ -83,13 +89,14 @@ export default Vue.extend({
         return {
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
-        }
+            logoSourcePng: require('../assets/logo_eterna.svg').default,
+        };
     },
     async mounted() {
         await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
         this.setProgressFromRoadmap();
         this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-        this.chat = new ChatManager('chat-container', this.$store)
+        this.chat = new ChatManager('chat-container', this.$store);
     },
     components: {
         ProgressBar,
@@ -212,6 +219,14 @@ export default Vue.extend({
     border: none;
     width: 9vmin;
     height: 8vmin;
+}
+.puzzle-view-about-button {
+    background: url('../assets/noun_info.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    width: 6vmin;
+    height: 6vmin;
 }
 
 .puzzle-view-icon-people {
