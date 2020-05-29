@@ -25,6 +25,7 @@ declare global {
         navigationbar: any;
     }
 }
+declare var StatusBar: any;
 
 document.addEventListener('deviceready', () => {
     window.navigationbar.setUp(true);
