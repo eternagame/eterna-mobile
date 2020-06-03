@@ -193,6 +193,7 @@ export default Vue.extend({
     margin-bottom: 6vmin;
     scroll-behavior: smooth;
     max-width: unset;
+    touch-action: pan-x;
 }
 
 #puzzle-scroll::-webkit-scrollbar {
