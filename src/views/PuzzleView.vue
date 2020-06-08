@@ -27,6 +27,13 @@
             </b-col>
         </b-row>
         <b-container id="puzzle-scroll">
+            <div class="finish-card left-aligned">
+                <div>
+                    <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
+                    <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
+                    <p><strong>Ready?</strong></p>
+                </div>
+            </div>
             <PuzzleCard
                 v-for="(puzzle, index) in roadmap"
                 :key="index"
