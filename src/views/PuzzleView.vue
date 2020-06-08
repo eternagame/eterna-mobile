@@ -8,11 +8,10 @@
                 <b-img :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto;font-size:8vmin;line-height:5.0vmin;text-transform:uppercase;">You did it!</b>
-                <b v-else style="margin:auto;font-size:4vmin;line-height:5.0vmin;">Complete these puzzles to unlock lab access!</b>
+                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:8vmin;text-transform:uppercase;">You did it!</b>
             </b-col>
             <b-col>
-                <b-row v-if="loggedIn" style="justify-content:flex-end">
+                <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
                     <b-dropdown right variant="link" toggle-class="text-decoration-none" no-caret>
                         <template #button-content>
                             <b style="font-size:3.5vmin;line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
@@ -21,7 +20,7 @@
                         <b-dropdown-item @click="logout">Logout</b-dropdown-item>
                     </b-dropdown>
                 </b-row>
-                <b-row v-else style="justify-content:flex-end">
+                <b-row v-else style="justify-content:flex-end;margin-top:12px;">
                     <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin" to="login">Log in</b-button>
                     <b-button class="puzzle-view-button" variant="secondary" to="register">Register</b-button>
                 </b-row>
@@ -50,7 +49,7 @@
             />
             <div class="finish-card" v-if="lab_access">
                 <div>
-                    <b>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</b>
+                    <strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong>
                     <br/>
                     <b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button>
                 </div>
@@ -248,7 +247,7 @@ export default Vue.extend({
 
 .finish-card {
     display: inline-flex;
-    width: 45vmin;
+    width: 55vmin;
     height: 45vmin;
     margin: 3vmin 1vmin 3vmin 1vmin;
     text-align: center;
@@ -258,10 +257,17 @@ export default Vue.extend({
     > div {
         margin: auto;
 
-        > b {
-            font-size: 4vmin;
+        > p {
+            font-size: 12px;
+        }
+        > strong {
+            font-size: 16px;
         }
     }
+}
+
+.left-aligned {
+    text-align: left;
 }
 
 .chat {
