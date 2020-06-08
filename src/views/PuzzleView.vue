@@ -27,38 +27,40 @@
             </b-col>
         </b-row>
         <b-container id="puzzle-scroll">
-            <div class="finish-card left-aligned" style="left:10vmin;">
-                <div>
-                    <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
-                    <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
-                    <p><strong>Ready?</strong></p>
+            <div class="puzzle-card-wrapper">
+                <div class="finish-card left-aligned" style="left:-60vmin;">
+                    <div>
+                        <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
+                        <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
+                        <p><strong>Ready?</strong></p>
+                    </div>
                 </div>
-            </div>
-            <PuzzleCard
-                v-for="(puzzle, index) in roadmap"
-                :key="index"
-                :highlight="index === Math.floor(playablePuzzleIndex)"
-                :imgSrc="getAbsUrl(puzzle.image)"
-                @play="play(puzzle.current_puzzle)"
-                :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
-                v-b-popover.click.blur.top.html="{
-                    content: puzzle.desc,
-                    fallbackPlacement: ['top'],
-                    customClass: 'puzzle-card-popover',
-                    boundary: 'viewport'
-                }"
-            />
-            <PuzzleCard
-                key="lab"
-                :highlight="lab_access"
-                :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
-                :state="lab_access ? 'completed' : 'locked'"
-            />
-            <div class="finish-card" v-if="lab_access">
-                <div>
-                    <strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong>
-                    <br/>
-                    <b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button>
+                <PuzzleCard
+                    v-for="(puzzle, index) in roadmap"
+                    :key="index"
+                    :highlight="index === Math.floor(playablePuzzleIndex)"
+                    :imgSrc="getAbsUrl(puzzle.image)"
+                    @play="play(puzzle.current_puzzle)"
+                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
+                    v-b-popover.click.blur.top.html="{
+                        content: puzzle.desc,
+                        fallbackPlacement: ['top'],
+                        customClass: 'puzzle-card-popover',
+                        boundary: 'viewport'
+                    }"
+                />
+                <PuzzleCard
+                    key="lab"
+                    :highlight="lab_access"
+                    :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
+                    :state="lab_access ? 'completed' : 'locked'"
+                />
+                <div class="finish-card" style="left:100%;" v-if="lab_access">
+                    <div>
+                        <strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong>
+                        <br/>
+                        <b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button>
+                    </div>
                 </div>
             </div>
         </b-container>
@@ -190,7 +192,6 @@ export default Vue.extend({
 }
 
 #puzzle-scroll {
-    position: relative;
     white-space: nowrap;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
@@ -210,6 +211,12 @@ export default Vue.extend({
 #puzzle-view-footer {
     margin-left: 3vmin;
     margin-right: 3vmin;
+}
+
+.puzzle-card-wrapper {
+    position: relative;
+    display: inline-block;
+    scroll-margin: 0 50vw;
 }
 
 .puzzle-card-container {
@@ -255,6 +262,7 @@ export default Vue.extend({
 
 .finish-card {
     position: absolute;
+    top: 0;
     display: inline-flex;
     width: 55vmin;
     height: 45vmin;
@@ -311,6 +319,6 @@ export default Vue.extend({
     }
 }
 .hidden{
-  opacity:0;
+  opacity: 0;
 }
 </style>
