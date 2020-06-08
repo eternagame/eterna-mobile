@@ -27,7 +27,7 @@
             </b-col>
         </b-row>
         <b-container id="puzzle-scroll">
-            <div class="finish-card left-aligned">
+            <div class="finish-card left-aligned" style="left:10vmin;">
                 <div>
                     <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
                     <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
@@ -190,6 +190,7 @@ export default Vue.extend({
 }
 
 #puzzle-scroll {
+    position: relative;
     white-space: nowrap;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
@@ -253,6 +254,7 @@ export default Vue.extend({
 }
 
 .finish-card {
+    position: absolute;
     display: inline-flex;
     width: 55vmin;
     height: 45vmin;
