@@ -19,6 +19,7 @@
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^5.1.1",
+    "cordova-plugin-ionic-keyboard": "2.2.0",
     "cordova-plugin-navigationbar": "^1.0.31",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
@@ -63,7 +64,8 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-wkwebview-engine": {},
       "cordova-plugin-wkwebviewxhrfix": {},
-      "cordova-plugin-splashscreen": {}
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
       "android",
