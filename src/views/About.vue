@@ -14,7 +14,7 @@
     </b-row>
     <b-row id="about-content">
         <b-col class="info-col">
-            <p>Eterna empowers citizen scientists to invent medicine through <strong>molecular design</strong>.</p>
+            <p style="font-size:larger">Eterna empowers citizen scientists to invent medicine through <strong>molecular design</strong>.</p>
             <p>You play by solving puzzles using RNAs,<br>tiny molecules at the heart of every cell.</p>
             <p><strong>Learn more at <a href="https://eternagame.org">eternagame.org</a></strong></p>
         </b-col>
