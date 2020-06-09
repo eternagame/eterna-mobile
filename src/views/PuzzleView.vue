@@ -279,10 +279,10 @@ export default Vue.extend({
         margin: auto;
 
         p {
-            font-size: 1em;
+            font-size: 12px;
         }
         strong {
-            font-size: 1.1em;
+            font-size: larger;
         }
     }
 }
