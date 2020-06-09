@@ -43,15 +43,22 @@ export default Vue.extend({
     },
     methods: {
         async doLogin() {
+            this.showError = false;
             if (this.username.length > 0 && this.password.length > 0) {
-                const data = await this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password});
-                if (data.error) {
-                    console.error('Error:', data.error);
-                    this.error = data.error;
+                try {
+                    const data = await this.$store.dispatch(Action.LOGIN, {username: this.username, password: this.password});
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                        this.error = data.error;
+                        this.showError = true;
+                    }
+                    if (this.loggedIn) {
+                        this.$router.replace('puzzles');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    this.error = error;
                     this.showError = true;
-                }
-                if (this.loggedIn) {
-                    this.$router.replace('puzzles');
                 }
             }
         },

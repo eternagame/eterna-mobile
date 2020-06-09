@@ -77,10 +77,12 @@ export default function createStore(http: AxiosInstance) {
                         if (matches && matches.length === 3) {
                             const [, username, uid] = matches;
                             commit('setLoggedIn', {loggedIn: true, uid, username});
+                            return true;
                         } else {
                             throw new Error(`Authentication response malformed: ${data}`);
                         }
                     }
+                    return false;
                 } finally {
                     commit('popIsLoading');
                 }
@@ -95,7 +97,9 @@ export default function createStore(http: AxiosInstance) {
                     });
                     const { data } = (await http.post('/login/', loginData)).data;
                     if (data.success) {
-                        await dispatch(Action.AUTHENTICATE);
+                        if (!await dispatch(Action.AUTHENTICATE)) {
+                            throw new Error('Login succeeded, but authentication failed');
+                        }
                     }
                     return data;
                 } finally {
