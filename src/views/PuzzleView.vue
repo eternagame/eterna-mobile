@@ -101,10 +101,14 @@ export default Vue.extend({
         };
     },
     async mounted() {
-        await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-        this.setProgressFromRoadmap();
-        this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-        this.chat = new ChatManager('chat-container', this.$store);
+        try {
+            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            this.setProgressFromRoadmap();
+            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
+            this.chat = new ChatManager('chat-container', this.$store);
+        } catch (error) {
+            console.error(error);
+        }
     },
     components: {
         ProgressBar,
