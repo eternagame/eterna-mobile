@@ -1,5 +1,5 @@
 <template>
-    <b-button id="puzzle-card-container" :class="{'puzzle-card-locked': state === 'locked', 'puzzle-card-highlight': highlight}">
+    <b-button class="puzzle-card-container" :class="{'puzzle-card-locked': state === 'locked', 'puzzle-card-highlight': highlight}">
         <b-img  class="puzzle-card-image" :src="imgSrc" />
         <div style="justify-content:center;align-items:center">
             <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" @click="$emit('play')">
@@ -36,7 +36,7 @@ export default Vue.component('puzzle-card', {
 </script>
 
 <style lang="scss" scoped>
-#puzzle-card-container {
+.puzzle-card-container {
     width: 45vmin;
     height: 45vmin;
     display: inline-block;

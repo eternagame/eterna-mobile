@@ -8,7 +8,7 @@
                 <b-img :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:8vmin;text-transform:uppercase;">You did it!</b>
+                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">You did it!</b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
@@ -27,8 +27,8 @@
             </b-col>
         </b-row>
         <b-container id="puzzle-scroll">
-            <div class="puzzle-card-wrapper">
-                <div class="finish-card left-aligned" style="left:-60vmin;">
+            <div id="puzzle-card-wrapper">
+                <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);">
                     <div>
                         <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
                         <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
@@ -124,6 +124,7 @@ export default Vue.extend({
             return this.$store.state.roadmap;
         },
         lab_access(): boolean {
+            return true;
             return this.playablePuzzleIndex === this.roadmap.length + 1;
         }
     },
@@ -160,8 +161,9 @@ export default Vue.extend({
         },
         scrollToPuzzleIndex(index : number) {
             var scroll = document.getElementById('puzzle-scroll');
-            if (scroll !== null) {
-                scroll.scrollLeft = Math.floor(index) * (scroll.scrollWidth / (this.roadmap.length + 1));
+            var wrapper = document.getElementById('puzzle-card-wrapper');
+            if (scroll !== null && wrapper !== null) {
+                scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
         },
     }
@@ -199,7 +201,6 @@ export default Vue.extend({
     padding-left: calc(50% - 22.5vmin);
     margin-top: 0vmin;
     margin-bottom: 6vmin;
-    scroll-behavior: smooth;
     max-width: unset;
     touch-action: pan-x;
 }
@@ -213,7 +214,7 @@ export default Vue.extend({
     margin-right: 3vmin;
 }
 
-.puzzle-card-wrapper {
+#puzzle-card-wrapper {
     position: relative;
     display: inline-block;
     scroll-margin: 0 50vw;
@@ -264,7 +265,7 @@ export default Vue.extend({
     position: absolute;
     top: 0;
     display: inline-flex;
-    width: 55vmin;
+    width: 30vw;
     height: 45vmin;
     margin: 3vmin 1vmin 3vmin 1vmin;
     text-align: center;
@@ -274,11 +275,11 @@ export default Vue.extend({
     > div {
         margin: auto;
 
-        > p {
-            font-size: 12px;
+        p {
+            font-size: 1em;
         }
-        > strong {
-            font-size: 16px;
+        strong {
+            font-size: 1.1em;
         }
     }
 }
