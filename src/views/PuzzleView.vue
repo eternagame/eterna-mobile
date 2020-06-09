@@ -57,9 +57,8 @@
                 />
                 <div class="finish-card" style="left:100%;" v-if="lab_access">
                     <div>
-                        <strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong>
-                        <br/>
-                        <b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button>
+                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong></p>
+                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
                     </div>
                 </div>
             </div>
@@ -279,7 +278,7 @@ export default Vue.extend({
         margin: auto;
 
         p {
-            font-size: 12px;
+            font-size: 1.5vw;
         }
         strong {
             font-size: larger;
