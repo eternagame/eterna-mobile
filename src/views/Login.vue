@@ -4,18 +4,20 @@
         <div class="logo" />
         <b-form-input type="text" :disabled="isLoading" v-model="username" placeholder="username"></b-form-input>
         <b-form-input type="password" :disabled="isLoading" v-model="password" placeholder="password"></b-form-input>
-        <b-form-group>
-            <router-link to="reset-password">Forgot your password?</router-link>
-        </b-form-group>
-        <b-button variant="primary" :disabled="isLoading" size="lg" @click="doLogin">Enter</b-button>
-        <b-form-group>
-            <router-link to="register">Register</router-link>
-        </b-form-group>
         <div class="alert-container">
             <b-alert v-model="showError" variant="danger" dismissable>
                 {{error}}
             </b-alert>
         </div>
+        <b-form-group>
+            <router-link to="reset-password">Forgot your password?</router-link>
+        </b-form-group>
+        <b-form-group>
+            <b-button variant="primary" :disabled="isLoading" size="lg" @click="doLogin">Enter</b-button>
+        </b-form-group>
+        <b-form-group>
+            <router-link to="register">Register</router-link>
+        </b-form-group>
     </b-form>
 </template>
 
@@ -97,7 +99,7 @@ export default Vue.extend({
 }
 
 .back-button {
-    position: absolute;
+    position: fixed;
     left: 10px;
     top: 10px;
 }

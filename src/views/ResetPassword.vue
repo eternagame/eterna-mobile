@@ -71,7 +71,7 @@ export default Vue.extend({
 }
 
 .back-button {
-    position: absolute;
+    position: fixed;
     left: 10px;
     top: 10px;
 }

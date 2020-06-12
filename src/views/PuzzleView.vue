@@ -186,6 +186,7 @@ export default Vue.extend({
     padding: 0;
     margin: 0;
     text-align: center;
+    touch-action: none;
 }
 
 #puzzle-view-header {
@@ -204,7 +205,6 @@ export default Vue.extend({
     margin-top: 0vmin;
     margin-bottom: 6vmin;
     max-width: unset;
-    touch-action: pan-x;
 }
 
 #puzzle-scroll::-webkit-scrollbar {

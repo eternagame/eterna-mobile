@@ -8,16 +8,18 @@
             <b-form-input type="email" v-model="email" :disabled="isLoading" placeholder="email" required></b-form-input>
             <b-form-input type="password" v-model="password" :disabled="isLoading" placeholder="password" required></b-form-input>
             <b-form-input type="password" v-model="passwordConfirm" :disabled="isLoading" placeholder="re-enter password" required></b-form-input>
+            <div class="alert-container">
+                <b-alert v-model="showError" variant="danger" dismissable>
+                    {{error}}
+                </b-alert>
+            </div>
             <b-form-checkbox v-model="acceptedTerms" :disabled="isLoading" required>
                 I accept the <a href="https://eternagame.org/about/terms" target="_blank">Terms &amp; Conditions</a>
             </b-form-checkbox>
-            <b-btn variant="primary" :disabled="isLoading" @click="doRegister">Create Account</b-btn>
+            <b-form-group>
+                <b-btn variant="primary" :disabled="isLoading" @click="doRegister">Create Account</b-btn>
+            </b-form-group>
         </b-form>
-        <div class="alert-container">
-            <b-alert v-model="showError" variant="danger" dismissable>
-                {{error}}
-            </b-alert>
-        </div>
     </b-container>
 </template>
 
@@ -46,6 +48,7 @@ export default Vue.extend({
     },
     methods: {
         async doRegister() {
+            this.showError = false;
             if (this.username.length > 0 && this.email.length > 0 && this.password.length > 0 && this.password === this.passwordConfirm && this.acceptedTerms) {
                 const params = new URLSearchParams({
                     type: 'create',
@@ -91,7 +94,7 @@ export default Vue.extend({
     padding-top: 10vh !important;
 }
 
-.form-control {
+p, .form-control, .custom-control {
     margin: 0 auto;
     margin-bottom: 10px;
     width: 80vw;
@@ -106,7 +109,7 @@ export default Vue.extend({
 }
 
 .back-button {
-    position: absolute;
+    position: fixed;
     left: 10px;
     top: 10px;
 }

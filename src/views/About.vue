@@ -19,9 +19,10 @@
             <p><strong>Learn more at <a href="https://eternagame.org">eternagame.org</a></strong></p>
         </b-col>
         <b-col class="video-col">
-            <video class="video" @click="toggleVideo" :poster="videoPosterSourcePng">
+            <video class="video" id="about-video" :poster="videoPosterSourcePng">
                 <source :src="videoSourceMp4" type="video/mp4">
             </video>
+            <div class="video-play" @click="toggleVideo"></div>
         </b-col>
     </b-row>
 </div>
@@ -40,8 +41,8 @@ export default Vue.extend({
     },
     methods: {
         toggleVideo(event: Event) {
-            if (event?.target) {
-                const video = event.target as HTMLMediaElement;
+            const video = document.getElementById('about-video') as HTMLMediaElement;
+            if (video) {
                 if (video.paused) {
                     video.play();
                 } else {
@@ -60,6 +61,7 @@ export default Vue.extend({
 #about-content {
     margin-left: 0;
     margin-right: 0;
+    font-size: 2vw;
 }
 .info-col {
     padding-left: 45px;
@@ -71,8 +73,18 @@ export default Vue.extend({
 .video-col {
     padding-right: 45px;
     padding-left: 0;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 .video {
     width: 100%;
+}
+
+.video-play {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% - 45px);
+    height: 100%;
 }
 </style>
