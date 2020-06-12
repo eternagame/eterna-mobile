@@ -260,7 +260,7 @@ export default Vue.extend({
 
 .puzzle-card-popover {
     font-size: 3vmin;
-    max-width: 70vw;
+    max-width: 300px;
 }
 
 .finish-card {
