@@ -200,6 +200,7 @@ export default Vue.extend({
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     padding-right: calc(50% - 22.5vmin);
     padding-left: calc(50% - 22.5vmin);
