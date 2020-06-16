@@ -31,7 +31,7 @@ document.addEventListener('deviceready', () => {
     window.navigationbar.setUp(true);
     StatusBar.hide();
 
-    window.addEventListener('keyboardDidShow', () => {
+    window.addEventListener('keyboardDidShow', () => setTimeout(() => {
         document.activeElement?.scrollIntoView();
-    });
+    }, 0));
 });
