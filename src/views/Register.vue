@@ -90,8 +90,13 @@ export default Vue.extend({
 <style lang="scss" scoped>
 #register-container {
     width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
     text-align: center;
     padding-top: 10vh !important;
+}
+#register-container::-webkit-scrollbar {
+    display: none;
 }
 
 p, .form-control, .custom-control {

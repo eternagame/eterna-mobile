@@ -1,5 +1,5 @@
 <template>
-    <b-form id="home-container">
+    <b-form id="login-container">
         <b-button class="back-button" @click="back">Back</b-button>
         <div class="logo" />
         <b-form-input type="text" :disabled="isLoading" v-model="username" placeholder="username"></b-form-input>
@@ -79,10 +79,15 @@ export default Vue.extend({
     margin-bottom: 10vmin;
 }
 
-#home-container {
+#login-container {
     width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
     text-align: center;
     padding-top: 10vh !important;
+}
+#login-container::-webkit-scrollbar {
+    display: none;
 }
 
 .form-control {
