@@ -30,4 +30,8 @@ declare var StatusBar: any;
 document.addEventListener('deviceready', () => {
     window.navigationbar.setUp(true);
     StatusBar.hide();
+
+    window.addEventListener('keyboardDidShow', () => {
+        document.activeElement?.scrollIntoView();
+    });
 });
