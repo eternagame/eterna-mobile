@@ -43,15 +43,6 @@ body {
     padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
 }
 
-h1 {
-    font-size: 24px;
-    font-weight: normal;
-    margin: 0;
-    overflow: visible;
-    padding: 0;
-    text-align: center;
-}
-
 .close-button {
     background: url('assets/close-button.png') no-repeat;
     width: 13px;

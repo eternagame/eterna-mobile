@@ -4,20 +4,20 @@
         <h3>Create a New Account</h3>
         <p>Register now to save your progress, engage in our community chat, and contribute solutions to science.</p>
         <b-form>
-            <b-form-input type="text" v-model="username" :disabled="isLoading" placeholder="username" required></b-form-input>
-            <b-form-input type="email" v-model="email" :disabled="isLoading" placeholder="email" required></b-form-input>
-            <b-form-input type="password" v-model="password" :disabled="isLoading" placeholder="password" required></b-form-input>
-            <b-form-input type="password" v-model="passwordConfirm" :disabled="isLoading" placeholder="re-enter password" required></b-form-input>
+            <b-form-input type="text" size="md" v-model="username" :disabled="isLoading" placeholder="username" required></b-form-input>
+            <b-form-input type="email" size="md" v-model="email" :disabled="isLoading" placeholder="email" required></b-form-input>
+            <b-form-input type="password" size="md" v-model="password" :disabled="isLoading" placeholder="password" required></b-form-input>
+            <b-form-input type="password" size="md" v-model="passwordConfirm" :disabled="isLoading" placeholder="re-enter password" required></b-form-input>
             <div class="alert-container">
                 <b-alert v-model="showError" variant="danger" dismissable>
                     {{error}}
                 </b-alert>
             </div>
-            <b-form-checkbox v-model="acceptedTerms" :disabled="isLoading" required>
+            <b-form-checkbox size="md" v-model="acceptedTerms" :disabled="isLoading" required>
                 I accept the <a href="https://eternagame.org/about/terms" target="_blank">Terms &amp; Conditions</a>
             </b-form-checkbox>
             <b-form-group>
-                <b-btn variant="primary" :disabled="isLoading" @click="doRegister">Create Account</b-btn>
+                <b-btn variant="primary" :disabled="isLoading" size="md" @click="doRegister">Create Account</b-btn>
             </b-form-group>
         </b-form>
     </b-container>

@@ -73,12 +73,12 @@ export default Vue.component('puzzle-card', {
     height: 6.5vmin;
     border-radius: 1vmin;
     text-align: center;
-    font-size: 3.2vmin;
+    font-size: 1.5vw;
     line-height: 5.2vmin;
 }
 
 .puzzle-card-text {
-    font-size: 2.5vmin;
+    font-size: 1.5vw;
     text-align: center;
     transform: translateY(2.5vmin);
     line-height: 0;

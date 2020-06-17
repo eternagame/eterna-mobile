@@ -12,9 +12,9 @@
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
-                    <b-dropdown right variant="link" toggle-class="text-decoration-none" no-caret>
+                    <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button" menu-class="puzzle-view-button" no-caret>
                         <template #button-content>
-                            <b style="font-size:3.5vmin;line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
+                            <b style="line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
                             <div class="puzzle-view-icon-people" />
                         </template>
                         <b-dropdown-item @click="logout">Logout</b-dropdown-item>
@@ -28,7 +28,7 @@
         </b-row>
         <b-container id="puzzle-scroll">
             <div id="puzzle-card-wrapper">
-                <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);">
+                <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
                     <div>
                         <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
                         <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
@@ -229,7 +229,7 @@ export default Vue.extend({
 }
 
 .puzzle-view-button {
-    font-size: 3.5vmin;
+    font-size: 1.5vw;
 }
 
 .puzzle-view-chat-button {
@@ -261,7 +261,7 @@ export default Vue.extend({
 }
 
 .puzzle-card-popover {
-    font-size: 3vmin;
+    font-size: 1.5vw;
     max-width: 300px;
 }
 

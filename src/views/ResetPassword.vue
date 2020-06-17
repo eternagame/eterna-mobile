@@ -4,8 +4,8 @@
         <h3>Reset password</h3>
         <p>We'll send you an email with a link to reset your password</p>
         <b-form>
-            <b-form-input type="email" v-model="email" placeholder="email"></b-form-input>
-            <b-btn variant="primary" @click="doReset">Send Reset Email</b-btn>
+            <b-form-input type="email" size="md" v-model="email" placeholder="email"></b-form-input>
+            <b-btn variant="primary" size="md" @click="doReset">Send Reset Email</b-btn>
         </b-form>
         <div class="alert-container">
             <b-alert v-model="showError" variant="danger" dismissable>
