@@ -44,7 +44,7 @@ body {
 }
 
 .close-button {
-    background: url('assets/close-button.png') no-repeat;
+    background: url('assets/close-button.png') no-repeat center;
     width: 13px;
     height: 13px;
 }

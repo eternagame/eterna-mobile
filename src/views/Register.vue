@@ -1,6 +1,6 @@
 <template>
     <b-container id="register-container">
-        <b-button class="back-button" @click="back">Back</b-button>
+        <a class="close-button" @click="back"></a>
         <h3>Create a New Account</h3>
         <p>Register now to save your progress, engage in our community chat, and contribute solutions to science.</p>
         <b-form>
@@ -81,7 +81,7 @@ export default Vue.extend({
             }
         },
         back() {
-            this.$router.back();
+            this.$router.replace('puzzles');
         },
     },
 })
@@ -113,9 +113,10 @@ p, .form-control, .custom-control {
     margin: 0 auto;
 }
 
-.back-button {
+.close-button {
     position: fixed;
-    left: 10px;
-    top: 10px;
+    right: 3vmin;
+    top: 3vmin;
+    margin: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
 }
 </style>

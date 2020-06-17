@@ -1,6 +1,6 @@
 <template>
     <b-form id="login-container">
-        <b-button class="back-button" @click="back">Back</b-button>
+        <a class="close-button" @click="back"></a>
         <div class="logo" />
         <b-form-input type="text" size="md" :disabled="isLoading" v-model="username" placeholder="username"></b-form-input>
         <b-form-input type="password" size="md" :disabled="isLoading" v-model="password" placeholder="password"></b-form-input>
@@ -65,7 +65,7 @@ export default Vue.extend({
             }
         },
         back() {
-            this.$router.back();
+            this.$router.replace('puzzles');
         },
     },
 });
@@ -75,7 +75,6 @@ export default Vue.extend({
 .logo {
     background: url('../assets/logo_eterna.svg') no-repeat center top; /* 170px x 200px */
     height: 15vmin;                   /* text area height */
-    // margin-top: 10vmin;
     margin-bottom: 10vmin;
 }
 
@@ -103,9 +102,10 @@ export default Vue.extend({
     margin: 0 auto;
 }
 
-.back-button {
+.close-button {
     position: fixed;
-    left: 10px;
-    top: 10px;
+    right: 3vmin;
+    top: 3vmin;
+    margin: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
 }
 </style>

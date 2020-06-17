@@ -1,6 +1,6 @@
 <template>
     <b-container id="reset-password-container">
-        <b-button class="back-button" @click="back">Back</b-button>
+        <a class="close-button" @click="back"></a>
         <h3>Reset password</h3>
         <p>We'll send you an email with a link to reset your password</p>
         <b-form>
@@ -43,7 +43,7 @@ export default Vue.extend({
             }
         },
         back() {
-            this.$router.back();
+            this.$router.replace('puzzles');
         },
     },
 })
@@ -75,9 +75,10 @@ export default Vue.extend({
     margin: 0 auto;
 }
 
-.back-button {
+.close-button {
     position: fixed;
-    left: 10px;
-    top: 10px;
+    right: 3vmin;
+    top: 3vmin;
+    margin: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
 }
 </style>
