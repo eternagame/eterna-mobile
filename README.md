@@ -1,6 +1,10 @@
 # Eterna Mobile
 Port of the Eterna puzzle progression for Android and iOS.
 
+Interested in development? Join the discusson on the Eterna Discord!
+
+[![Eterna Discord](https://discord.com/api/guilds/702618517589065758/widget.png?style=banner2)](https://discord.gg/KYeTwux)
+
 ## Setup dev environment
 - Make sure you have the Cordova CLI installed globally (`npm install -g cordova`)
 - Checkout the eternajs submodule. (`git submodule init` followed by `git submodule update`)
