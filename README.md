@@ -7,12 +7,15 @@ Interested in development? Join the discussion on the Eterna Discord!
 
 ## Setup dev environment
 - Checkout the eternajs submodule. (`git submodule init` followed by `git submodule update`)
+- Create a `./eternajs/.env.local` and set `MOBILE_APP=true` (you may also want to change `APP_SERVER_URL` and `ENGINE_LOCATION`)
 - Run `npm install` in both the top-most folder and the eternajs submodule.
-- Create a folder called `www` in the top-most folder.
 - Run `npx cordova prepare` to install the Cordova plugins and platforms.
-- If you're using Visual Studio Code, make sure you have the Cordova Tools extension installed.
-- Run either `npm run build:dev` or `npm run build:prod` at least once, which should also build eternajs.
+Either
+    - For a one-off build, run either `npm run build:dev` or `npm run build:prod` at least once,
+    which will also build eternajs.
+    - For live reload, run `npm run watch` (you will also have to have built eternajs previously)
+- Use `npx cordova run <platform>` to test the app - see the [Cordova docs](https://cordova.apache.org/docs/en/latest/reference/cordova-cli/#cordova-run-command) for details. `npx cordova run browser` is probably a good starting point.
 
-For live reload:
-- Run `npm run watch`.
-- Launch the browser platform via Cordova Tools extension.
+## For production builds
+- Ensure you have a `./.env.local` with `APP_SERVER_URL=https://eternagame.org`
+- Ensure you have a `./eternajs/.env.local` with `APP_SERVER_URL`, `ENGINE_LOCATION`, and `MOBILE_APP` set correctly

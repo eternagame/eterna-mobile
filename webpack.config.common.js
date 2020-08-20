@@ -62,9 +62,9 @@ module.exports = function(mode, eternajs_copy) {
                 },
             }),
             new VueLoaderPlugin(),
-            new CopyPlugin([
+            new CopyPlugin({patterns: [
                 { context: eternajs_copy, from: '**/*', to: 'eternajs/'},
-            ]),
+            ]}),
         ],
     };
 };
