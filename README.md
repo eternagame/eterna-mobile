@@ -1,7 +1,7 @@
 # Eterna Mobile
 Port of the Eterna puzzle progression for Android and iOS.
 
-Interested in development? Join the discusson on the Eterna Discord!
+Interested in development? Join the discussion on the Eterna Discord!
 
 [![Eterna Discord](https://discord.com/api/guilds/702618517589065758/widget.png?style=banner2)](https://discord.gg/KYeTwux)
 
