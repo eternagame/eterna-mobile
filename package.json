@@ -23,7 +23,6 @@
     "cordova-plugin-navigationbar": "^1.0.31",
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^2.4.3",
-    "cordova-plugin-wkwebview-engine": "^1.2.1",
     "cordova-plugin-wkwebviewxhrfix": "git+https://github.com/TheMattRay/cordova-plugin-wkwebviewxhrfix.git",
     "es6-promise-plugin": "^4.2.2",
     "eterna-chat-wrapper": "github:eternagame/eterna-chat-wrapper#abe53eca223948847b4f899f9de7119672adf3a2",
@@ -62,7 +61,6 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-navigationbar": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-wkwebview-engine": {},
       "cordova-plugin-wkwebviewxhrfix": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-keyboard": {}
