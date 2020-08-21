@@ -28,10 +28,6 @@
     <preference name="DisallowOverscroll" value="true" />
     <hook type="before_prepare" src="./scripts/clean-www.js" />
     <hook type="before_prepare" src="./scripts/build.js" />
-    <feature name="CDVWKWebViewEngine">
-        <param name="ios-package" value="CDVWKWebViewEngine" />
-    </feature>
-    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
     <preference name="WKWebViewOnly" value="true" />
     <platform name="android">
         <icon density="mdpi" background="res/eterna_icon_48_bg.png" foreground="res/eterna_icon_48_fg.png" src="res/eterna_icon_48.png" />

@@ -23,7 +23,6 @@
     "cordova-plugin-navigationbar": "^1.0.31",
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^2.4.3",
-    "cordova-plugin-wkwebviewxhrfix": "git+https://github.com/TheMattRay/cordova-plugin-wkwebviewxhrfix.git",
     "es6-promise-plugin": "^4.2.2",
     "eterna-chat-wrapper": "github:eternagame/eterna-chat-wrapper#abe53eca223948847b4f899f9de7119672adf3a2",
     "jquery": "^3.5.1",
@@ -33,6 +32,7 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
+    "@globules-io/cordova-plugin-ios-xhr": "^1.0.8",
     "@npmcli/run-script": "^1.5.0",
     "@types/node": "^14.6.0",
     "@types/webpack": "^4.41.21",
@@ -62,9 +62,9 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-navigationbar": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-wkwebviewxhrfix": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "@globules-io/cordova-plugin-ios-xhr": {}
     },
     "platforms": [
       "android",
