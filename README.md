@@ -9,6 +9,7 @@ Interested in development? Join the discussion on the Eterna Discord!
 - Checkout the eternajs submodule. (`git submodule init` followed by `git submodule update`)
 - Create a `./eternajs/.env.local` and set `MOBILE_APP=true` (you may also want to change `APP_SERVER_URL` and `ENGINE_LOCATION`)
 - Run `npm install` in both the top-most folder and the eternajs submodule.
+- Make sure there is a `www` folder in the top-most folder (needed by cordova commands) - create it, if it's not there.
 - Run `npx cordova prepare` to install the Cordova plugins and platforms.
 Either
     - For a one-off build, run either `npm run build:dev` or `npm run build:prod` at least once,
