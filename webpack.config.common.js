@@ -54,6 +54,7 @@ module.exports = function(mode, eternajs_copy) {
                 defaults: './.env',
                 path: './.env.local',
                 silent: true,
+                systemvars: true
             }),
             new HtmlWebpackPlugin({
                 inject: false,
