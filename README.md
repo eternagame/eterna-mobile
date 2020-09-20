@@ -19,4 +19,4 @@ Either
 
 ## For production builds
 - Ensure you have a `./.env.local` with `APP_SERVER_URL=https://eternagame.org`
-- Ensure you have a `./eternajs/.env.local` with `APP_SERVER_URL`, `ENGINE_LOCATION`, and `MOBILE_APP` set correctly
+- Ensure you have a `./eternajs/.env.local` with `APP_SERVER_URL=https://eternagame.org`, `MOBILE_APP=true`, `DEBUG=false`, and `ENGINE_LOCATION` set correctly
