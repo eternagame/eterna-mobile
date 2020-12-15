@@ -41,7 +41,8 @@
                     :highlight="index === Math.floor(playablePuzzleIndex)"
                     :imgSrc="getAbsUrl(puzzle.image)"
                     @play="play(puzzle.current_puzzle)"
-                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
+                    :state="Number(puzzle.level) - 1 > Number(puzzle.current_level) ? 'locked' : puzzle.to_next >= 1 ? 'completed' : 'unlocked'"
+                    :notstate="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
                     v-b-popover.click.blur.top.html="{
                         content: puzzle.desc,
                         fallbackPlacement: ['top'],
