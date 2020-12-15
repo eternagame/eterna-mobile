@@ -37,6 +37,7 @@
         <icon density="mdpi" background="res/eterna_icon_48_bg.png" foreground="res/eterna_icon_48_fg.png" src="res/eterna_icon_48.png" />
         <icon density="xxhdpi" background="res/eterna_icon_144_bg.png" foreground="res/eterna_icon_144_fg.png" src="res/eterna_icon_144.png" />
         <allow-intent href="market:*" />
+        <preference name="android-targetSdkVersion" value="29" />
     </platform>
     <platform name="ios">
         <icon src="res/eterna_icon_1024.png" width="1024" height="1024" />
