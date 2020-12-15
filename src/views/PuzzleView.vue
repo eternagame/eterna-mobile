@@ -152,13 +152,7 @@ export default Vue.extend({
             return process.env.APP_SERVER_URL + relUrl;
         },
         setProgressFromRoadmap() {
-            this.playablePuzzleIndex = this.roadmap.length + 1;
-            for (const [index, a] of this.roadmap.entries()) {
-                if (a.level - 1 <= a.current_level && a.to_next < 1) {
-                    this.playablePuzzleIndex = index + a.to_next;
-                    break;
-                }
-            }
+            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
             this.$forceUpdate();
         },
         scrollToPuzzleIndex(index : number) {
