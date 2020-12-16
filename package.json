@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "mkdir www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
+    "postinstall": "shx mkdir -p www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
     "prebuild:dev": "npm run clean && cd eternajs && npm run build:dev",
     "build:dev": "webpack --config webpack.config.dev.js",
     "postbuild:dev": "npm run postbuild",
