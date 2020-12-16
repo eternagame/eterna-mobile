@@ -127,7 +127,7 @@ export default Vue.extend({
             return this.$store.state.roadmap;
         },
         lab_access(): boolean {
-            return this.playablePuzzleIndex === this.roadmap.length + 1;
+            return this.playablePuzzleIndex >= this.roadmap.length;
         }
     },
     methods: {

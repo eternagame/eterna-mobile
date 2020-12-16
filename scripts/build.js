@@ -25,5 +25,9 @@ module.exports = async context => {
             event: 'build:dev',
             path: '.',
         });
+        await runScript({
+            event: 'postbuild:dev',
+            path: '.',
+        });
     }
 };

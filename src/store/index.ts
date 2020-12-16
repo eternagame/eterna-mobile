@@ -25,7 +25,7 @@ export const Action = {
     GET_ACHIEVEMENT_ROADMAP: 'GET_ACHIEVEMENT_ROADMAP',
 };
 
-const MAX_LEVEL = 8;
+const MAX_LEVEL = 2;
 
 export default function createStore(http: AxiosInstance) {
     return new Vuex.Store({

@@ -8,7 +8,9 @@
     "build:dev": "webpack",
     "prebuild:prod": "cd eternajs && npm run build:prod",
     "build:prod": "webpack --config webpack.config.prod.js",
-    "postbuild:prod": "shx mkdir -p www/eternajs/frontend && shx cp -r eternajs/website/frontend/* www/eternajs/frontend && coffee -o www/eternajs/frontend/jscripts -c www/eternajs/frontend/coffee",
+    "postbuild": "shx mkdir -p www/eternajs/frontend && shx cp -r eternajs/website/frontend/* www/eternajs/frontend && coffee -o www/eternajs/frontend/jscripts -c www/eternajs/frontend/coffee",
+    "postbuild:prod": "npm run postbuild",
+    "postbuild:dev": "npm run postbuild",
     "watch": "webpack --watch"
   },
   "author": "Eat Create Sleep AB",
