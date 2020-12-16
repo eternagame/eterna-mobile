@@ -4,14 +4,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prebuild:dev": "cd eternajs && npm run build:dev",
+    "postinstall": "mkdir www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
+    "prebuild:dev": "npm run clean && cd eternajs && npm run build:dev",
     "build:dev": "webpack --config webpack.config.dev.js",
-    "prebuild:prod": "cd eternajs && npm run build:prod",
-    "build:prod": "webpack --config webpack.config.prod.js",
-    "postbuild": "shx mkdir -p www/eternajs/frontend && shx cp -r eternajs/website/frontend/* www/eternajs/frontend && coffee -o www/eternajs/frontend/jscripts -c www/eternajs/frontend/coffee",
-    "postbuild:prod": "npm run postbuild",
     "postbuild:dev": "npm run postbuild",
-    "watch": "webpack --watch"
+    "prebuild:prod": "npm run clean && cd eternajs && npm run build:prod",
+    "build:prod": "webpack --config webpack.config.prod.js",
+    "postbuild:prod": "npm run postbuild",
+    "postbuild": "shx mkdir -p www/eternajs/frontend && shx cp -r eternajs/website/frontend/* www/eternajs/frontend && coffee -o www/eternajs/frontend/jscripts -c www/eternajs/frontend/coffee",
+    "clean": "shx rm -r www/* || true"
   },
   "author": "Eat Create Sleep AB",
   "dependencies": {
@@ -47,6 +48,7 @@
     "dotenv-webpack": "^6.0.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
+    "is-ci": "^2.0.0",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.0",
     "shelljs": "^0.8.4",

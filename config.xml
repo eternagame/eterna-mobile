@@ -26,7 +26,6 @@
     <preference name="orientation" value="landscape" />
     <preference name="resizeOnFullScreen" value="true" />
     <preference name="DisallowOverscroll" value="true" />
-    <hook type="before_prepare" src="./scripts/clean-www.js" />
     <hook type="before_prepare" src="./scripts/build.js" />
     <preference name="WKWebViewOnly" value="true" />
     <platform name="android">
