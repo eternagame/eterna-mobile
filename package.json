@@ -35,6 +35,7 @@
     "vuex": "^3.6.0"
   },
   "devDependencies": {
+    "@globules-io/cordova-plugin-ios-xhr": "^1.2.0",
     "@npmcli/run-script": "^1.8.1",
     "@types/node": "^14.14.14",
     "@types/webpack": "^4.41.25",
@@ -42,7 +43,6 @@
     "copy-webpack-plugin": "^7.0.0",
     "cordova": "^10.0.0",
     "cordova-plugin-whitelist": "^1.3.4",
-    "cordova-plugin-wkwebview-file-xhr": "^3.0.0",
     "cordova-plugin-wkwebview-inject-cookie": "git+https://github.com/lucky3491/cordova-plugin-wkwebview-inject-cookie.git",
     "css-loader": "^5.0.1",
     "dotenv-webpack": "^6.0.0",
@@ -70,7 +70,7 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-wkwebview-inject-cookie": {},
-      "cordova-plugin-wkwebview-file-xhr": {}
+      "@globules-io/cordova-plugin-ios-xhr": {}
     },
     "platforms": [
       "android",
