@@ -21,9 +21,9 @@ If you want to build for a specific platform you'll also need to install their r
 ## For development
 To quickly test the app, run `npx cordova run <platform>`
 This will do the following:
-    - Run `cordova prepare`, as above
-    - Run `cordova compile`, which actually builds native code for the relevant platform
-    - Deploys to a device/emulator/web server depending on the configuration
+- Run `cordova prepare`, as above
+- Run `cordova compile`, which actually builds native code for the relevant platform
+- Deploys to a device/emulator/web server depending on the configuration
 
 `npx cordova run browser` is probably a good starting point, which will build the app for the browser, spin up
 a local web server, and open your browser to it.
