@@ -2,7 +2,7 @@
 <widget
   id="org.eternagame.mob"
   ios-CFBundleIdentifier="eternagame"
-  version="1.2.2"
+  version="1.2.3"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Eterna</name>
     <author email="contact@eatcreatesleep.net" href="https://eatcreatesleep.net">
