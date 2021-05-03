@@ -14,12 +14,6 @@ const http = Axios.create({
 });
 Vue.use(VueAxios, http);
 
-new Vue({
-    router,
-    store: createStore(http),
-    render: h => h(App),
-}).$mount('#app');
-
 declare global {
     interface Window {
         navigationbar: any;
@@ -41,8 +35,15 @@ document.addEventListener('deviceready', () => {
         }];
         wkWebView.injectCookie(cookies);
     }
-
+    
     window.addEventListener('keyboardDidShow', () => setTimeout(() => {
         document.activeElement?.scrollIntoView();
     }, 0));
+
+    // Initialize Vue after cordova is fully loaded
+    new Vue({
+        router,
+        store: createStore(http),
+        render: h => h(App),
+    }).$mount('#app');
 });
