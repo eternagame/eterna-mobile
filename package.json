@@ -1,7 +1,7 @@
 {
   "name": "org.eternagame.mobile",
   "displayName": "EternaMobile",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "private": true,
   "scripts": {
     "postinstall": "shx mkdir -p www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
