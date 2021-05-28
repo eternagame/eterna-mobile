@@ -31,6 +31,6 @@ a local web server, and open your browser to it.
 For more information, see the [Cordova CI documentation](https://cordova.apache.org/docs/en/latest/reference/cordova-cli/)
 
 ## For production builds
-- Ensure you have a `./.env.local` with `APP_SERVER_URL=https://eternagame.org`
+- Ensure you have a `./.env.local` with `APP_SERVER_URL=https://eternagame.org` and `INJECT_COOKIE_DOMAIN=.eternagame.org`
 - Ensure you have a `./eternajs/.env.local` with `APP_SERVER_URL=https://eternagame.org`, `MOBILE_APP=true`, `DEBUG=false`, and `ENGINE_LOCATION` set correctly
 - Run `npx cordova build --release` (which will run `cordova prepare` and `cordova compile`)
