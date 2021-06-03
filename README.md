@@ -7,7 +7,7 @@ Interested in development? Join the discussion on the Eterna Discord!
 
 ## Setup
 - Checkout the eternajs submodule. (`git submodule init` followed by `git submodule update`)
-- Create a `./eternajs/.env.local` and set `MOBILE_APP=true` (you may also want to change `APP_SERVER_URL` and `ENGINE_LOCATION`)
+- Create a `./eternajs/.env.local` and set `MOBILE_APP=true` and `DEBUG=false` (you may also want to change `APP_SERVER_URL` and `ENGINE_LOCATION`)
 - Run `npm install` (which automatically installs eternajs dependencies and sets up our initial www folder as well)
 - Run `npx cordova prepare`, which will:
     - Run our preprepare hooks, which clear out `www` and then build EternaJS and this app into `www`
