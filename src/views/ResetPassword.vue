@@ -31,6 +31,7 @@ export default Vue.extend({
                 const params = new URLSearchParams({
                     type: 'sendreset',
                     resetID: this.email,
+                    captchaResponse: 'et3rn4lP4Ss',
                 });
                 const {data} = (await this.$http.post('/login/', params)).data;
                 if (data.success) {
