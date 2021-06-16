@@ -1,7 +1,6 @@
 {
-  "name": "org.eternagame.mobile",
-  "displayName": "EternaMobile",
-  "version": "1.2.5",
+  "name": "eterna-mobile",
+  "version": "1.2.6",
   "private": true,
   "scripts": {
     "postinstall": "shx mkdir -p www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
@@ -14,7 +13,7 @@
     "postbuild": "shx mkdir -p www/eternajs/frontend && shx cp -r eternajs/website/frontend/* www/eternajs/frontend && coffee -o www/eternajs/frontend/jscripts -c www/eternajs/frontend/coffee",
     "clean": "shx rm -r www/* || true"
   },
-  "author": "Eat Create Sleep AB",
+  "author": "Eternagame",
   "dependencies": {
     "axios": "^0.21.1",
     "boostrap": "^2.0.0",

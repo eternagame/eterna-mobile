@@ -2,11 +2,11 @@
 <widget
   id="org.eternagame.mob"
   ios-CFBundleIdentifier="eternagame"
-  version="1.2.5"
+  version="1.2.6"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Eterna</name>
-    <author email="contact@eatcreatesleep.net" href="https://eatcreatesleep.net">
-        Eat Create Sleep AB
+    <author email="support@eternagame.org" href="https://eternagame.org">
+        Eternagame
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
