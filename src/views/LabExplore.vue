@@ -30,9 +30,7 @@
             <div id="puzzle-card-wrapper">
                 <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
                     <div>
-                        <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
-                        <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
-                        <p><strong>Ready?</strong></p>
+                        LAB ACCESS IS HERE 
                     </div>
                 </div>
                 <PuzzleCard
@@ -71,11 +69,9 @@
                     </router-link>
                 </b-row>
             </b-col>
-            <div v-if="!lab_access">
-                <b-col class="col-8" style="padding:0">
-                    <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
-                </b-col>
-            </div>
+            <b-col class="col-8" style="padding:0">
+                <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
+            </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
                     <div @click="openChat" class="puzzle-view-chat-button" />
@@ -90,7 +86,7 @@
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
-import { Action, Achievement } from '../store';
+import { Action, Achievement, LabData } from '../store';
 import ChatManager from '../ChatManager';
 
 export default Vue.extend({
@@ -104,11 +100,10 @@ export default Vue.extend({
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            await this.$store.dispatch(Action.GET_LABS);
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
-            console.log("roadmap", this.roadmap);
-            console.log("store", this.$store.state);
         } catch (error) {
             console.error(error);
         }
@@ -131,9 +126,12 @@ export default Vue.extend({
             return this.$store.state.roadmap;
         },
         lab_access(): boolean {
-            console.log("YEAH you got lab access");
             return this.playablePuzzleIndex >= this.roadmap.length;
+        },
+        get_labs(): LabData[]{
+            return this.$store.state.l
         }
+        
     },
     methods: {
         async logout() {

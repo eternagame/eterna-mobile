@@ -6,6 +6,8 @@ import Login from '../views/Login.vue';
 import PuzzleView from '../views/PuzzleView.vue';
 import Register from '../views/Register.vue';
 import ResetPassword from '../views/ResetPassword.vue';
+import LabExplore from '../views/LabExplore.vue';
+import LabView from '../views/LabView.vue';
 
 Vue.use(VueRouter);
 
@@ -37,7 +39,16 @@ const routes: Array<RouteConfig> = [
     {
         path: '/puzzles',
         component: PuzzleView,
+    },
+    {
+        path: '/labs',
+        component: LabExplore,
+    },
+    {
+        path: '/labs/:labid',
+        component: LabView,
     }
+    
 ];
 
 const router = new VueRouter({

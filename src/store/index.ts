@@ -17,12 +17,32 @@ export interface Achievement {
     to_next: number;
     current_puzzle: number;
 }
-
+export interface LabData{
+    affiliation: string;
+    banner_image: string;
+    challenge: string;
+    cover_image: string;
+    created: string;
+    exp_phase: any; //unknown property
+    exp_phase_end: any; //unknown property
+    exp_phase_start: any; //unknown property
+    founder: string; 
+    founder_uid: string;
+    is_active: boolean;
+    nid: string;
+    num_slots: any; //unknown property
+    puzzles: []; // contains all puzzle ids
+    round: number; //puzzle information
+    playable: boolean; // puzzle info
+    selection: any; ///unknown property
+    title: string;
+}
 export const Action = {
     AUTHENTICATE: 'AUTHENTICATE',
     LOGIN: 'LOGIN',
     LOGOUT: 'LOGOUT',
     GET_ACHIEVEMENT_ROADMAP: 'GET_ACHIEVEMENT_ROADMAP',
+    GET_LABS: 'GET_LABS',
 };
 
 const MAX_LEVEL = 8;
@@ -36,6 +56,7 @@ export default function createStore(http: AxiosInstance) {
             uid: <number | null>null,
             username: <string | null>null,
             roadmap: <Achievement[]>[],
+            labdata: [],
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -66,6 +87,9 @@ export default function createStore(http: AxiosInstance) {
             setRoadmap(state, roadmap) {
                 state.roadmap = roadmap;
             },
+            setLabs(state, labs){
+                state.labdata = labs;
+            }
         },
         actions: {
             async [Action.AUTHENTICATE]({ commit }) {
@@ -129,6 +153,25 @@ export default function createStore(http: AxiosInstance) {
                     commit('popIsLoading');
                 }
             },
+            async [Action.GET_LABS]({ commit }){
+                commit('pushIsLoading');
+                try{
+                    console.log("fetching labs");
+                    const { data } = (await http.get('/get/?type=get_labs_for_lab_cards')).data;
+                    console.log("data", data);
+                    const labdata = <LabData[]>data.labs;
+                    console.log("simple constructor", labdata);
+                    for(let i = 0; i < data.labs.length; i++){
+                        console.log("big", data.labs[i]);
+                        console.log("puzzles", data.labs[i].puzzles);
+                        console.log("attempted json parse", JSON.parse(data.labs[i].puzzles));
+                    }
+                    commit('setLabs', data);
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            }
         },
         modules: {
         },
