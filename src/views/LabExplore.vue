@@ -8,7 +8,7 @@
                 <b-img :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">You did it!</b>
+                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">Labs</b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
@@ -32,26 +32,15 @@
                     <div>
                         LAB ACCESS IS HERE 
                     </div>
+
                 </div>
-                <PuzzleCard
-                    v-for="(puzzle, index) in roadmap"
+                <LabCard
+                    v-for="(lab, index) in labs"
                     :key="index"
-                    :highlight="index === Math.floor(playablePuzzleIndex)"
-                    :imgSrc="getAbsUrl(puzzle.image)"
-                    @play="play(puzzle.current_puzzle)"
-                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
-                    v-b-popover.click.blur.top.html="{
-                        content: puzzle.desc,
-                        fallbackPlacement: ['top'],
-                        customClass: 'puzzle-card-popover',
-                        boundary: 'viewport'
-                    }"
-                />
-                <PuzzleCard
-                    key="lab"
-                    :highlight="lab_access"
-                    :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
-                    :state="lab_access ? 'completed' : 'locked'"
+                    :title="lab.title"
+                    :status_color="getStatusColor(lab.exp_phase)"
+                    :status="getStatus(lab.exp_phase)"
+                    :imgSrc="getAbsUrl(lab.banner_image)"
                 />
                 <div class="finish-card" style="left:100%;" v-if="lab_access">
                     <div>
@@ -69,9 +58,6 @@
                     </router-link>
                 </b-row>
             </b-col>
-            <b-col class="col-8" style="padding:0">
-                <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
-            </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
                     <div @click="openChat" class="puzzle-view-chat-button" />
@@ -86,6 +72,7 @@
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
+import LabCard from '../components/LabCard.vue'
 import { Action, Achievement, LabData } from '../store';
 import ChatManager from '../ChatManager';
 
@@ -99,9 +86,7 @@ export default Vue.extend({
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             await this.$store.dispatch(Action.GET_LABS);
-            this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
@@ -111,6 +96,7 @@ export default Vue.extend({
     components: {
         ProgressBar,
         PuzzleCard,
+        LabCard,
     },
     computed: {
         isLoading(): boolean {
@@ -128,16 +114,15 @@ export default Vue.extend({
         lab_access(): boolean {
             return this.playablePuzzleIndex >= this.roadmap.length;
         },
-        get_labs(): LabData[]{
-            return this.$store.state.l
+        labs(): LabData[]{
+            return this.$store.state.labdata;
         }
         
     },
     methods: {
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
+            await this.$store.dispatch(Action.GET_LABS);
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
         },
         clamp(x: number, min: number, max: number) {
@@ -154,9 +139,36 @@ export default Vue.extend({
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;
         },
-        setProgressFromRoadmap() {
-            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
-            this.$forceUpdate();
+        getStatus(exp_phase: string){
+            if(!exp_phase) return "Results Posted";
+            switch (exp_phase) {
+            case '1':
+                return 'Accepting Submissions';
+            case '2':
+                return 'Ordering DNA Template';
+            case '3':
+                return 'Synthesizing RNA';
+            case '4':
+                return 'Getting Data';
+            case '5':
+            default:
+                return 'Results Posted';
+            }
+        },
+        getStatusColor(exp_phase: string){
+            switch (exp_phase) {
+            case '1':
+                return 'lime';
+            case '2':
+                return 'yellow';
+            case '3':
+                return 'purple';
+            case '4':
+                return 'blue';
+            case '5':
+            default:
+                return 'red';
+            }
         },
         scrollToPuzzleIndex(index : number) {
             var scroll = document.getElementById('puzzle-scroll');

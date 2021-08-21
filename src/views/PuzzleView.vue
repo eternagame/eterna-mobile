@@ -71,11 +71,11 @@
                     </router-link>
                 </b-row>
             </b-col>
-            <div v-if="!lab_access">
-                <b-col class="col-8" style="padding:0">
+            <b-col class="col-8" style="padding:0">
+                <div v-if="lab_access">
                     <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
-                </b-col>
-            </div>
+                </div>
+            </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
                     <div @click="openChat" class="puzzle-view-chat-button" />
@@ -131,7 +131,7 @@ export default Vue.extend({
             return this.$store.state.roadmap;
         },
         lab_access(): boolean {
-            console.log("YEAH you got lab access");
+
             return this.playablePuzzleIndex >= this.roadmap.length;
         }
     },

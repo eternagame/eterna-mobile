@@ -1,15 +1,17 @@
 <template>
-    <b-button class="puzzle-card-container" :class="{'puzzle-card-locked': state === 'locked', 'puzzle-card-highlight': highlight}">
-        <b-img  class="puzzle-card-image" :src="imgSrc" />
-        <div style="justify-content:center;align-items:center">
-            <b-button v-if="state === 'unlocked'" class="puzzle-card-button" variant="primary" @click="$emit('play')">
-                <b>PLAY</b>
-            </b-button>
-            <div v-else-if="state === 'locked'" class="puzzle-card-icon-lock" />
-            <b-row v-else-if="state === 'completed'" class="puzzle-card-text" style="justify-content:center;align-items:center;">
-                <div class="puzzle-card-icon-checkmark" />
-                <b>COMPLETED!</b>
-            </b-row>
+    <b-button class="lab-card-container">
+        <div class="lab-title" >
+            {{title}}
+        </div >
+        <img  class="lab-card-image" :src="imgSrc" />
+        <div class="lab-card-footer d-flex">
+          <div
+            class="status-indicator"
+            :style="{ 'background-color': status_color }"
+          ></div>
+        <div class="status-text">
+          {{ status }}
+          </div>
         </div>
     </b-button>
 </template>
@@ -17,7 +19,8 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.component('puzzle-card', {
+export default Vue.component('lab-card', {
+    
     props: {
         highlight: {
             type: Boolean,
@@ -30,13 +33,22 @@ export default Vue.component('puzzle-card', {
         imgSrc: {
             type: String,
             default: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png'
+        },
+        title: {
+            type: String,
+        },
+        status:{
+            type: String,
+        },
+        status_color:{
+            type: String,
         }
     },
 })
 </script>
 
 <style lang="scss" scoped>
-.puzzle-card-container {
+.lab-card-container {
     width: 45vmin;
     height: 45vmin;
     display: inline-block;
@@ -51,20 +63,47 @@ export default Vue.component('puzzle-card', {
     padding: 0;
     border: none;
 }
-
-.puzzle-card-locked {
-    opacity: 0.5;
+.lab-title{
+    white-space: normal;
+    margin-left: 2vmin;
+    margin-right: 2vmin;
+    font-size: 2vmin;
+    height: 6vmin;
+    margin-bottom: 3vmin;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
+.lab-card-footer {
+    margin-top: 1vmin;
+    margin-bottom: -1.5vmin;
+    font-weight: bold;
+    line-height: 1vmin;
+    font-size: 1.5vmin;
+    margin-left: 2vmin;
+    text-align: center;
+  }
+
+.status-text{
+    margin-top: .08vmin;
+    margin-left: 1vmin;
+}
+.status-indicator {
+    width: 1.5vmin;
+    height: 1.5vmin;
+    border-radius: 50%;
+  }
+
 
 .puzzle-card-highlight {
     box-shadow: 0px 0px 2.5vmin 0.25vmin rgb(21, 194, 231);
 }
 
-.puzzle-card-image {
-    height: 65%;
-    margin-top: 0%;
-    margin-bottom: 1vh;
+.lab-card-image {
+    width: 100%;
+    height: 25vmin;
+    object-fit: cover;
 }
+
 
 .puzzle-card-button {
     margin-top: 3%;
