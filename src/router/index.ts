@@ -45,7 +45,7 @@ const routes: Array<RouteConfig> = [
         component: LabExplore,
     },
     {
-        path: '/labs/:labid',
+        path: '/labs/:id',
         component: LabView,
     }
     

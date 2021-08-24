@@ -17,29 +17,92 @@ export interface Achievement {
     to_next: number;
     current_puzzle: number;
 }
-export interface LabData{
-    affiliation: string;
-    cover_image?: string;
+export interface LabViewData {
+    lab: LabData;
+    comments: CommentItem[]; // do we need comments ?
+    supercomments: []; // ?
+    follow: []; // ?
+    sum_picks: null;
+    my_votes: number;
+    uid: string;
+  }
+  export interface CommentItem {
+    cid: string;
+    name: string;
+    uid: string;
+    comment: string;
     created: string;
-    exp_phase: string;
-    exp_phase_end?: any;
-    exp_phase_start?: any;
-    founder: string;
-    founder_uid: string;
-    is_active: boolean;
+    picture: string;
+  }
+export interface LabData {
     nid: string;
-    num_slots: string;
-    puzzles: string;
-    selection?: any;
+    created: string; // timestamp; change to int?
     title: string;
+    body: string;
+    uid: string;
+    puzzles: RoundData[];
+    is_featured: null;
+    coadmins: string[]; // uids
+    project_type: null;
+    winner: string; // "1"
+    exp_phase: string; // "2"
+    exp_phase_start: null;
+    exp_phase_end: null;
+    synthesis_date: null;
+    proposed_date: null;
+    affiliation: string;
+    email: string;
+    selection: null;
+    pending: null;
+    voters: null;
+    cover_image: string;
+    conclusion: string | null;
+    coadmin_names: string[];
+    username: string; // of whome?
+    synthesized_solutions: [];
+    current_cloud_round: number;
+    curr_time: number;
     banner_image: string;
-}
+    total_submitted_solutions: number;
+    total_designs: number;
+    total_submitted_solutions_of_user: number;
+    max_designs: number;
+    challenge: string;
+  }
+
+  export interface RoundData {
+    puzzles: PuzzleData[];
+    round: number;
+    is_playable: boolean;
+  }
+
+  export interface PuzzleData {
+    nid: string;
+    title: string;
+    secstruct: string;
+    sequence: string;
+    rna_type: string;
+    object: string;
+    constraint: string;
+    cover_image: null;
+    num_slots: number;
+    constraints: string;
+    switch_struct?: string[];
+    synthesized_solutions: [];
+    num_solutions: number;
+    my_votes: number;
+    submitted: number;
+    num_synthesized: number;
+    player_max_submissions: number;
+  }
+
 export const Action = {
     AUTHENTICATE: 'AUTHENTICATE',
     LOGIN: 'LOGIN',
     LOGOUT: 'LOGOUT',
     GET_ACHIEVEMENT_ROADMAP: 'GET_ACHIEVEMENT_ROADMAP',
     GET_LABS: 'GET_LABS',
+    GET_LAB: 'GET_LAB'
 };
 
 const MAX_LEVEL = 8;
@@ -53,7 +116,8 @@ export default function createStore(http: AxiosInstance) {
             uid: <number | null>null,
             username: <string | null>null,
             roadmap: <Achievement[]>[],
-            labdata: [],
+            labdata: <LabData[]>[],
+            current_lab: <LabData[]>[], 
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -86,6 +150,9 @@ export default function createStore(http: AxiosInstance) {
             },
             setLabs(state, labs){
                 state.labdata = labs;
+            },
+            setCurrentLab(state, lab){
+                state.current_lab = lab;
             }
         },
         actions: {
@@ -142,7 +209,6 @@ export default function createStore(http: AxiosInstance) {
                 commit('pushIsLoading');
                 try {
                     const { data } = (await http.get('/get/?type=side_project_roadmap')).data;
-                    console.log(data);
                     if (data.achievement_roadmap) {
                         const roadmap = <Achievement[]>data.achievement_roadmap;
                         commit('setRoadmap', roadmap.filter(a => a.key === 'ten_tools' && a.level <= MAX_LEVEL).sort((a, b) => a.level - b.level));
@@ -156,8 +222,18 @@ export default function createStore(http: AxiosInstance) {
                 try{
                     const { data } = (await http.get('/get/?type=get_labs_for_lab_cards')).data;
                     const labdata = <LabData[]>data.labs;
-                    console.log("LABZ", labdata);
                     commit('setLabs', labdata);
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_LAB]({ commit }, { id }: { id: string}){
+                commit('pushIsLoading');
+                try{
+                    const { data } = (await http.get(`/get/?type=project&nid=${id}`)).data;
+                    const labdata = <LabData>data;
+                    commit('setCurrentLab', labdata);
                 }
                 finally{
                     commit('popIsLoading');

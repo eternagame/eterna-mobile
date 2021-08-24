@@ -29,29 +29,25 @@
         <b-container id="puzzle-scroll">
             <div id="puzzle-card-wrapper">
                 <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
+                    <!-- {{lab_title}} -->
                     <div>
-                        LAB ACCESS IS HERE 
+                        <!-- {{ description }} -->
+                        placeholdler
                     </div>
                 </div>
-                <PuzzleCard
-                    v-for="(puzzle, index) in roadmap"
+                
+                <LabPuzzleCard
+                    v-for="(puzzle, index) in puzzles"
                     :key="index"
-                    :highlight="index === Math.floor(playablePuzzleIndex)"
-                    :imgSrc="getAbsUrl(puzzle.image)"
-                    @play="play(puzzle.current_puzzle)"
-                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
-                    v-b-popover.click.blur.top.html="{
-                        content: puzzle.desc,
-                        fallbackPlacement: ['top'],
-                        customClass: 'puzzle-card-popover',
-                        boundary: 'viewport'
-                    }"
-                />
-                <PuzzleCard
-                    key="lab"
-                    :highlight="lab_access"
-                    :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
-                    :state="lab_access ? 'completed' : 'locked'"
+                    :title="puzzle.title"
+                    :leftNum="puzzle.num_slots"
+                    :numSynths="puzzle.num_synthesized"
+                    :mySolutions="puzzle.num_solutions"
+                    :maxSubmissions="puzzle.player_max_submissions"
+                    :rightNum="puzzle.submitted"
+                    :imgSrc="getPuzImg(puzzle.nid)"
+                    @play="play(puzzle.nid)"
+                    @review="review(puzzle.nid)"
                 />
                 <div class="finish-card" style="left:100%;" v-if="lab_access">
                     <div>
@@ -70,7 +66,9 @@
                 </b-row>
             </b-col>
             <b-col class="col-8" style="padding:0">
-                <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
+                <div v-if="lab_access">
+                    <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
+                </div>
             </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
@@ -86,7 +84,8 @@
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
-import { Action, Achievement } from '../store';
+import LabPuzzleCard from '../components/LabPuzzleCard.vue'
+import { Action, Achievement, LabViewData, LabData, PuzzleData } from '../store';
 import ChatManager from '../ChatManager';
 
 export default Vue.extend({
@@ -99,8 +98,8 @@ export default Vue.extend({
     },
     async mounted() {
         try {
+            await this.$store.dispatch(Action.GET_LAB, {id: this.$route.params.id});
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            await this.$store.dispatch(Action.GET_LABS);
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
@@ -111,6 +110,7 @@ export default Vue.extend({
     components: {
         ProgressBar,
         PuzzleCard,
+        LabPuzzleCard,
     },
     computed: {
         isLoading(): boolean {
@@ -127,10 +127,21 @@ export default Vue.extend({
         },
         lab_access(): boolean {
             return this.playablePuzzleIndex >= this.roadmap.length;
+        },
+        lab_title(): string{
+            return this.$store.state.current_lab.lab.title;
+        },
+        description(): string{
+            return this.$store.state.current_lab.lab.body;
+        },
+        puzzles(): PuzzleData {
+            // loop through all rounds? or get first index
+            return this.$store.state.current_lab.lab.puzzles[0].puzzles;
         }
     },
     methods: {
         async logout() {
+            await this.$store.dispatch(Action.GET_LAB, {id: this.$route.params.id});
             await this.$store.dispatch(Action.LOGOUT);
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             this.setProgressFromRoadmap();
@@ -140,7 +151,7 @@ export default Vue.extend({
             return Math.max(min, Math.min(max, x));
         },
         play(id: number) {
-            this.$router.push(`game/${id}`);
+            this.$router.replace(`/game/${id}`);
         },
         openChat() {
             if (this.chat) {
@@ -149,6 +160,12 @@ export default Vue.extend({
         },
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;
+        },
+        getPuzImg(nid: string | null){
+            return (
+            nid &&
+            `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
+            );
         },
         setProgressFromRoadmap() {
             this.playablePuzzleIndex = Number(this.roadmap[0].current_level);

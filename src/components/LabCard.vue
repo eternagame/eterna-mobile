@@ -1,5 +1,5 @@
 <template>
-    <b-button class="lab-card-container">
+    <b-button class="lab-card-container" @click="$emit('link_lab')">
         <div class="lab-title" >
             {{title}}
         </div >

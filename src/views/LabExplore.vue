@@ -41,6 +41,7 @@
                     :status_color="getStatusColor(lab.exp_phase)"
                     :status="getStatus(lab.exp_phase)"
                     :imgSrc="getAbsUrl(lab.banner_image)"
+                    @link_lab="link_lab(lab.nid)"
                 />
                 <div class="finish-card" style="left:100%;" v-if="lab_access">
                     <div>
@@ -128,8 +129,8 @@ export default Vue.extend({
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
         },
-        play(id: number) {
-            this.$router.push(`game/${id}`);
+        link_lab(nid: String) {
+            this.$router.push(`labs/${nid}`);
         },
         openChat() {
             if (this.chat) {
