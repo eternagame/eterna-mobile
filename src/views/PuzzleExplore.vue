@@ -8,7 +8,7 @@
                 <b-img :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">Labs</b>
+                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;"></b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
@@ -30,32 +30,21 @@
             <div id="puzzle-card-wrapper">
                 <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
                     <div>
-                        <p>
-                            <strong>
-                                Welcome to the lab!
-                            </strong>
-                        </p>
-                        <p>
-                            Here you can participate in RNA design challenges and learn about experimental results of your solutions from researchers.
-                        </p>
+                        <p><strong>Puzzles</strong></p>
+                        <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
                     </div>
-
                 </div>
-                <LabCard
-                    v-for="(lab, index) in labs"
+                <PuzzleCard
+                    v-for="(puzzle, index) in puzzles"
                     :key="index"
-                    :title="lab.title"
-                    :status_color="getStatusColor(lab.exp_phase)"
-                    :status="getStatus(lab.exp_phase)"
-                    :imgSrc="getAbsUrl(lab.banner_image)"
-                    @link_lab="link_lab(lab.nid)"
+                    :imgSrc="getPuzImg(puzzle.id)"
+                    :title="puzzle.title"
+                    :folder="puzzle.folder"
+                    :reward="puzzle.reward"
+                    :username="puzzle.username"
+                    :user_pfp="puzzle.userpicture"
+                    :num_cleared="puzzle['num-cleared']"
                 />
-                <div class="finish-card" style="left:100%;" v-if="lab_access">
-                    <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong></p>
-                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
-                    </div>
-                </div>
             </div>
         </b-container>
         <b-row id="puzzle-view-footer">
@@ -66,9 +55,10 @@
                     </router-link>
                 </b-row>
             </b-col>
-            <b-col class="col-8" style="padding:0">
+            <b-col class="col-8" style="padding:0" v-if="lab_access">
                 <NavBar/>
             </b-col>
+            
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
                     <div @click="openChat" class="puzzle-view-chat-button" />
@@ -82,11 +72,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import PuzzleCard from '../components/TutorialCard.vue'
+import PuzzleCard from '../components/PuzzleCard.vue'
 import NavBar from '../components/NavBar.vue'
-import LabCard from '../components/LabCard.vue'
-import { Action, Achievement, LabData } from '../store';
+import { Action, Achievement, PuzzleData } from '../store';
 import ChatManager from '../ChatManager';
+
 
 export default Vue.extend({
     data() {
@@ -98,7 +88,10 @@ export default Vue.extend({
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_LABS);
+            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            await this.$store.dispatch(Action.GET_PUZZLES);
+            console.log("CURRENT LABS TO LOOP THROUGH", this.puzzles);
+            this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
@@ -106,10 +99,8 @@ export default Vue.extend({
         }
     },
     components: {
-        ProgressBar,
+        NavBar,
         PuzzleCard,
-        LabCard,
-        NavBar
     },
     computed: {
         isLoading(): boolean {
@@ -124,25 +115,29 @@ export default Vue.extend({
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
         },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
+        puzzles(): PuzzleData[]{
+            return this.$store.state.puzzle_list; 
         },
-        labs(): LabData[]{
-            return this.$store.state.labdata;
+        lab_access(): boolean {
+            console.log("LAB ACCESS IS ", this.playablePuzzleIndex >= this.roadmap.length )
+            // normally would have access, so just mocking this
+            return true;
+            // return this.playablePuzzleIndex >= this.roadmap.length;
         }
         
     },
     methods: {
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
-            await this.$store.dispatch(Action.GET_LABS);
+            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
         },
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
         },
-        link_lab(nid: String) {
-            this.$router.push(`labs/${nid}`);
+        play(id: number) {
+            this.$router.push(`game/${id}`);
         },
         openChat() {
             if (this.chat) {
@@ -152,36 +147,9 @@ export default Vue.extend({
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;
         },
-        getStatus(exp_phase: string){
-            if(!exp_phase) return "Results Posted";
-            switch (exp_phase) {
-            case '1':
-                return 'Accepting Submissions';
-            case '2':
-                return 'Ordering DNA Template';
-            case '3':
-                return 'Synthesizing RNA';
-            case '4':
-                return 'Getting Data';
-            case '5':
-            default:
-                return 'Results Posted';
-            }
-        },
-        getStatusColor(exp_phase: string){
-            switch (exp_phase) {
-            case '1':
-                return 'lime';
-            case '2':
-                return 'yellow';
-            case '3':
-                return 'purple';
-            case '4':
-                return 'blue';
-            case '5':
-            default:
-                return 'red';
-            }
+        setProgressFromRoadmap() {
+            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
+            this.$forceUpdate();
         },
         scrollToPuzzleIndex(index : number) {
             var scroll = document.getElementById('puzzle-scroll');
@@ -189,6 +157,12 @@ export default Vue.extend({
             if (scroll !== null && wrapper !== null) {
                 scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
+        },
+        getPuzImg(nid: string | null){
+            return (
+            nid &&
+            `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
+            );
         },
     }
 });
@@ -234,6 +208,7 @@ export default Vue.extend({
 #puzzle-scroll::-webkit-scrollbar {
     display: none;
 }
+
 
 #puzzle-view-footer {
     margin-left: 3vmin;

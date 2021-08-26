@@ -35,7 +35,7 @@
                         <p><strong>Ready?</strong></p>
                     </div>
                 </div>
-                <PuzzleCard
+                <TutorialCard
                     v-for="(puzzle, index) in roadmap"
                     :key="index"
                     :highlight="index === Math.floor(playablePuzzleIndex)"
@@ -49,7 +49,7 @@
                         boundary: 'viewport'
                     }"
                 />
-                <PuzzleCard
+                <TutorialCard
                     key="lab"
                     :highlight="lab_access"
                     :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
@@ -93,7 +93,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import PuzzleCard from '../components/PuzzleCard.vue'
+import TutorialCard from '../components/TutorialCard.vue'
 import NavBar from '../components/NavBar.vue'
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
@@ -110,6 +110,7 @@ export default Vue.extend({
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            await this.$store.dispatch(Action.GET_PUZZLES);
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
@@ -119,7 +120,7 @@ export default Vue.extend({
     },
     components: {
         ProgressBar,
-        PuzzleCard,
+        TutorialCard,
         NavBar,
     },
     computed: {

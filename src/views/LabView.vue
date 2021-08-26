@@ -136,7 +136,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import PuzzleCard from '../components/PuzzleCard.vue'
+import PuzzleCard from '../components/TutorialCard.vue'
 import LabPuzzleCard from '../components/LabPuzzleCard.vue'
 import NavBar from '../components/NavBar.vue'
 import Modal from '../components/Modal.vue'

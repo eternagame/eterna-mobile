@@ -115,7 +115,8 @@ export default Vue.component('puzzle-card', {
     margin-left: 1vmin;
     margin-right: 1vmin;
     padding: 0;
-    border: none;
+    border: solid;
+    border-color: #21508C;
 }
 
 .puzzle-card-locked {

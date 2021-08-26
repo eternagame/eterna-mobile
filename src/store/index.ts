@@ -102,7 +102,8 @@ export const Action = {
     LOGOUT: 'LOGOUT',
     GET_ACHIEVEMENT_ROADMAP: 'GET_ACHIEVEMENT_ROADMAP',
     GET_LABS: 'GET_LABS',
-    GET_LAB: 'GET_LAB'
+    GET_LAB: 'GET_LAB',
+    GET_PUZZLES: 'GET_PUZZLES',
 };
 
 const MAX_LEVEL = 8;
@@ -117,7 +118,8 @@ export default function createStore(http: AxiosInstance) {
             username: <string | null>null,
             roadmap: <Achievement[]>[],
             labdata: <LabData[]>[],
-            current_lab: <LabData[]>[], 
+            current_lab: <LabData[]>[],
+            puzzle_list: <PuzzleData[]> [], 
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -153,6 +155,9 @@ export default function createStore(http: AxiosInstance) {
             },
             setCurrentLab(state, lab){
                 state.current_lab = lab;
+            },
+            setPuzzles(state, puzzles){
+                state.puzzle_list = puzzles;
             }
         },
         actions: {
@@ -238,7 +243,17 @@ export default function createStore(http: AxiosInstance) {
                 finally{
                     commit('popIsLoading');
                 }
-            }
+            },
+            async [Action.GET_PUZZLES]({ commit }){
+                commit('pushIsLoading');
+                try{
+                    const { puzzles } = (await http.get(`/get/?type=puzzles&sort=date`)).data.data;
+                    commit('setPuzzles', puzzles);
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            },
         },
         modules: {
         },

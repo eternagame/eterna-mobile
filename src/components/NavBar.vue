@@ -4,6 +4,9 @@
                 <b-button variant="primary" size="lg"  class="nav-button" @click="goToHome()">Home</b-button>
             </b-col>
             <b-col>
+                <b-button variant="primary" size="lg" class="nav-button" @click="goToPuzzles()">Puzzles</b-button>
+            </b-col>
+            <b-col>
                 <b-button variant="primary" size="lg" class="nav-button" @click="goToLabs()">Labs</b-button>
             </b-col>
     </b-container>
@@ -23,6 +26,9 @@ export default Vue.component('puzzle-view-progress-bar', {
         }
     },
     methods:{
+        goToPuzzles(){
+            this.$router.replace('/puzzle-explore');
+        },
         goToLabs() {
             this.$router.replace('/labs');
         },
