@@ -71,11 +71,15 @@
                     </router-link>
                 </b-row>
             </b-col>
-            <b-col class="col-8" style="padding:0">
-                <div v-if="lab_access">
+            <b-col class="col-8" style="padding:0" v-if="!lab_access">
+                <div>
                     <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
                 </div>
             </b-col>
+            <b-col class="col-8" style="padding:0" v-if="lab_access">
+                <NavBar/>
+            </b-col>
+            
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
                     <div @click="openChat" class="puzzle-view-chat-button" />
@@ -90,8 +94,10 @@
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
+import NavBar from '../components/NavBar.vue'
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
+
 
 export default Vue.extend({
     data() {
@@ -107,8 +113,6 @@ export default Vue.extend({
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
-            console.log("roadmap", this.roadmap);
-            console.log("store", this.$store.state);
         } catch (error) {
             console.error(error);
         }
@@ -116,6 +120,7 @@ export default Vue.extend({
     components: {
         ProgressBar,
         PuzzleCard,
+        NavBar,
     },
     computed: {
         isLoading(): boolean {
@@ -131,8 +136,10 @@ export default Vue.extend({
             return this.$store.state.roadmap;
         },
         lab_access(): boolean {
-
-            return this.playablePuzzleIndex >= this.roadmap.length;
+            console.log("LAB ACCESS IS ", this.playablePuzzleIndex >= this.roadmap.length )
+            // normally would have access, so just mocking this
+            return true;
+            // return this.playablePuzzleIndex >= this.roadmap.length;
         }
     },
     methods: {
@@ -211,6 +218,7 @@ export default Vue.extend({
 #puzzle-scroll::-webkit-scrollbar {
     display: none;
 }
+
 
 #puzzle-view-footer {
     margin-left: 3vmin;

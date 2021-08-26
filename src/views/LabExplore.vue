@@ -30,7 +30,14 @@
             <div id="puzzle-card-wrapper">
                 <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
                     <div>
-                        LAB ACCESS IS HERE 
+                        <p>
+                            <strong>
+                                Welcome to the lab!
+                            </strong>
+                        </p>
+                        <p>
+                            Here you can participate in RNA design challenges and learn about experimental results of your solutions from researchers.
+                        </p>
                     </div>
 
                 </div>
@@ -59,6 +66,9 @@
                     </router-link>
                 </b-row>
             </b-col>
+            <b-col class="col-8" style="padding:0">
+                <NavBar/>
+            </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
                     <div @click="openChat" class="puzzle-view-chat-button" />
@@ -73,6 +83,7 @@
 import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
+import NavBar from '../components/NavBar.vue'
 import LabCard from '../components/LabCard.vue'
 import { Action, Achievement, LabData } from '../store';
 import ChatManager from '../ChatManager';
@@ -98,6 +109,7 @@ export default Vue.extend({
         ProgressBar,
         PuzzleCard,
         LabCard,
+        NavBar
     },
     computed: {
         isLoading(): boolean {

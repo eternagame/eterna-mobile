@@ -31,6 +31,7 @@
     "vue": "^2.6.12",
     "vue-axios": "^3.2.4",
     "vue-router": "^3.5.1",
+    "vue-sanitize": "^0.2.1",
     "vuex": "^3.6.2"
   },
   "devDependencies": {

@@ -5,12 +5,6 @@
             {{title}}
         </div>
         <b-img  class="puzzle-card-image" :src="imgSrc" />
-        <!-- <div>
-            leftNum: {{leftNum}} || synths : {{numSynths}} || mySolution : {{mySolution}}
-        </div>
-        <div>
-            maxSubmissions : {{maxSubmissions}} || rightNum? : {{rightNum}}
-        </div> -->
         <div class="row-position">
         <b-row class="mb-2">
             <b-col cols="6" >
@@ -194,6 +188,10 @@ export default Vue.component('puzzle-card', {
 .button-position{
     position: relative;
     top: -9vmin;
+}
+.status-text{
+    margin-top: .08vmin;
+    margin-left: 1vmin;
 }
 .test-tube{
     background: url('../assets/test-tube.svg');

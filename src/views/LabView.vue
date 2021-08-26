@@ -29,10 +29,65 @@
         <b-container id="puzzle-scroll">
             <div id="puzzle-card-wrapper">
                 <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
-                    <!-- {{lab_title}} -->
-                    <div>
-                        <!-- {{ description }} -->
-                        placeholdler
+                    
+                    <div class="lab-description">
+                    <p>
+                        {{lab_title}}
+                    </p>
+                    <div style="display:flex;">
+                        <div
+                        class="status-indicator"
+                        :style="{ 'background-color': status_color }"
+                        > 
+                        </div>
+                        <div class="status-text">
+                            {{ status }}
+                        </div>
+                    </div>
+                    <div  style="font-size: 2vmin; margin-bottom: 2vmin;" v-html="descriptiontoShow">
+                    </div>
+                            <div >
+                            <b-button size="lg" v-b-modal.full-description-modal>Read More</b-button>
+                                <b-modal
+                                id="full-description-modal"
+                                ref="modal"
+                                size="xl"
+                                header-border-variant="primary"
+                                hide-header
+                                hide-footer
+                                >
+                                    <div class="readmore-scroll">
+                                        <b-img  class="img-fluid" :src="getBanner" />
+                                        <div style="padding: 2vmin;">
+                                                <div class="modal-title">
+                                                        {{lab_title}}
+                                                </div>
+                                                <div  style="font-size: 2vmin;" v-html="full_description">
+                                                </div>
+                                        </div>
+                                    </div>
+                                </b-modal>
+                            <b-button size="lg" v-b-modal.lab-updates-modal v-if="labUpdates">Lab Updates</b-button>
+                            <b-modal
+                                id="lab-updates-modal"
+                                ref="modal"
+                                size="xl"
+                                header-border-variant="primary"
+                                hide-header
+                                hide-footer
+                                >
+                                <div class="readmore-scroll">
+                                    <b-img  class="puzzle-card-image" :src="getBanner" />
+                                    <div style="padding: 2vmin;">
+                                            <div class="modal-title">
+                                                    Lab Updates!
+                                            </div>
+                                            <div  style="font-size: 2vmin;" v-html="labUpdates">
+                                            </div>
+                                    </div>
+                                </div>
+                                </b-modal>
+                            </div>
                     </div>
                 </div>
                 
@@ -66,9 +121,7 @@
                 </b-row>
             </b-col>
             <b-col class="col-8" style="padding:0">
-                <div v-if="lab_access">
-                    <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
-                </div>
+                <NavBar/>
             </b-col>
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
@@ -85,8 +138,13 @@ import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
 import LabPuzzleCard from '../components/LabPuzzleCard.vue'
-import { Action, Achievement, LabViewData, LabData, PuzzleData } from '../store';
+import NavBar from '../components/NavBar.vue'
+import Modal from '../components/Modal.vue'
+import { Action, Achievement, PuzzleData } from '../store';
+
 import ChatManager from '../ChatManager';
+
+const MAX_CHARS = 450;
 
 export default Vue.extend({
     data() {
@@ -99,6 +157,7 @@ export default Vue.extend({
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_LAB, {id: this.$route.params.id});
+            console.log("THIS LAB", this.$store.state.current_lab.lab);
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
@@ -111,6 +170,8 @@ export default Vue.extend({
         ProgressBar,
         PuzzleCard,
         LabPuzzleCard,
+        Modal,
+        NavBar
     },
     computed: {
         isLoading(): boolean {
@@ -131,12 +192,28 @@ export default Vue.extend({
         lab_title(): string{
             return this.$store.state.current_lab.lab.title;
         },
-        description(): string{
+        descriptiontoShow(): string{
+            // strip all html, only take the first MAX_CHARS characters
+            return this.$store.state.current_lab.lab.body.replace(/<[^>]+>/ig,"").substr(0, MAX_CHARS) + ". . .";
+        },
+        full_description(): string{
             return this.$store.state.current_lab.lab.body;
         },
         puzzles(): PuzzleData {
             // loop through all rounds? or get first index
             return this.$store.state.current_lab.lab.puzzles[0].puzzles;
+        },
+        status(): string{
+            return this.getStatus(this.$store.state.current_lab.lab.exp_phase);
+        },
+        status_color(): string{
+            return this.getStatusColor(this.$store.state.current_lab.lab.exp_phase);
+        },
+        getBanner(): string{
+            return process.env.APP_SERVER_URL + this.$store.state.current_lab.lab.banner_image;
+        },
+        labUpdates(): string{
+            return this.$store.state.current_lab.lab.conclusion
         }
     },
     methods: {
@@ -167,6 +244,37 @@ export default Vue.extend({
             `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
             );
         },
+        getStatus(exp_phase: string){
+            if(!exp_phase) return "Results Posted";
+            switch (exp_phase) {
+            case '1':
+                return 'Accepting Submissions';
+            case '2':
+                return 'Ordering DNA Template';
+            case '3':
+                return 'Synthesizing RNA';
+            case '4':
+                return 'Getting Data';
+            case '5':
+            default:
+                return 'Results Posted';
+            }
+        },
+        getStatusColor(exp_phase: string){
+            switch (exp_phase) {
+            case '1':
+                return 'lime';
+            case '2':
+                return 'yellow';
+            case '3':
+                return 'purple';
+            case '4':
+                return 'blue';
+            case '5':
+            default:
+                return 'red';
+            }
+        },
         setProgressFromRoadmap() {
             this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
             this.$forceUpdate();
@@ -191,7 +299,43 @@ export default Vue.extend({
     right: 0;
     bottom: 0;
 }
-
+.modal-title{
+    width: 100%;
+    font-size: 6vmin;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    height: 40vmin;
+    top: -1vmin;
+}
+.modal-body{
+    padding: 0vmin;
+}
+.modal-header {
+  display:none;
+}
+.lab-description{
+    position: relative;
+    top: -1vmin;
+}
+.puzzle-card-image {
+    width: 100%;
+    height: 40vmin;
+    object-fit: contain;
+    position: relative;
+    top: -2vmin;
+}
+.status-indicator {
+    width: 1.5vmin;
+    height: 1.5vmin;
+    border-radius: 50%;
+    margin-top: .8vmin;
+    margin-right: 2vmin;
+  }
+  .status-text{
+      font-size: 2vmin;
+      margin-bottom: 2vmin;
+  }
 .puzzle-view-container {
     padding: 0;
     margin: 0;
@@ -211,7 +355,7 @@ export default Vue.extend({
     overflow-x: scroll;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: y mandatory;
     padding-right: calc(50% - 22.5vmin);
     padding-left: calc(50% - 22.5vmin);
     margin-top: 0vmin;
