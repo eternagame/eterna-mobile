@@ -3,7 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import About from '../views/About.vue';
 import Game from '../views/Game.vue';
 import Login from '../views/Login.vue';
-import PuzzleView from '../views/PuzzleView.vue';
+import LandingPage from '../views/LandingPage.vue';
 import Register from '../views/Register.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import LabExplore from '../views/LabExplore.vue';
@@ -15,7 +15,7 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
     {
         path: '/',
-        redirect: 'puzzles',
+        redirect: 'home',
     },
     {
         path: '/login',
@@ -38,11 +38,11 @@ const routes: Array<RouteConfig> = [
         component: Game,
     },
     {
-        path: '/puzzles',
-        component: PuzzleView,
+        path: '/home',
+        component: LandingPage,
     },
     {
-        path: '/puzzle-explore',
+        path: '/puzzles',
         component: PuzzleExplore,
     },
     {

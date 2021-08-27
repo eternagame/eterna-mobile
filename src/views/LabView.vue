@@ -32,7 +32,9 @@
                     
                     <div class="lab-description">
                     <p>
+                        <strong>
                         {{lab_title}}
+                        </strong>
                     </p>
                     <div style="display:flex;">
                         <div
@@ -193,7 +195,7 @@ export default Vue.extend({
             return this.$store.state.current_lab.lab.title;
         },
         descriptiontoShow(): string{
-            // strip all html, only take the first MAX_CHARS characters
+            // strip all html, only take the first MAX_CHARS characters and add ending ... tag
             return this.$store.state.current_lab.lab.body.replace(/<[^>]+>/ig,"").substr(0, MAX_CHARS) + ". . .";
         },
         full_description(): string{

@@ -137,10 +137,7 @@ export default Vue.extend({
             return this.$store.state.roadmap;
         },
         lab_access(): boolean {
-            console.log("LAB ACCESS IS ", this.playablePuzzleIndex >= this.roadmap.length )
-            // normally would have access, so just mocking this
-            return true;
-            // return this.playablePuzzleIndex >= this.roadmap.length;
+            return this.playablePuzzleIndex >= this.roadmap.length;
         }
     },
     methods: {

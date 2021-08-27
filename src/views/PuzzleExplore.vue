@@ -44,6 +44,7 @@
                     :username="puzzle.username"
                     :user_pfp="puzzle.userpicture"
                     :num_cleared="puzzle['num-cleared']"
+                    @play="play(puzzle.id)"
                 />
             </div>
         </b-container>
@@ -90,7 +91,6 @@ export default Vue.extend({
         try {
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             await this.$store.dispatch(Action.GET_PUZZLES);
-            console.log("CURRENT LABS TO LOOP THROUGH", this.puzzles);
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
@@ -119,10 +119,7 @@ export default Vue.extend({
             return this.$store.state.puzzle_list; 
         },
         lab_access(): boolean {
-            console.log("LAB ACCESS IS ", this.playablePuzzleIndex >= this.roadmap.length )
-            // normally would have access, so just mocking this
-            return true;
-            // return this.playablePuzzleIndex >= this.roadmap.length;
+            return this.playablePuzzleIndex >= this.roadmap.length;
         }
         
     },
@@ -137,7 +134,7 @@ export default Vue.extend({
             return Math.max(min, Math.min(max, x));
         },
         play(id: number) {
-            this.$router.push(`game/${id}`);
+            this.$router.replace(`game/${id}`);
         },
         openChat() {
             if (this.chat) {

@@ -1,13 +1,31 @@
 <template>
-    <b-container style="padding:0; display: flex;">
+    <b-container style="padding:0; display: flex; position: relative; top: -2vmin;" class="nav-bar">
             <b-col>
-                <b-button variant="primary" size="lg"  class="nav-button" @click="goToHome()">Home</b-button>
+                <b-button variant="primary" size="lg"  class="nav-button" id="home-btn" :disabled="atHome" @click="goToHome()">
+                    <div class="home-icon" v-if="atHome">
+                    </div>
+                    <div class="home-disabled" v-else>
+                    </div>
+                    Home
+                </b-button>
             </b-col>
             <b-col>
-                <b-button variant="primary" size="lg" class="nav-button" @click="goToPuzzles()">Puzzles</b-button>
+                <b-button variant="primary" size="lg" class="nav-button" id="puzzle-btn" :disabled="atPuzzles" @click="goToPuzzles()">
+                    <div class="puzzle-icon" v-if="atPuzzles">
+                    </div>
+                    <div class="puzzle-disabled" v-else>
+                    </div>
+                    Puzzles
+                </b-button>
             </b-col>
             <b-col>
-                <b-button variant="primary" size="lg" class="nav-button" @click="goToLabs()">Labs</b-button>
+                <b-button variant="primary" size="lg" class="nav-button" id="lab-btn" :disabled="atLabs" @click="goToLabs()">
+                    <div class="flask-icon" v-if="atLabs">
+                    </div>
+                    <div class="flask-disabled" v-else>
+                    </div>
+                    Labs
+                    </b-button>
             </b-col>
     </b-container>
 </template>
@@ -25,23 +43,50 @@ export default Vue.component('puzzle-view-progress-bar', {
             default: 7,
         }
     },
+    computed: {
+        atHome(): boolean{
+            // disable button
+            return this.$route.path === "/home";
+        },
+        atPuzzles(): boolean{
+            // disable button
+            return this.$route.path === "/puzzles";
+        },
+        atLabs(): boolean{
+            // disable button
+            return this.$route.path === "/labs";
+        }
+    },
     methods:{
         goToPuzzles(){
-            this.$router.replace('/puzzle-explore');
+            this.$router.replace('/puzzles');
         },
         goToLabs() {
             this.$router.replace('/labs');
         },
         goToHome() {
-            this.$router.replace('/puzzles');
+            this.$router.replace('/home');
         },
     }
 })
 </script>
 
 <style lang="scss" scoped>
+
+button:disabled,
+button[disabled]{
+  color: #fff; // highlight current tab and also disable it
+  opacity: 1;
+}
+
+.nav-bar .btn-primary{
+    background-color: transparent;
+    border-color: transparent;
+}
+
 .nav-button{
     margin-top: 3%;
+    color: #ffffff7a; //grey until set by the page
     padding: 0;
     width: 49%;
     height: 6.5vmin;
@@ -49,6 +94,80 @@ export default Vue.component('puzzle-view-progress-bar', {
     text-align: center;
     font-size: 1.5vw;
     line-height: 5.2vmin;
+    
+}
+.nav-button:focus-visible{
+    outline:hidden;
+}
+.btn-primary:not(:disabled):not(.disabled):active{
+    background-color: transparent;
+    border-color: transparent;
+}
+.home-icon{
+    background-image: url('../assets/home.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.home-disabled{
+    background-image: url('../assets/home_disabled.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.flask-icon{
+    background-image: url('../assets/flask.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.flask-disabled{
+    background-image: url('../assets/flask_disabled.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.puzzle-icon{
+    background-image: url('../assets/puzzle.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.puzzle-disabled{
+    background-image: url('../assets/puzzle_disabled.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 .left-col,
   .right-col {
