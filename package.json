@@ -26,7 +26,7 @@
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^2.4.3",
     "es6-promise-plugin": "^4.2.2",
-    "eterna-chat-wrapper": "https://github.com/eternagame/eterna-chat-wrapper/archive/abe53eca223948847b4f899f9de7119672adf3a2.tar.gz",
+    "eterna-chat-wrapper": "https://github.com/eternagame/eterna-chat-wrapper/archive/dd47b03753aeae81c3a8450933b274216515d1bc.tar.gz",
     "jquery": "^3.5.1",
     "vue": "^2.6.12",
     "vue-axios": "^3.2.4",
