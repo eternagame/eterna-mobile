@@ -32,6 +32,7 @@
     "vue-axios": "^3.2.4",
     "vue-router": "^3.5.1",
     "vue-sanitize": "^0.2.1",
+    "vue2-flip-countdown": "^0.11.2",
     "vuex": "^3.6.2"
   },
   "devDependencies": {

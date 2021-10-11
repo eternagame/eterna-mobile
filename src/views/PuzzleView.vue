@@ -4,11 +4,11 @@
     </div>
     <div v-else class="puzzle-view-container">
         <b-row id="puzzle-view-header">
-            <b-col>
-                <b-img :src="logoSourcePng" />
+            <b-col class="d-flex mh-100">
+                <b-img class="mh-100" :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">Labs</b>
+                <b v-if="true" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;"></b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
@@ -28,36 +28,46 @@
         </b-row>
         <div class="content">
             <div class="left-block left-aligned">
-                 <div>
-                        <p>
-                            <strong>
-                                Welcome to the lab!
-                            </strong>
-                        </p>
-                        <p>
-                            Here you can participate in RNA design challenges and learn about experimental results of your solutions from researchers.
-                        </p>
-                    </div>
-            </div>
-            <b-container id="puzzle-scroll">
-            <div id="puzzle-card-wrapper">
-                <LabCard
-                    v-for="(lab, index) in labs"
-                    :key="index"
-                    :title="lab.title"
-                    :status_color="getStatusColor(lab.exp_phase)"
-                    :status="getStatus(lab.exp_phase)"
-                    :imgSrc="getAbsUrl(lab.banner_image)"
-                    @link_lab="link_lab(lab.nid)"
-                />
-                <div class="finish-card" style="left:100%;" v-if="lab_access">
-                    <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong></p>
-                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
-                    </div>
+                <div>
+                    <p><strong>Norway Rat rRNA Extra Locked Bases Version</strong></p>
+                    <p>Restored the 3 locked bases forgot last time plus added four more.</p>
                 </div>
             </div>
-        </b-container>
+            <b-container id="puzzle-scroll">
+                <div id="puzzle-card-wrapper">
+                    <PuzzleCard
+                        :imgSrc="getPuzImg(puzzle.id)"
+                        :title="puzzle.title"
+                        :folder="puzzle.folder"
+                        :reward="puzzle.reward"
+                        :username="puzzle.username"
+                        :user_pfp="puzzle.userpicture"
+                        :num_cleared="puzzle['num-cleared']"
+                        :playable="true"
+                        @play="play(puzzle.id)"
+                    />
+                </div>
+                <div id="puzzle-info-wrapper">
+                    <h3 id="puzzle-info-title">puzzle info</h3>
+                    <ul id="puzzle-info-body">
+                        <li>
+                            <h3>{{ puzzle.username }}</h3>
+                        </li>
+                        <li>
+                            <h3>{{ puzzle.folder }}</h3>
+                        </li>
+                        <li>
+                            <h3>{{ puzzle.reward }}</h3>
+                        </li>
+                        <li>
+                            <h3>{{ puzzle["num-cleared"] }}</h3>
+                        </li>
+                        <li>
+                            <h3>21 May 2021</h3>
+                        </li>
+                    </ul>
+                </div>
+            </b-container>
         </div>
         <b-row id="puzzle-view-footer">
             <b-col>
@@ -67,135 +77,94 @@
                     </router-link>
                 </b-row>
             </b-col>
-            <b-col class="col-8" style="padding:0">
+            <b-col class="col-8" style="padding:0" v-if="true">
                 <NavBar/>
             </b-col>
+            
             <b-col>
                 <b-row style="justify-content:flex-end;align-items:flex-end;">
                     <div @click="openChat" class="puzzle-view-chat-button" />
                 </b-row>
             </b-col>
-        </b-row>
-        <div id="chat-container" class="chat hidden"></div>
+        </b-row> 
     </div>
 </template>
-
 <script lang="ts">
-import Vue from 'vue'
-import ProgressBar from '../components/ProgressBar.vue'
-import PuzzleCard from '../components/TutorialCard.vue'
+import Vue from 'vue';
+import PuzzleCard from '../components/PuzzleCard.vue';
 import NavBar from '../components/NavBar.vue'
-import LabCard from '../components/LabCard.vue'
-import { Action, Achievement, LabData } from '../store';
-import ChatManager from '../ChatManager';
+import { Achievement, Action, PuzzleData } from '../store';
+
 
 export default Vue.extend({
     data() {
         return {
-            playablePuzzleIndex: 0,
-            chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg').default,
+            playablePuzzleIndex: 0
         };
     },
-    async mounted() {
-        try {
-            await this.$store.dispatch(Action.GET_LABS);
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-            this.chat = new ChatManager('chat-container', this.$store);
-        } catch (error) {
-            console.error(error);
-        }
-    },
     components: {
-        ProgressBar,
         PuzzleCard,
-        LabCard,
         NavBar
     },
     computed: {
         isLoading(): boolean {
             return this.$store.getters.isLoading;
         },
+        
         loggedIn(): boolean {
             return this.$store.state.loggedIn;
         },
         username(): string {
             return this.$store.state.username;
         },
+        puzzle(): PuzzleData {
+            return this.$store.state.puzzle_list.find((puzzle: PuzzleData) => puzzle.id === this.$router.currentRoute.params.id); 
+        },
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
-        },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
-        },
-        labs(): LabData[]{
-            return this.$store.state.labdata;
         }
-        
     },
     methods: {
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
-            await this.$store.dispatch(Action.GET_LABS);
+            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
         },
-        clamp(x: number, min: number, max: number) {
-            return Math.max(min, Math.min(max, x));
-        },
-        link_lab(nid: String) {
-            this.$router.push(`labs/${nid}`);
-        },
-        openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
-        },
-        getAbsUrl(relUrl: string) {
-            return process.env.APP_SERVER_URL + relUrl;
-        },
-        getStatus(exp_phase: string){
-            if(!exp_phase) return "Results Posted";
-            switch (exp_phase) {
-            case '1':
-                return 'Accepting Submissions';
-            case '2':
-                return 'Ordering DNA Template';
-            case '3':
-                return 'Synthesizing RNA';
-            case '4':
-                return 'Getting Data';
-            case '5':
-            default:
-                return 'Results Posted';
-            }
-        },
-        getStatusColor(exp_phase: string){
-            switch (exp_phase) {
-            case '1':
-                return 'lime';
-            case '2':
-                return 'yellow';
-            case '3':
-                return 'purple';
-            case '4':
-                return 'blue';
-            case '5':
-            default:
-                return 'red';
-            }
+        setProgressFromRoadmap() {
+            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
+            this.$forceUpdate();
         },
         scrollToPuzzleIndex(index : number) {
             var scroll = document.getElementById('puzzle-scroll');
             var wrapper = document.getElementById('puzzle-card-wrapper');
             if (scroll !== null && wrapper !== null) {
-                scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
+                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
+                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
         },
+        getPuzImg(nid: string | null){
+            return (
+            nid &&
+            `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
+            );
+        },
+        play(id: number) {
+            this.$router.replace(`/game/${id}`);
+        },
+    },
+    async mounted() {
+        try {
+            await this.$store.dispatch(Action.GET_PUZZLES);
+        } catch (error) {
+            console.log(error);
+        }
     }
-});
+})
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .loading-spinner {
     position: absolute;
     margin: auto;
@@ -229,21 +198,96 @@ export default Vue.extend({
     padding-left: 25px;
     margin-top: 0vmin;
     max-width: unset;
+    display: flex; 
 }
 
 #puzzle-scroll::-webkit-scrollbar {
     display: none;
 }
 
+
 #puzzle-view-footer {
     margin-left: 3vmin;
     margin-right: 3vmin;
+    height: 18vh;
+    align-items: center;
 }
 
 #puzzle-card-wrapper {
     position: relative;
     display: inline-block;
     scroll-margin: 0 50vw;
+    margin-right: 45px;
+}
+
+#puzzle-info-wrapper {
+    margin: 3vmin 0;
+}
+#puzzle-info-title {
+    color: #2f94d1;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 3vmin;
+    display: flex;
+    align-items: center;
+
+    &::before {
+        content: ""; 
+        display: inline-block; 
+        width: 2.8vmin;
+        height: 2.8vmin;
+        margin-right: 10px;
+        background: url('../assets/info.svg') no-repeat center / cover;  
+    }
+}
+#puzzle-info-body {
+    padding: 0;
+    margin: 0;
+    margin-top: 3vmin;
+    list-style: none;
+    li {
+        padding: inherit;
+        margin: inherit;
+        display: flex;
+        margin-top: 1vmin;
+        &:first-child {
+            margin-top: 0;
+        }
+        h3 {
+            font-size: 2.5vmin;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            &::before {
+                content: "";
+                display: inline-block;
+                width: 2.5vmin;
+                height: 2.5vmin;
+                background: url("../assets/profile.svg") no-repeat center / contain;
+                margin-right: 10px;    
+            }
+        }
+    }
+    li:nth-child(2) {
+        h3::before {
+            background-image: url("../assets/chemical_bond.svg");
+        }
+    }
+    li:nth-child(3) {
+        h3::before {
+            background-image: url("../assets/dollar.svg");
+        }
+    }
+    li:nth-child(4) {
+        h3::before {
+            background-image: url("../assets/people.svg");
+        }
+    }
+    li:nth-child(5) {
+        h3::before {
+            background-image: url("../assets/calendar.svg");
+        }
+    }
 }
 
 .puzzle-card-container {
@@ -347,35 +391,5 @@ export default Vue.extend({
 }
 .hidden{
   opacity: 0;
-}
-
-.content {
-    display: flex;
-    height: calc(64vh - 15px);
-}
-
-.left-block {
-    overflow: overlay;
-    max-height: 100%;
-
-    position: relative;
-    display: flex;
-    flex: 0 0 30vw;
-    padding-right: 25px;
-    padding-left: 50px;
-        > div {
-        margin: auto;
-
-        p {
-            font-size: 1.5vw;
-            // font-size: 3vmin;
-        }
-        strong {
-            font-size: larger;
-            // font-size: 4.5vmin;
-        }
-    }
-
-    border-right: 2px solid #2F94D1;
 }
 </style>

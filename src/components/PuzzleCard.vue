@@ -1,11 +1,11 @@
 <template>
-    <b-button class="puzzle-card-container" >
+    <b-button class="puzzle-card-container" @click="goToPuzzle">
         
-        <div class="puzzle-card-title">
+        <div v-if="!playable" class="puzzle-card-title">
             {{title}}
         </div>
         <b-img  class="puzzle-card-image" :src="imgSrc" />
-        <div class="row-position">
+        <div v-if="!playable" class="row-position">
         <b-row class="mb-2">
             <b-col cols="6" >
                 <div class="left-col">
@@ -48,7 +48,7 @@
             </b-col>
         </b-row>
         </div>
-        <div class="button-position">
+        <div v-if="playable" class="button-position">
             <b-button variant="primary"  class="puzzle-card-button" @click="$emit('play')">PLAY</b-button>
         </div>
     </b-button>
@@ -59,6 +59,10 @@ import Vue from 'vue'
 
 export default Vue.component('puzzle-card', {
     props: {
+        playable: {
+            type: Boolean,
+            default: false
+        },
         highlight: {
             type: Boolean,
             default: false
@@ -70,6 +74,9 @@ export default Vue.component('puzzle-card', {
         imgSrc: {
             type: String,
             default: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png'
+        },
+        id: {
+            type: String
         },
         title:{
             type: String
@@ -90,6 +97,13 @@ export default Vue.component('puzzle-card', {
             type: String
         },
     },
+    methods: {
+        goToPuzzle: function() {
+            if(!this.playable) {
+                this.$router.push(`${this.$router.currentRoute.fullPath}/${this.id}`);
+            }
+        }
+    }
 })
 </script>
 
@@ -117,11 +131,11 @@ export default Vue.component('puzzle-card', {
 
 
 .puzzle-card-image {
-    width: 80%;
+    width: 50%;
     height: 30vmin;
     object-fit: contain;
     position: relative;
-    top: -2vmin;
+    top: 0;
     z-index: -1;
 }
 
@@ -176,11 +190,11 @@ export default Vue.component('puzzle-card', {
 }
 .row-position{
     position: relative;
-    top: -9vmin;
+    top: -1vmin;
 }
 .button-position{
     position: relative;
-    top: -9vmin;
+    top: -1vmin;
 }
 .status-text{
     margin-top: .08vmin;

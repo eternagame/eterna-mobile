@@ -10,6 +10,24 @@
                 </b-button>
             </b-col>
             <b-col>
+                <b-button variant="primary" size="lg" class="nav-button" id="lab-btn" :disabled="atLabs" @click="goToLabs()">
+                    <div class="flask-icon" v-if="atLabs">
+                    </div>
+                    <div class="flask-disabled" v-else>
+                    </div>
+                    Labs
+                </b-button>
+            </b-col>
+            <!-- <b-col>
+                <b-button variant="primary" size="lg" class="nav-button" id="quests-btn" :disabled="atQuests" @click="goToQuests()">
+                    <div class="quests-icon" v-if="atQuests">
+                    </div>
+                    <div class="quests-disabled" v-else>
+                    </div>
+                    Quests
+                </b-button>
+            </b-col> -->
+            <b-col>
                 <b-button variant="primary" size="lg" class="nav-button" id="puzzle-btn" :disabled="atPuzzles" @click="goToPuzzles()">
                     <div class="puzzle-icon" v-if="atPuzzles">
                     </div>
@@ -17,15 +35,6 @@
                     </div>
                     Puzzles
                 </b-button>
-            </b-col>
-            <b-col>
-                <b-button variant="primary" size="lg" class="nav-button" id="lab-btn" :disabled="atLabs" @click="goToLabs()">
-                    <div class="flask-icon" v-if="atLabs">
-                    </div>
-                    <div class="flask-disabled" v-else>
-                    </div>
-                    Labs
-                    </b-button>
             </b-col>
     </b-container>
 </template>
@@ -55,6 +64,10 @@ export default Vue.component('puzzle-view-progress-bar', {
         atLabs(): boolean{
             // disable button
             return this.$route.path === "/labs";
+        },
+        atQuests(): boolean{
+            // disable button
+            return this.$route.path === "/quests";
         }
     },
     methods:{
@@ -66,6 +79,9 @@ export default Vue.component('puzzle-view-progress-bar', {
         },
         goToHome() {
             this.$router.replace('/home');
+        },
+        goToQuests() {
+            this.$router.replace('/quests');
         },
     }
 })
@@ -89,7 +105,7 @@ button[disabled]{
     color: #ffffff7a; //grey until set by the page
     padding: 0;
     width: 49%;
-    height: 6.5vmin;
+    // height: 6.5vmin; Comment this to show labels on mobile
     border-radius: 1vmin;
     text-align: center;
     font-size: 1.5vw;
@@ -160,6 +176,28 @@ button[disabled]{
 }
 .puzzle-disabled{
     background-image: url('../assets/puzzle_disabled.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.quests-icon {
+    background-image: url('../assets/quests.svg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    width: 6vmin;
+    height: 5vmin;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.quests-disabled {
+    background-image: url('../assets/quests-disabled.svg');
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: contain; /* Resize the background image to cover the entire container */

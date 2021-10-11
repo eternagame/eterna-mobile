@@ -4,11 +4,8 @@
     </div>
     <div v-else class="puzzle-view-container">
         <b-row id="puzzle-view-header">
-            <b-col>
-                <b-img :src="logoSourcePng" />
-            </b-col>
-            <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">You did it!</b>
+            <b-col class="text-left" style="height: 100%; padding-top: 14px;">
+                <b-img class="header-logo" :src="logoSourcePng" />
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
@@ -26,15 +23,19 @@
                 </b-row>
             </b-col>
         </b-row>
-        <b-container id="puzzle-scroll">
-            <div id="puzzle-card-wrapper">
-                <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
-                    <div>
-                        <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
-                        <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
-                        <p><strong>Ready?</strong></p>
-                    </div>
+        <div class="content" v-if="lab_access">
+            <Carousel />
+        </div>
+        <div class="content" v-else>
+            <div class="left-block ">
+                <div>
+                    <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
+                    <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
+                    <p><strong>Ready?</strong></p>
                 </div>
+            </div>
+             <b-container id="puzzle-scroll">
+                <div id="puzzle-card-wrapper">
                 <TutorialCard
                     v-for="(puzzle, index) in roadmap"
                     :key="index"
@@ -63,6 +64,7 @@
                 </div>
             </div>
         </b-container>
+        </div>
         <b-row id="puzzle-view-footer">
             <b-col>
                 <b-row style="justify-content:flex-start;align-items:flex-start;">
@@ -95,6 +97,7 @@ import Vue from 'vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import TutorialCard from '../components/TutorialCard.vue'
 import NavBar from '../components/NavBar.vue'
+import Carousel from '../components/Carousel.vue'
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
 
@@ -122,6 +125,7 @@ export default Vue.extend({
         ProgressBar,
         TutorialCard,
         NavBar,
+        Carousel,
     },
     computed: {
         isLoading(): boolean {
@@ -169,14 +173,14 @@ export default Vue.extend({
             var scroll = document.getElementById('puzzle-scroll');
             var wrapper = document.getElementById('puzzle-card-wrapper');
             if (scroll !== null && wrapper !== null) {
-                scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
+                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
         },
     }
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .loading-spinner {
     position: absolute;
     margin: auto;
@@ -194,8 +198,9 @@ export default Vue.extend({
 }
 
 #puzzle-view-header {
-    height: 30vh;
-    padding-top: 3vmin;
+    height: 18vh !important;
+    margin-bottom: 15px;
+    padding-top: 0 !important;
     margin-left: 3vmin;
     margin-right: 3vmin;
 }
@@ -207,9 +212,8 @@ export default Vue.extend({
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     padding-right: calc(50% - 22.5vmin);
-    padding-left: calc(50% - 22.5vmin);
+    padding-left: 25px;
     margin-top: 0vmin;
-    margin-bottom: 6vmin;
     max-width: unset;
 }
 
@@ -219,6 +223,9 @@ export default Vue.extend({
 
 
 #puzzle-view-footer {
+    height: 18vh !important;
+    display: flex;
+    align-items: center;
     margin-left: 3vmin;
     margin-right: 3vmin;
 }
@@ -330,5 +337,9 @@ export default Vue.extend({
 }
 .hidden{
   opacity: 0;
+}
+.header-logo {
+    max-width: 100%;
+    height: 100%;
 }
 </style>

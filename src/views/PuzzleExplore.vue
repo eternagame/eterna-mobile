@@ -4,8 +4,8 @@
     </div>
     <div v-else class="puzzle-view-container">
         <b-row id="puzzle-view-header">
-            <b-col>
-                <b-img :src="logoSourcePng" />
+            <b-col class="d-flex mh-100">
+                <b-img class="mh-100" :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
                 <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;"></b>
@@ -26,28 +26,31 @@
                 </b-row>
             </b-col>
         </b-row>
-        <b-container id="puzzle-scroll">
-            <div id="puzzle-card-wrapper">
-                <div class="finish-card left-aligned" style="left:calc(-30vw - 2vmin);padding-right:10px;">
-                    <div>
-                        <p><strong>Puzzles</strong></p>
-                        <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
-                    </div>
+        <div class="content">
+            <div class="left-block left-aligned">
+                <div>
+                    <p><strong>Puzzles</strong></p>
+                    <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
                 </div>
-                <PuzzleCard
-                    v-for="(puzzle, index) in puzzles"
-                    :key="index"
-                    :imgSrc="getPuzImg(puzzle.id)"
-                    :title="puzzle.title"
-                    :folder="puzzle.folder"
-                    :reward="puzzle.reward"
-                    :username="puzzle.username"
-                    :user_pfp="puzzle.userpicture"
-                    :num_cleared="puzzle['num-cleared']"
-                    @play="play(puzzle.id)"
-                />
             </div>
-        </b-container>
+            <b-container id="puzzle-scroll">
+                <div id="puzzle-card-wrapper">
+                    <PuzzleCard
+                        v-for="(puzzle, index) in puzzles"
+                        :key="index"
+                        :imgSrc="getPuzImg(puzzle.id)"
+                        :title="puzzle.title"
+                        :folder="puzzle.folder"
+                        :reward="puzzle.reward"
+                        :username="puzzle.username"
+                        :user_pfp="puzzle.userpicture"
+                        :num_cleared="puzzle['num-cleared']"
+                        :id="puzzle.id"
+                        @play="play(puzzle.id)"
+                    />
+                </div>
+            </b-container>
+        </div>
         <b-row id="puzzle-view-footer">
             <b-col>
                 <b-row style="justify-content:flex-start;align-items:flex-start;">
@@ -56,7 +59,8 @@
                     </router-link>
                 </b-row>
             </b-col>
-            <b-col class="col-8" style="padding:0" v-if="lab_access">
+            <!-- TODO: replace with correct logic -->
+            <b-col class="col-8" style="padding:0" v-if="true">
                 <NavBar/>
             </b-col>
             
@@ -152,7 +156,8 @@ export default Vue.extend({
             var scroll = document.getElementById('puzzle-scroll');
             var wrapper = document.getElementById('puzzle-card-wrapper');
             if (scroll !== null && wrapper !== null) {
-                scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
+                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
+                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
         },
         getPuzImg(nid: string | null){
@@ -166,6 +171,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+.left-block > div {
+    margin: 0;
+    padding-top: 3vmin;
+}
 .loading-spinner {
     position: absolute;
     margin: auto;
@@ -183,10 +192,11 @@ export default Vue.extend({
 }
 
 #puzzle-view-header {
-    height: 30vh;
+    height: 18vh;
     padding-top: 3vmin;
     margin-left: 3vmin;
     margin-right: 3vmin;
+    margin-bottom: 3vmin;
 }
 
 #puzzle-scroll {
@@ -196,9 +206,8 @@ export default Vue.extend({
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     padding-right: calc(50% - 22.5vmin);
-    padding-left: calc(50% - 22.5vmin);
+    padding-left: 25px;
     margin-top: 0vmin;
-    margin-bottom: 6vmin;
     max-width: unset;
 }
 
@@ -210,6 +219,8 @@ export default Vue.extend({
 #puzzle-view-footer {
     margin-left: 3vmin;
     margin-right: 3vmin;
+    height: 18vh;
+    align-items: center;
 }
 
 #puzzle-card-wrapper {

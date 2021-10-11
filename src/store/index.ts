@@ -77,6 +77,7 @@ export interface LabData {
   }
 
   export interface PuzzleData {
+    id: string;
     nid: string;
     title: string;
     secstruct: string;

@@ -9,6 +9,7 @@ import ResetPassword from '../views/ResetPassword.vue';
 import LabExplore from '../views/LabExplore.vue';
 import LabView from '../views/LabView.vue';
 import PuzzleExplore from '../views/PuzzleExplore.vue';
+import PuzzleView from '../views/PuzzleView.vue';
 
 Vue.use(VueRouter);
 
@@ -44,6 +45,10 @@ const routes: Array<RouteConfig> = [
     {
         path: '/puzzles',
         component: PuzzleExplore,
+    },
+    {
+        path: '/puzzles/:id',
+        component: PuzzleView,
     },
     {
         path: '/labs',
