@@ -57,16 +57,13 @@
                                 hide-header
                                 hide-footer
                                 >
-                                    <div class="readmore-scroll">
-                                        <b-img  class="img-fluid" :src="getBanner" />
-                                        <div style="padding: 2vmin;">
-                                                <div class="modal-title">
-                                                        {{lab_title}}
-                                                </div>
-                                                <div  style="font-size: 2vmin;" v-html="full_description">
-                                                </div>
-                                        </div>
+                                <div class="modal_container">
+                                    <div class="modal_header">
+                                    <b-img  class="img-fluid" :src="getBanner" />
+                                    <div class="modal_title">{{lab_title}}</div>
                                     </div>
+                                    <div class="modal_body" v-html="full_description"/>
+                                </div>
                                 </b-modal>
                             <b-button size="lg" v-b-modal.lab-updates-modal v-if="labUpdates">Lab Updates</b-button>
                             <b-modal
@@ -107,6 +104,7 @@
                     :imgSrc="getPuzImg(puzzle.nid)"
                     @play="play(puzzle.nid)"
                     @review="review(puzzle.nid)"
+                    @details="details(puzzle.nid)"
                 />
                 <div class="finish-card" style="left:100%;" v-if="lab_access">
                     <div>
@@ -216,6 +214,9 @@ export default Vue.extend({
             return this.getStatusColor(this.$store.state.current_lab.lab.exp_phase);
         },
         getBanner(): string{
+            if (this.$store.state.current_lab.lab.banner_image?.startsWith('http')) {
+                return this.$store.state.current_lab.lab.banner_image
+            }
             return process.env.APP_SERVER_URL + this.$store.state.current_lab.lab.banner_image;
         },
         labUpdates(): string{
@@ -235,6 +236,12 @@ export default Vue.extend({
         },
         play(id: number) {
             this.$router.replace(`/game/${id}`);
+        },
+        review(id: number) {
+            this.$router.replace(`/game/browse/${id}`);
+        },
+        details(id: number) {
+            this.$router.replace(`/puzzles/${id}`);
         },
         openChat() {
             if (this.chat) {
@@ -297,6 +304,56 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+.modal_container {
+  height: calc(100vh - 3.5rem);
+  padding-bottom: 2rem;
+  overflow: hidden;
+  border: 2px solid #043468;
+  border-radius: 0.3rem;
+}
+
+.modal_header {
+  position: relative;
+  height: 40%;
+  width: 100%;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.modal_title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 0.75rem 1.25rem;
+}
+
+.modal_body {
+    font-size: 2vmin;
+  overflow-y: scroll;
+  height: 60%;
+  padding: 0rem 1rem;
+  margin-right: 1rem;
+  margin-top: 0.75rem;
+  
+  &::-webkit-scrollbar {
+      width: 3px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background-color: #052651;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #2F94D1;
+    }
+}
+
 .loading-spinner {
     position: absolute;
     margin: auto;

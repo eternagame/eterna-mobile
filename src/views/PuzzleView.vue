@@ -57,13 +57,13 @@
                             <h3>{{ puzzle.folder }}</h3>
                         </li>
                         <li>
-                            <h3>{{ puzzle.reward }}</h3>
+                            <h3>{{ puzzle.reward || 0 }}</h3>
                         </li>
                         <li>
-                            <h3>{{ puzzle["num-cleared"] }}</h3>
+                            <h3>{{ puzzle["num-cleared"] || 0 }}</h3>
                         </li>
                         <li>
-                            <h3>21 May 2021</h3>
+                            <h3>{{ puzzle.created }}</h3>
                         </li>
                     </ul>
                 </div>
@@ -119,7 +119,7 @@ export default Vue.extend({
             return this.$store.state.username;
         },
         puzzle(): PuzzleData {
-            return this.$store.state.puzzle_list.find((puzzle: PuzzleData) => puzzle.id === this.$router.currentRoute.params.id); 
+            return this.$store.state.current_puzzle;
         },
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
@@ -156,7 +156,7 @@ export default Vue.extend({
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_PUZZLES);
+            await this.$store.dispatch(Action.GET_PUZZLE, {id: this.$route.params.id});
         } catch (error) {
             console.log(error);
         }

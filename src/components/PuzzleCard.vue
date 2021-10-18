@@ -49,7 +49,7 @@
         </b-row>
         </div>
         <div v-if="playable" class="button-position">
-            <b-button variant="primary"  class="puzzle-card-button" @click="$emit('play')">PLAY</b-button>
+            <b-button variant="primary"  class="puzzle-card-button" @click="$emit('play')">Play Now</b-button>
         </div>
     </b-button>
 </template>
@@ -158,8 +158,7 @@ export default Vue.component('puzzle-card', {
 }
 .puzzle-card-title {
     white-space: normal;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
+    margin: 0 30px;
     font-size: 2vmin;
     height: 6vmin;
     text-overflow: ellipsis;

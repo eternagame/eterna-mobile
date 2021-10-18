@@ -151,6 +151,9 @@ export default Vue.extend({
             }
         },
         getAbsUrl(relUrl: string) {
+            if (relUrl.startsWith('http')) {
+                return relUrl
+            }
             return process.env.APP_SERVER_URL + relUrl;
         },
         getStatus(exp_phase: string){

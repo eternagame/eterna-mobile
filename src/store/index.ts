@@ -105,6 +105,7 @@ export const Action = {
     GET_LABS: 'GET_LABS',
     GET_LAB: 'GET_LAB',
     GET_PUZZLES: 'GET_PUZZLES',
+    GET_PUZZLE: 'GET_PUZZLE',
 };
 
 const MAX_LEVEL = 8;
@@ -121,6 +122,7 @@ export default function createStore(http: AxiosInstance) {
             labdata: <LabData[]>[],
             current_lab: <LabData[]>[],
             puzzle_list: <PuzzleData[]> [], 
+            current_puzzle: <PuzzleData | null>null,
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -159,7 +161,10 @@ export default function createStore(http: AxiosInstance) {
             },
             setPuzzles(state, puzzles){
                 state.puzzle_list = puzzles;
-            }
+            },
+            setCurrentPuzzle(state, puzzle){
+                state.current_puzzle = puzzle;
+            },
         },
         actions: {
             async [Action.AUTHENTICATE]({ commit }) {
@@ -250,6 +255,16 @@ export default function createStore(http: AxiosInstance) {
                 try{
                     const { puzzles } = (await http.get(`/get/?type=puzzles&sort=date`)).data.data;
                     commit('setPuzzles', puzzles);
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_PUZZLE]({ commit }, { id }: { id: string}){
+                commit('pushIsLoading');
+                try{
+                    const { puzzle } = (await http.get(`/get/?type=puzzle&nid=${id}&script=-1`)).data.data;
+                    commit('setCurrentPuzzle', puzzle);
                 }
                 finally{
                     commit('popIsLoading');

@@ -1,5 +1,5 @@
 <template>
-    <b-button class="puzzle-card-container" >
+    <b-button class="puzzle-card-container lab-puzzle-card-container" @click="$emit('details')" >
         
         <div class="puzzle-card-title">
             {{title}}
@@ -57,7 +57,8 @@
         </b-row>
         </div>
         <div class="button-position">
-            <b-button variant="primary"  class="puzzle-card-button" @click="$emit('play')">PLAY</b-button>
+            <b-button variant="primary" class="puzzle-card-button" @click="$emit('play')">Design</b-button>
+            <b-button variant="secondary" class="puzzle-card-button" @click="$emit('review')">Review</b-button>
         </div>
     </b-button>
 </template>
@@ -102,6 +103,18 @@ export default Vue.component('puzzle-card', {
 </script>
 
 <style lang="scss" scoped>
+.lab-puzzle-card-container {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        background: url('../assets/info.svg') no-repeat center / cover;
+        width: 16.87px;
+        height: 16.87px;
+    }
+}
 .puzzle-card-container {
     width: 45vmin;
     height: 45vmin;
@@ -134,14 +147,18 @@ export default Vue.component('puzzle-card', {
 }
 
 .puzzle-card-button {
-    margin-top: 3%;
-    padding: 0;
-    width: 49%;
-    height: 6.5vmin;
+    width: 45%;
     border-radius: 1vmin;
     text-align: center;
-    font-size: 1.5vw;
-    line-height: 5.2vmin;
+    font-size: 2vmin;
+
+    &.btn {
+        padding: 0.275rem 0.75rem;
+
+        @media screen and (min-height: 400px) {
+            padding: 0.375rem 0.75rem;
+        }
+    }       
 }
 
 .puzzle-card-text {
@@ -152,8 +169,7 @@ export default Vue.component('puzzle-card', {
 }
 .puzzle-card-title {
     white-space: normal;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
+    margin: 0 30px;
     font-size: 2vmin;
     height: 6vmin;
     text-overflow: ellipsis;
@@ -188,7 +204,11 @@ export default Vue.component('puzzle-card', {
 }
 .button-position{
     position: relative;
-    top: -9vmin;
+    bottom: 36px;
+
+    @media screen and (min-height: 400px) {
+        bottom: 40px;
+    }
 }
 .status-text{
     margin-top: .08vmin;
