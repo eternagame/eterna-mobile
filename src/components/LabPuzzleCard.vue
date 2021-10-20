@@ -58,7 +58,7 @@
         </div>
         <div class="button-position">
             <b-button variant="primary" class="puzzle-card-button" @click="$emit('play')">Design</b-button>
-            <b-button variant="secondary" class="puzzle-card-button" @click="$emit('review')">Review</b-button>
+            <b-button :href="reviewLink" @click.stop variant="secondary" class="puzzle-card-button">Review</b-button>
         </div>
     </b-button>
 </template>
@@ -98,6 +98,9 @@ export default Vue.component('puzzle-card', {
         rightNum:{
             type: Number,
         },
+        reviewLink: {
+            type: String
+        }
     },
 })
 </script>

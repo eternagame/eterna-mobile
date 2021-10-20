@@ -102,6 +102,7 @@
                     :maxSubmissions="puzzle.player_max_submissions"
                     :rightNum="puzzle.submitted"
                     :imgSrc="getPuzImg(puzzle.nid)"
+                    :reviewLink="getReviewLink(puzzle.nid)"
                     @play="play(puzzle.nid)"
                     @review="review(puzzle.nid)"
                     @details="details(puzzle.nid)"
@@ -299,6 +300,9 @@ export default Vue.extend({
                 // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
         },
+        getReviewLink(puzzleId: string) {
+            return `${process.env.APP_SERVER_URL}/game/browse/${puzzleId}/`
+        }
     }
 });
 </script>
