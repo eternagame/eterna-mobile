@@ -45,7 +45,7 @@
                             {{ status }}
                         </div>
                     </div>
-                    <div  style="font-size: 2vmin; margin-bottom: 2vmin;" v-html="descriptiontoShow">
+                    <div  style="font-size: 0.75rem; font-style: normal; font-weight: 400; margin-bottom: 2vmin;" v-html="descriptiontoShow">
                     </div>
                             <div >
                             <b-button size="lg" v-b-modal.full-description-modal>Read More</b-button>
@@ -384,6 +384,14 @@ export default Vue.extend({
 .lab-description{
     position: relative;
     top: -1vmin;
+
+    p {
+        strong {
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 700;
+        }
+    }
 }
 .puzzle-card-image {
     width: 100%;

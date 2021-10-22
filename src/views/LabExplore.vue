@@ -366,16 +366,20 @@ export default Vue.extend({
     flex: 0 0 30vw;
     padding-right: 25px;
     padding-left: 50px;
+
+    .status-text {
+        font-size: 0.6875rem;
+        font-style: normal;
+        font-weight: 700;
+    }
         > div {
         margin: auto;
 
         p {
             font-size: 1.5vw;
-            // font-size: 3vmin;
         }
         strong {
             font-size: larger;
-            // font-size: 4.5vmin;
         }
     }
 
