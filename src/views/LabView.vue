@@ -162,7 +162,6 @@ export default Vue.extend({
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_LAB, {id: this.$route.params.id});
-            console.log("THIS LAB", this.$store.state.current_lab.lab);
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);

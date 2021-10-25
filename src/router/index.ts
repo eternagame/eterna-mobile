@@ -10,6 +10,7 @@ import LabExplore from '../views/LabExplore.vue';
 import LabView from '../views/LabView.vue';
 import PuzzleExplore from '../views/PuzzleExplore.vue';
 import PuzzleView from '../views/PuzzleView.vue';
+import BrowseView from '../views/BrowseView.vue';
 
 Vue.use(VueRouter);
 
@@ -57,6 +58,10 @@ const routes: Array<RouteConfig> = [
     {
         path: '/labs/:id',
         component: LabView,
+    },
+    {
+        path: '/game/browse/:id',
+        component: BrowseView,
     }
     
 ];

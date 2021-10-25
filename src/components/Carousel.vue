@@ -113,8 +113,6 @@
             const puzzleBody = await res[2].json();
             this.labSlideData = carouselBody.data.labs[0];
             this.bestPuzzle = puzzleBody.data;
-            console.log("CAROUSEL", carouselBody);
-            console.log("PUZZLE", puzzleBody);
             this.isLoading = false;
         } catch(e) {
             console.log('ERROR', e);
