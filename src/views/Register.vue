@@ -14,7 +14,7 @@
                 </b-alert>
             </div>
             <b-form-checkbox size="md" v-model="acceptedTerms" :disabled="isLoading" required>
-                I accept the <a href="https://eternagame.org/about/terms" target="_blank">Terms &amp; Conditions</a>
+                I accept the <a href="https://eternagame.org/terms" target="_blank">Terms of Use and Privacy Policy</a>
             </b-form-checkbox>
             <b-form-group>
                 <b-btn variant="primary" :disabled="isLoading" size="md" @click="doRegister">Create Account</b-btn>
