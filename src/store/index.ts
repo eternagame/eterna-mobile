@@ -120,7 +120,7 @@ export default function createStore(http: AxiosInstance) {
             username: <string | null>null,
             roadmap: <Achievement[]>[],
             labdata: <LabData[]>[],
-            current_lab: <LabData[]>[],
+            current_lab: <LabData | null>null,
             puzzle_list: <PuzzleData[]> [], 
             current_puzzle: <PuzzleData | null>null,
         },

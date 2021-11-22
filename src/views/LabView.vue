@@ -88,9 +88,9 @@
                             </div>
                     </div>
             </div>
-            </div>
+        </div>
 
- <b-container id="puzzle-scroll">
+        <b-container id="puzzle-scroll">
             <div id="puzzle-card-wrapper">
                 <LabPuzzleCard
                     v-for="(puzzle, index) in puzzles"
@@ -107,12 +107,6 @@
                     @review="review(puzzle.nid)"
                     @details="details(puzzle.nid)"
                 />
-                <div class="finish-card" style="left:100%;" v-if="lab_access">
-                    <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong></p>
-                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
-                    </div>
-                </div>
             </div>
         </b-container>
         </div>
@@ -179,7 +173,7 @@ export default Vue.extend({
     },
     computed: {
         isLoading(): boolean {
-            return this.$store.getters.isLoading;
+            return this.$store.getters.isLoading || !this.$store.state.current_lab;
         },
         loggedIn(): boolean {
             return this.$store.state.loggedIn;
@@ -203,9 +197,9 @@ export default Vue.extend({
         full_description(): string{
             return this.$store.state.current_lab.lab.body;
         },
-        puzzles(): PuzzleData {
+        puzzles(): PuzzleData[] {
             // loop through all rounds? or get first index
-            return this.$store.state.current_lab.lab.puzzles[0].puzzles;
+            return this.$store.state.current_lab.lab.puzzles?.[0]?.puzzles || [];
         },
         status(): string{
             return this.getStatus(this.$store.state.current_lab.lab.exp_phase);

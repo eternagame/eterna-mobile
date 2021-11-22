@@ -47,15 +47,9 @@
                     :title="lab.title"
                     :status_color="getStatusColor(lab.exp_phase)"
                     :status="getStatus(lab.exp_phase)"
-                    :imgSrc="getAbsUrl(lab.banner_image)"
+                    :imgSrc="lab.banner_image ? getAbsUrl(lab.banner_image) : defaultLabImage"
                     @link_lab="link_lab(lab.nid)"
                 />
-                <div class="finish-card" style="left:100%;" v-if="lab_access">
-                    <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong></p>
-                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
-                    </div>
-                </div>
             </div>
         </b-container>
         </div>
@@ -88,6 +82,7 @@ import NavBar from '../components/NavBar.vue'
 import LabCard from '../components/LabCard.vue'
 import { Action, Achievement, LabData } from '../store';
 import ChatManager from '../ChatManager';
+import DefaultLabHero from '../assets/slides/hero-lab-default.png';
 
 export default Vue.extend({
     data() {
@@ -95,6 +90,7 @@ export default Vue.extend({
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg').default,
+            defaultLabImage: DefaultLabHero
         };
     },
     async mounted() {

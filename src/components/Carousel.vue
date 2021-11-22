@@ -38,7 +38,7 @@
                         >
                     </template>
                 </b-carousel-slide>
-                <b-carousel-slide>
+                <b-carousel-slide v-if="bestPuzzle">
                     <template #default>
                         <div class="slide-content">
                             <div class="info">
@@ -88,18 +88,18 @@
 </template>
 
 <script>
-    import FlipCountdown from 'vue2-flip-countdown';
-    import Progress from './Progress.vue';
+import FlipCountdown from 'vue2-flip-countdown';
+import Progress from './Progress.vue';
 
-  export default {
+export default {
     data() {
-      return {
-        slide: 0,
-        bestPuzzle: null,
-        labSlideData: null,
-        sliding: null,
-        isLoading: true
-      }
+        return {
+            slide: 0,
+            bestPuzzle: null,
+            labSlideData: null,
+            sliding: null,
+            isLoading: true
+        }
     },
     mounted: async function() {
         try {
@@ -118,18 +118,18 @@
         }
     },
     methods: {
-      onSlideStart(slide) {
-        this.sliding = true
-      },
-      onSlideEnd(slide) {
-        this.sliding = false
-      },
-       prev() {
-        this.$refs.myCarousel.prev()
-      },
-      next() {
-        this.$refs.myCarousel.next()
-      }
+        onSlideStart(slide) {
+            this.sliding = true
+        },
+        onSlideEnd(slide) {
+            this.sliding = false
+        },
+        prev() {
+            this.$refs.myCarousel.prev()
+        },
+        next() {
+            this.$refs.myCarousel.next()
+        }
     },
     computed: {
         closesDateFormat() {
@@ -151,7 +151,7 @@
         FlipCountdown,
         Progress
     }
-  }
+}
 </script>
 
 <style lang="scss">
