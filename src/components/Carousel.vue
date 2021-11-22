@@ -98,12 +98,11 @@
         bestPuzzle: null,
         labSlideData: null,
         sliding: null,
-        isLoading: false
+        isLoading: true
       }
     },
     mounted: async function() {
         try {
-            this.isLoading = true;
             const res = await Promise.all([
                 fetch(`${process.env.APP_SERVER_URL}/get/?type=side_project_roadmap`),
                 fetch(`${process.env.APP_SERVER_URL}/get/?type=carousel`),
