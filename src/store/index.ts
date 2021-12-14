@@ -123,7 +123,7 @@ export default function createStore(http: AxiosInstance) {
                     const { data } = (await http.get('/get/?type=side_project_roadmap')).data;
                     if (data.achievement_roadmap) {
                         const roadmap = <Achievement[]>data.achievement_roadmap;
-                        commit('setRoadmap', roadmap.filter(a => a.key === 'ten_tools' && a.level <= MAX_LEVEL).sort((a, b) => a.level - b.level));
+                        commit('setRoadmap', roadmap.filter(a => a.key === 'eterna_essentials' && a.level <= MAX_LEVEL).sort((a, b) => a.level - b.level));
                     }
                 } finally {
                     commit('popIsLoading');
