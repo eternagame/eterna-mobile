@@ -15,7 +15,7 @@
   },
   "author": "Eternagame",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "boostrap": "^2.0.0",
     "bootstrap-vue": "^2.21.2",
     "cordova-android": "^10.1.1",
