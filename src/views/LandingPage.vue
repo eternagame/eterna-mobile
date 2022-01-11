@@ -30,7 +30,7 @@
             <div class="left-block ">
                 <div>
                     <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
-                    <p>Complete these puzzles to build your virtual lab and unlock access to advanced lab challenges.</p>
+                    <p>Complete these puzzles to unlock access to advanced lab challenges.</p>
                     <p><strong>Ready?</strong></p>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 />
                 <div class="finish-card" style="left:100%;" v-if="lab_access">
                     <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the OpenVaccine<br/>Challenge!</strong></p>
+                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the lab!</strong></p>
                         <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
                     </div>
                 </div>

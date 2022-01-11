@@ -2,7 +2,7 @@
 <widget
   id="org.eternagame.mob"
   ios-CFBundleIdentifier="eternagame"
-  version="1.2.7"
+  version="1.3.1"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Eterna</name>
     <author email="support@eternagame.org" href="https://eternagame.org">
@@ -32,7 +32,7 @@
         <icon density="mdpi" background="res/eterna_icon_48_bg.png" foreground="res/eterna_icon_48_fg.png" src="res/eterna_icon_48.png" />
         <icon density="xxhdpi" background="res/eterna_icon_144_bg.png" foreground="res/eterna_icon_144_fg.png" src="res/eterna_icon_144.png" />
         <allow-intent href="market:*" />
-        <preference name="android-targetSdkVersion" value="29" />
+        <preference name="android-targetSdkVersion" value="30" />
     </platform>
     <platform name="ios">
         <icon src="res/eterna_icon_1024.png" width="1024" height="1024" />
