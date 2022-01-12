@@ -46,7 +46,7 @@
                         :user_pfp="puzzle.userpicture"
                         :num_cleared="puzzle['num-cleared']"
                         :id="puzzle.id"
-                        @play="play(puzzle.id)"
+                        @play="play(parseInt(puzzle.id, 10))"
                     />
                 </div>
             </b-container>
@@ -76,10 +76,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
 import NavBar from '../components/NavBar.vue'
-import { Action, Achievement, PuzzleData } from '../store';
+import { Action, Achievement, PuzzleData, PuzzleItem } from '../store';
 import ChatManager from '../ChatManager';
 
 
@@ -119,7 +118,7 @@ export default Vue.extend({
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
         },
-        puzzles(): PuzzleData[]{
+        puzzles(): PuzzleItem[]{
             return this.$store.state.puzzle_list; 
         },
         lab_access(): boolean {
@@ -328,6 +327,7 @@ export default Vue.extend({
         right: 5px;
     }
 }
+
 .hidden{
   opacity: 0;
 }

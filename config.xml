@@ -46,4 +46,9 @@
         <preference name="allowFileAccessFromFileURLs" value="true" />
         <preference name="allowUniversalAccessFromFileURLs" value="true" />
     </platform>
+    <platform name="browser">
+        <preference name="SplashScreen" value="/res/Default@2x~universal~anyany.png" />
+        <preference name="SplashScreenWidth" value="2732" />
+        <preference name="SplashScreenHeight" value="2732" />
+    </platform>
 </widget>

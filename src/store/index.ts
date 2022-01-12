@@ -17,6 +17,80 @@ export interface Achievement {
     to_next: number;
     current_puzzle: number;
 }
+
+export interface PuzzleItem {
+    id: string;
+    title: string;
+    created: string;
+    username: string;
+    userpicture: string;
+    "made-by-player": string;
+    "num-cleared": string;
+    type: string;
+    "solved-by-bot": string | null;
+    reward: string;
+    "made-for-lab": string | null;
+    folder: string;
+    number_of_states: number;
+    'next-puzzle': string;
+}
+
+export interface Puzzle {
+    title: string;
+    created: string;
+    rna_type: string;
+    uid: string;
+    username: string;
+    userpicture: string;
+    reward: string;
+    secstruct: string;
+    "num-cleared": string;
+    "num-submissions": string;
+    id: string;
+    body: string;
+    folder: string | null;
+    "made-by-player": string;
+    type: string;
+    // Format of this stuff is a bit wacky, a bunch of it is specific to EternaJS, and we don't use it
+    // anyways, so let's just leave them excluded unless we really need them for some reason.
+    // "locks": null,
+    // "beginseq": null,
+    // "usetails": null,
+    // "constraints": "SHAPE,0",
+    // "scoring": null,
+    // "tutorial-level": "123",
+    // "ui-specs": ""
+    // "rscript": null,
+    // "solved-by-bot": null,
+    // "object": null,
+    // "annotations": null,
+    // "last-round": null,
+    // "next-puzzle": null,
+    // "objective": null,
+    // "check_hairpin": null,
+    // "cloud_round": null,
+    // "hint": null,
+    // "coauthor": "[\"Eterna100\"]",
+    // "max-votes": 0
+}
+
+export interface LabCardData {
+    affiliation: string;
+    cover_image?: string;
+    created: string;
+    exp_phase: string;
+    exp_phase_end?: any;
+    exp_phase_start?: any;
+    founder: string;
+    founder_uid: string;
+    is_active: boolean;
+    nid: string;
+    num_slots: string;
+    puzzles: string;
+    selection?: any;
+    title: string;
+    banner_image: string;
+}  
 export interface LabViewData {
     lab: LabData;
     comments: CommentItem[]; // do we need comments ?
@@ -25,15 +99,15 @@ export interface LabViewData {
     sum_picks: null;
     my_votes: number;
     uid: string;
-  }
-  export interface CommentItem {
+}
+export interface CommentItem {
     cid: string;
     name: string;
     uid: string;
     comment: string;
     created: string;
     picture: string;
-  }
+}
 export interface LabData {
     nid: string;
     created: string; // timestamp; change to int?
@@ -119,10 +193,10 @@ export default function createStore(http: AxiosInstance) {
             uid: <number | null>null,
             username: <string | null>null,
             roadmap: <Achievement[]>[],
-            labdata: <LabData[]>[],
+            labdata: <LabCardData[]>[],
             current_lab: <LabData | null>null,
-            puzzle_list: <PuzzleData[]> [], 
-            current_puzzle: <PuzzleData | null>null,
+            puzzle_list: <PuzzleItem[]> [], 
+            current_puzzle: <Puzzle | null>null,
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -232,7 +306,7 @@ export default function createStore(http: AxiosInstance) {
                 commit('pushIsLoading');
                 try{
                     const { data } = (await http.get('/get/?type=get_labs_for_lab_cards')).data;
-                    const labdata = <LabData[]>data.labs;
+                    const labdata = <LabCardData[]>data.labs;
                     commit('setLabs', labdata);
                 }
                 finally{

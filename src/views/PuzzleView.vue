@@ -29,8 +29,8 @@
         <div class="content">
             <div class="left-block left-aligned">
                 <div>
-                    <p><strong>Norway Rat rRNA Extra Locked Bases Version</strong></p>
-                    <p>Restored the 3 locked bases forgot last time plus added four more.</p>
+                    <p><strong>{{puzzle.title}}</strong></p>
+                    <p>{{puzzle.body}}</p>
                 </div>
             </div>
             <b-container id="puzzle-scroll">
@@ -44,7 +44,7 @@
                         :user_pfp="puzzle.userpicture"
                         :num_cleared="puzzle['num-cleared']"
                         :playable="true"
-                        @play="play(puzzle.id)"
+                        @play="play(parseInt(puzzle.id, 10))"
                     />
                 </div>
                 <div id="puzzle-info-wrapper">
@@ -93,14 +93,16 @@
 import Vue from 'vue';
 import PuzzleCard from '../components/PuzzleCard.vue';
 import NavBar from '../components/NavBar.vue'
-import { Achievement, Action, PuzzleData } from '../store';
+import { Achievement, Action, Puzzle } from '../store';
+import ChatManager from '../ChatManager';
 
 
 export default Vue.extend({
     data() {
         return {
             logoSourcePng: require('../assets/logo_eterna.svg').default,
-            playablePuzzleIndex: 0
+            playablePuzzleIndex: 0,
+            chat: <ChatManager | null>null
         };
     },
     components: {
@@ -118,7 +120,7 @@ export default Vue.extend({
         username(): string {
             return this.$store.state.username;
         },
-        puzzle(): PuzzleData {
+        puzzle(): Puzzle {
             return this.$store.state.current_puzzle;
         },
         roadmap(): Achievement[] {
@@ -153,10 +155,16 @@ export default Vue.extend({
         play(id: number) {
             this.$router.replace(`/game/${id}`);
         },
+        openChat() {
+            if (this.chat) {
+                this.chat.toggleVisibility();
+            }
+        },
     },
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_PUZZLE, {id: this.$route.params.id});
+            this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
             console.log(error);
         }

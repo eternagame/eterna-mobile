@@ -98,9 +98,6 @@ export default Vue.component('puzzle-card', {
         rightNum:{
             type: Number,
         },
-        reviewLink: {
-            type: String
-        }
     },
 })
 </script>

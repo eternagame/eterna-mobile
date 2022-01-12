@@ -88,10 +88,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import FlipCountdown from 'vue2-flip-countdown';
 import Progress from './Progress.vue';
 
-export default {
+export default Vue.extend({
     data() {
         return {
             slide: 0,
@@ -151,7 +152,7 @@ export default {
         FlipCountdown,
         Progress
     }
-}
+});
 </script>
 
 <style lang="scss">
