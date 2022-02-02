@@ -65,17 +65,17 @@ export default Vue.component('lab-card', {
     border-color: #21508C;
 }
 .lab-title{
-    white-space: normal;
+    white-space: nowrap;
     margin-left: 2vmin;
     margin-right: 2vmin;
-    font-size: 2vmin;
+    font-size: 3vmin;
     height: 6vmin;
     margin-bottom: 3vmin;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 .lab-card-footer {
-    margin-top: 1vmin;
+    margin-top: 3vmin;
     margin-bottom: -1.5vmin;
     font-weight: bold;
     line-height: 1vmin;
@@ -85,8 +85,9 @@ export default Vue.component('lab-card', {
   }
 
 .status-text{
-    margin-top: .08vmin;
+    // margin-top: .08vmin;
     margin-left: 1vmin;
+    font-size: 2.5vmin;
 }
 .status-indicator {
     width: 1.5vmin;

@@ -6,7 +6,7 @@
         </div>
         <b-img  class="puzzle-card-image" :src="imgSrc" />
         <div class="row-position">
-        <b-row class="mb-2">
+        <b-row class="">
             <b-col cols="6" >
                 <div class="left-col" v-if="numSynths">
                     <slot name="left-icon">
@@ -150,14 +150,14 @@ export default Vue.component('puzzle-card', {
     width: 45%;
     border-radius: 1vmin;
     text-align: center;
-    font-size: 2vmin;
+    font-size: 2.5vmin;
 
     &.btn {
-        padding: 0.275rem 0.75rem;
+        padding: 0.2rem 0.5rem;
 
-        @media screen and (min-height: 400px) {
-            padding: 0.375rem 0.75rem;
-        }
+        // @media screen and (min-height: 400px) {
+        //     padding: 0.375rem 0.75rem;
+        // }
     }       
 }
 
@@ -168,9 +168,9 @@ export default Vue.component('puzzle-card', {
     line-height: 0;
 }
 .puzzle-card-title {
-    white-space: normal;
-    margin: 0 30px;
-    font-size: 2vmin;
+    white-space: nowrap;
+    margin: 0 12px;
+    font-size: 3vmin;
     height: 6vmin;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -260,7 +260,7 @@ export default Vue.component('puzzle-card', {
 }
 .left-col,
   .right-col {
-    font-size: 2vmin;
+    font-size: 2.5vmin;
     display: flex;
     align-items: center;
     font-weight: bold;

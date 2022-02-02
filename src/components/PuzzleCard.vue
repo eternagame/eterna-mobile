@@ -6,7 +6,7 @@
         </div>
         <b-img  class="puzzle-card-image" :src="imgSrc" />
         <div v-if="!playable" class="row-position">
-        <b-row class="mb-2">
+        <b-row class="">
             <b-col cols="6" >
                 <div class="left-col">
                     <slot name="left-icon">
@@ -157,9 +157,9 @@ export default Vue.component('puzzle-card', {
     line-height: 0;
 }
 .puzzle-card-title {
-    white-space: normal;
-    margin: 0 30px;
-    font-size: 2vmin;
+    white-space: nowrap;
+    margin: 0 12px;
+    font-size: 3vmin;
     height: 6vmin;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -255,7 +255,7 @@ export default Vue.component('puzzle-card', {
 }
 .left-col,
   .right-col {
-    font-size: 2vmin;
+    font-size: 2.5vmin;
     display: flex;
     align-items: center;
     font-weight: bold;

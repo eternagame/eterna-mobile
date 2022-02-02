@@ -173,6 +173,8 @@ export default Vue.extend({
 .left-block > div {
     margin: 0;
     padding-top: 3vmin;
+    overflow-y: scroll;
+    font-size: 1.8vw;
 }
 .loading-spinner {
     position: absolute;

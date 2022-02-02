@@ -372,7 +372,7 @@ export default Vue.extend({
         margin: auto;
 
         p {
-            font-size: 1.5vw;
+            font-size: 1.8vw;
         }
         strong {
             font-size: larger;

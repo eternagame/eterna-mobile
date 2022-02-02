@@ -327,7 +327,7 @@ export default Vue.extend({
 }
 
 .modal_body {
-    font-size: 2vmin;
+  font-size: 3vmin;
   overflow-y: scroll;
   height: 60%;
   padding: 0rem 1rem;
@@ -393,7 +393,7 @@ export default Vue.extend({
     width: 1.5vmin;
     height: 1.5vmin;
     border-radius: 50%;
-    margin-top: .8vmin;
+    // margin-top: .8vmin;
     margin-right: 2vmin;
   }
   .status-text{
