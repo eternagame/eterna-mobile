@@ -57,6 +57,7 @@ export default Vue.extend({
 
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* prevent default behavior of highlighting the entire app on tap + hold */;
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     user-select: none;
