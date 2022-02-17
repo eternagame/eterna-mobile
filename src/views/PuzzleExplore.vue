@@ -37,24 +37,25 @@
                 <FilterBar 
                 v-bind:filters="availableFilters"
                 @filter="fetchNewPuzzles"/>
-            <b-container id="puzzle-scroll">
-                <div id="puzzle-card-wrapper">
-                    <PuzzleCard
-                        v-for="(puzzle, index) in puzzles"
-                        :key="index"
-                        :imgSrc="getPuzImg(puzzle.id)"
-                        :title="puzzle.title"
-                        :folder="puzzle.folder"
-                        :reward="puzzle.reward"
-                        :username="puzzle.username"
-                        :user_pfp="puzzle.userpicture"
-                        :num_cleared="puzzle['num-cleared']"
-                        :id="puzzle.id"
-                        @play="play(parseInt(puzzle.id, 10))"
-                    />
-                </div>
-            </b-container>
-        </div>
+                <b-container id="puzzle-scroll">
+                    <div id="puzzle-card-wrapper">
+                        <PuzzleCard
+                            v-for="(puzzle, index) in puzzles"
+                            :key="index"
+                            :imgSrc="getPuzImg(puzzle.id)"
+                            :title="puzzle.title"
+                            :folder="puzzle.folder"
+                            :reward="puzzle.reward"
+                            :username="puzzle.username"
+                            :user_pfp="puzzle.userpicture"
+                            :num_cleared="puzzle['num-cleared']"
+                            :id="puzzle.id"
+                            @play="play(parseInt(puzzle.id, 10))"
+                        />
+                        <button class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Fetch more Puzzles</button>
+                    </div>
+                </b-container>
+            </div>
         </div>
         <b-row id="puzzle-view-footer">
             <b-col>
@@ -84,7 +85,6 @@ import Vue from 'vue'
 import FilterBar from '../components/FilterBar.vue';
 import NavBar from '../components/NavBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
-import NavBar from '../components/NavBar.vue'
 import { Action, Achievement, PuzzleData, PuzzleItem } from '../store';
 import ChatManager from '../ChatManager';
 
@@ -154,6 +154,10 @@ export default Vue.extend({
             const clearedFilter = filters.includes("notcleared") ? `notcleared=true` : `notcleared=false`;
             const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}`;
             await this.$store.dispatch(Action.GET_PUZZLES, requestString);
+        },
+        async fetchMorePuzzles() {
+            this.numberOfPuzzles += 9;
+            await this.fetchNewPuzzles();
         },
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
@@ -367,5 +371,22 @@ export default Vue.extend({
 
 .hidden{
   opacity: 0;
+}
+
+.fetch-puzzles-btn {
+    width: 45vmin;
+    height: 45vmin;
+    display: inline-block;
+    border-radius: 2vmin;
+    background-color: #008cff15;
+    scroll-snap-align: center;
+    text-align: center;
+    margin-top: 3vmin;
+    margin-bottom: 3vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
+    padding: 0;
+    border: solid;
+    border-color: #21508C;
 }
 </style>
