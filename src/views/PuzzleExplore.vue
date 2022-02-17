@@ -52,7 +52,7 @@
                             :id="puzzle.id"
                             @play="play(parseInt(puzzle.id, 10))"
                         />
-                        <button class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Fetch more Puzzles</button>
+                        <button class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
                     </div>
                 </b-container>
             </div>
