@@ -42,7 +42,7 @@
             <div class="right-block">
                 <FilterBar 
                     v-bind:filters="availableFilters"
-                    @filter="fetchNewPuzzles"/>
+                    @filter="fetchNewLabs"/>
                 <b-container id="puzzle-scroll">
                     <div id="puzzle-card-wrapper">
                         <LabCard
@@ -54,6 +54,7 @@
                             :imgSrc="lab.banner_image ? getAbsUrl(lab.banner_image) : defaultLabImage"
                             @link_lab="link_lab(lab.nid)"
                         />
+                        <button class="btn btn-secondary fetch-labs-btn" @click="fetchMoreLabs">Load More Labs</button>
                     </div>
                 </b-container>
             </div>
@@ -97,6 +98,7 @@ export default Vue.extend({
                 { value: 'active', text: 'Active' },
                 { value: 'inactive', text: 'Inactive' }
             ],
+            numberOfLabs: 9,
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg').default,
@@ -105,7 +107,7 @@ export default Vue.extend({
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_LABS, 'type=get_labs_for_lab_cards&size=18');
+            await this.fetchNewLabs();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
@@ -141,14 +143,18 @@ export default Vue.extend({
         
     },
     methods: {
-        async fetchNewPuzzles() {
+        async fetchNewLabs() {
             const query = this.$route.query;
             const filters = `${query.filters}`.split(',');
-            const requestString = `type=get_labs_for_lab_cards&size=18`
+            const requestString = `type=get_labs_for_lab_cards&size=${this.numberOfLabs}`
             let labFilter = requestString;
             if (filters.includes("active") && !filters.includes("inactive")) {labFilter = `${requestString}&filters=active`}
             if (filters.includes("inactive") && !filters.includes("active")) {labFilter = `${requestString}&filters=inactive`}
             await this.$store.dispatch(Action.GET_LABS, labFilter);
+        },
+        async fetchMoreLabs() {
+            this.numberOfLabs += 9;
+            await this.fetchNewLabs();
         },
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
@@ -406,5 +412,22 @@ export default Vue.extend({
     }
 
     border-right: 2px solid #2F94D1;
+}
+
+.fetch-labs-btn {
+    width: 45vmin;
+    height: 45vmin;
+    display: inline-block;
+    border-radius: 2vmin;
+    background-color: #008cff15;
+    scroll-snap-align: center;
+    text-align: center;
+    margin-top: 3vmin;
+    margin-bottom: 3vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
+    padding: 0;
+    border: solid;
+    border-color: #21508C;
 }
 </style>
