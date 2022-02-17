@@ -302,15 +302,15 @@ export default function createStore(http: AxiosInstance) {
                     commit('popIsLoading');
                 }
             },
-            async [Action.GET_LABS]({ commit }){
-                commit('pushIsLoading');
+            async [Action.GET_LABS]({ commit }, queryString: string){
+                // commit('pushIsLoading');
                 try{
-                    const { data } = (await http.get('/get/?type=get_labs_for_lab_cards')).data;
+                    const { data } = (await http.get(`/get/?${queryString}`)).data;
                     const labdata = <LabCardData[]>data.labs;
                     commit('setLabs', labdata);
                 }
                 finally{
-                    commit('popIsLoading');
+                    // commit('popIsLoading');
                 }
             },
             async [Action.GET_LAB]({ commit }, { id }: { id: string}){

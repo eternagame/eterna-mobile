@@ -4,11 +4,11 @@
     </div>
     <div v-else class="puzzle-view-container">
         <b-row id="puzzle-view-header">
-            <b-col>
-                <b-img :src="logoSourcePng" />
+            <b-col class="d-flex mh-100">
+                <b-img class="mh-100" :src="logoSourcePng" />
             </b-col>
             <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">Labs</b>
+                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;"></b>
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
@@ -39,19 +39,24 @@
                         </p>
                     </div>
             </div>
-            <b-container id="puzzle-scroll">
-            <div id="puzzle-card-wrapper">
-                <LabCard
-                    v-for="(lab, index) in labs"
-                    :key="index"
-                    :title="lab.title"
-                    :status_color="getStatusColor(lab.exp_phase)"
-                    :status="getStatus(lab.exp_phase)"
-                    :imgSrc="lab.banner_image ? getAbsUrl(lab.banner_image) : defaultLabImage"
-                    @link_lab="link_lab(lab.nid)"
-                />
+            <div class="right-block">
+                <FilterBar 
+                    v-bind:filters="availableFilters"
+                    @filter="fetchNewPuzzles"/>
+                <b-container id="puzzle-scroll">
+                    <div id="puzzle-card-wrapper">
+                        <LabCard
+                            v-for="(lab, index) in labs"
+                            :key="index"
+                            :title="lab.title"
+                            :status_color="getStatusColor(lab.exp_phase)"
+                            :status="getStatus(lab.exp_phase)"
+                            :imgSrc="lab.banner_image ? getAbsUrl(lab.banner_image) : defaultLabImage"
+                            @link_lab="link_lab(lab.nid)"
+                        />
+                    </div>
+                </b-container>
             </div>
-        </b-container>
         </div>
         <b-row id="puzzle-view-footer">
             <b-col>
@@ -76,10 +81,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import FilterBar from '../components/FilterBar.vue';
+import LabCard from '../components/LabCard.vue'
+import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/TutorialCard.vue'
-import NavBar from '../components/NavBar.vue'
-import LabCard from '../components/LabCard.vue'
 import { Action, Achievement, LabData } from '../store';
 import ChatManager from '../ChatManager';
 import DefaultLabHero from '../assets/slides/hero-lab-default.png';
@@ -87,6 +93,10 @@ import DefaultLabHero from '../assets/slides/hero-lab-default.png';
 export default Vue.extend({
     data() {
         return {
+            availableFilters: [
+                { value: 'active', text: 'Active' },
+                { value: 'inactive', text: 'Inactive' }
+            ],
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg').default,
@@ -95,7 +105,7 @@ export default Vue.extend({
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_LABS);
+            await this.$store.dispatch(Action.GET_LABS, 'type=get_labs_for_lab_cards&size=18');
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
@@ -103,10 +113,11 @@ export default Vue.extend({
         }
     },
     components: {
-        ProgressBar,
-        PuzzleCard,
+        FilterBar,
         LabCard,
-        NavBar
+        NavBar,
+        ProgressBar,
+        PuzzleCard
     },
     computed: {
         isLoading(): boolean {
@@ -130,6 +141,15 @@ export default Vue.extend({
         
     },
     methods: {
+        async fetchNewPuzzles() {
+            const query = this.$route.query;
+            const filters = `${query.filters}`.split(',');
+            const requestString = `type=get_labs_for_lab_cards&size=18`
+            let labFilter = requestString;
+            if (filters.includes("active") && !filters.includes("inactive")) {labFilter = `${requestString}&filters=active`}
+            if (filters.includes("inactive") && !filters.includes("active")) {labFilter = `${requestString}&filters=inactive`}
+            await this.$store.dispatch(Action.GET_LABS, labFilter);
+        },
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
             await this.$store.dispatch(Action.GET_LABS);
@@ -202,6 +222,12 @@ export default Vue.extend({
     top: 0;
     right: 0;
     bottom: 0;
+}
+
+.right-block {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
 }
 
 .puzzle-view-container {
