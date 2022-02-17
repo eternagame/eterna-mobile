@@ -324,14 +324,14 @@ export default function createStore(http: AxiosInstance) {
                     commit('popIsLoading');
                 }
             },
-            async [Action.GET_PUZZLES]({ commit }){
-                commit('pushIsLoading');
+            async [Action.GET_PUZZLES]({ commit }, queryString: string){
+                // commit('pushIsLoading');
                 try{
-                    const { puzzles } = (await http.get(`/get/?type=puzzles&sort=date`)).data.data;
+                    const { puzzles } = (await http.get(`/get/?${queryString}`)).data.data;
                     commit('setPuzzles', puzzles);
                 }
                 finally{
-                    commit('popIsLoading');
+                    // commit('popIsLoading');
                 }
             },
             async [Action.GET_PUZZLE]({ commit }, { id }: { id: string}){

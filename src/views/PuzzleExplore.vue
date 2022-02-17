@@ -33,6 +33,10 @@
                     <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
                 </div>
             </div>
+            <div class="right-block">
+                <FilterBar 
+                v-bind:filters="availableFilters"
+                @filter="fetchNewPuzzles"/>
             <b-container id="puzzle-scroll">
                 <div id="puzzle-card-wrapper">
                     <PuzzleCard
@@ -50,6 +54,7 @@
                     />
                 </div>
             </b-container>
+        </div>
         </div>
         <b-row id="puzzle-view-footer">
             <b-col>
@@ -76,6 +81,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import FilterBar from '../components/FilterBar.vue';
+import NavBar from '../components/NavBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
 import NavBar from '../components/NavBar.vue'
 import { Action, Achievement, PuzzleData, PuzzleItem } from '../store';
@@ -85,6 +92,13 @@ import ChatManager from '../ChatManager';
 export default Vue.extend({
     data() {
         return {
+            availableFilters: [
+                { value: 'challenge', text: 'Challenges' },
+                { value: 'player', text: 'Player' },
+                { value: 'single', text: 'Single State' },
+                { value: 'notcleared', text: 'Uncleared' },
+            ],
+            numberOfPuzzles: 9,
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg').default,
@@ -93,7 +107,7 @@ export default Vue.extend({
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            await this.$store.dispatch(Action.GET_PUZZLES);
+            await this.fetchNewPuzzles();
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
@@ -102,6 +116,7 @@ export default Vue.extend({
         }
     },
     components: {
+        FilterBar,
         NavBar,
         PuzzleCard,
     },
@@ -127,6 +142,19 @@ export default Vue.extend({
         
     },
     methods: {
+        async fetchNewPuzzles() {
+            // Get filters from query, then convert to API's expected parameters
+            // Will change with Eterna-Next API
+            const query = this.$route.query;
+            const filters = `${query.filters}`.split(',');
+            let puzzleFilter = `puzzle_type=AllChallengesPuzzle`;
+            if (filters.includes("challenge") && !filters.includes("player"))    {puzzleFilter = `puzzle_type=Challenge`}
+            if (filters.includes("player")    && !filters.includes("challenge")) {puzzleFilter = `puzzle_type=PlayerPuzzle`}
+            const singleFilter = filters.includes("single") ? `single=checked` : `single=false`;
+            const clearedFilter = filters.includes("notcleared") ? `notcleared=true` : `notcleared=false`;
+            const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}`;
+            await this.$store.dispatch(Action.GET_PUZZLES, requestString);
+        },
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
@@ -176,6 +204,13 @@ export default Vue.extend({
     overflow-y: scroll;
     font-size: 1.8vw;
 }
+
+.right-block {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+}
+
 .loading-spinner {
     position: absolute;
     margin: auto;
