@@ -87,6 +87,7 @@
                 </b-row>
             </b-col>
         </b-row> 
+        <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 <script lang="ts">
