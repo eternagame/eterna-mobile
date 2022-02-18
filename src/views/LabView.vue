@@ -113,7 +113,7 @@
         <b-row id="puzzle-view-footer">
             <b-col>
                 <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <router-link to="about">
+                    <router-link to="/about">
                         <div class="puzzle-view-about-button" />
                     </router-link>
                 </b-row>
