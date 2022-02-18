@@ -12,20 +12,20 @@
                 ref="myCarousel"
                 v-if="!isLoading"
             >
-                <b-carousel-slide>
+                <b-carousel-slide v-for="lab in labSlideData" :key="lab.nid">
                     <template #default>
                         <div class="slide-content">
                             <div class="info">
-                                <h2>{{ labSlideData.carousel_title }}</h2>
-                                <h3>{{ labSlideData.carousel_subtitle || labSlideData.title }}</h3>
-                                <router-link :to="`labs/${labSlideData.nid}`" class="route-btn">Enter Lab</router-link>
+                                <h2>{{ lab.carousel_title }}</h2>
+                                <h3>{{ lab.carousel_subtitle || lab.title }}</h3>
+                                <router-link :to="`labs/${lab.nid}`" class="route-btn">Enter Lab</router-link>
                             </div>
                             <div class="status">
-                                <div class="mr-4" v-if="labSlideData.project_closes && labSlideData.project_closes * 1000 > Date.now()">
-                                    <p class="text"><strong>{{ labSlideData.designs_to_be_synthesized }} designs</strong> will be selected for <br /> synthesis in:</p>
-                                    <flip-countdown :deadline="closesDateFormat"></flip-countdown>
+                                <div class="mr-4" v-if="lab.project_closes && lab.project_closes * 1000 > Date.now()">
+                                    <p class="text"><strong>{{ lab.designs_to_be_synthesized }} designs</strong> will be selected for <br /> synthesis in:</p>
+                                    <flip-countdown :deadline="closesDateFormat(lab)"></flip-countdown>
                                 </div>
-                                <Progress :maxLimit="labSlideData.max_designs" :currentProgress="labSlideData.total_submitted_solutions_of_user" />
+                                <Progress :maxLimit="lab.max_designs" :currentProgress="lab.total_submitted_solutions_of_user" />
                             </div>
                         </div>
                     </template>
@@ -33,45 +33,27 @@
                         <div class="img-overlay"></div>
                         <img
                             class="d-block img-fluid w-100"
-                            src="https://eternagame.org/sites/default/files/hero-ribosome.jpg"
+                            :src="lab.banner_image"
                             alt="image slot"
                         >
                     </template>
                 </b-carousel-slide>
-                <b-carousel-slide v-if="bestPuzzle">
+                <b-carousel-slide v-if="potw">
                     <template #default>
                         <div class="slide-content">
                             <div class="info">
                                 <h2>Puzzle of the Week</h2>
-                                <h3>{{ bestPuzzle.title }}</h3>
-                                <router-link :to="`puzzles/${bestPuzzle.nid}`" class="route-btn">Solve Now</router-link>
+                                <h3>{{ potw.title }}</h3>
+                                <router-link :to="`puzzles/${potw.nid}`" class="route-btn">Solve Now</router-link>
                             </div>
                         </div>
                     </template>
                     <template #img>
                         <div class="img-overlay"></div>
-                        <img class="image" :src="`https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${bestPuzzle.nid}.svg`" :alt="bestPuzzle.title">
+                        <img class="image" :src="`https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${potw.nid}.svg`" :alt="potw.title">
                         <img
                             class="d-block img-fluid w-100"
                             src="https://eternagame.org/img/hero-sunburst.d2ff31bb.png"
-                            alt="image slot"
-                        >
-                    </template>
-                </b-carousel-slide>
-                <b-carousel-slide>
-                    <template #default>
-                        <div class="slide-content">
-                            <div class="info w-75">
-                                <h2>10 Years of Discovery</h2>
-                                <p>This year we celebrate 10 years of citizen science through Eterna. Together we've synthesized thousands of player-designed molecules, published over 20 academic papers tackling fundamental RNA design questions, and pioneered the open development of RNA medicines. Over the course of the year we'll be rolling out new features and game mechanics as we continue to build the future of Eterna.</p>
-                            </div>
-                        </div>
-                    </template>
-                    <template #img>
-                        <div class="img-overlay"></div>
-                        <img
-                            class="d-block img-fluid w-100"
-                            src="https://eternagame.org/img/hero-10year.b8ba6993.png"
                             alt="image slot"
                         >
                     </template>
@@ -87,55 +69,47 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import FlipCountdown from 'vue2-flip-countdown';
 import Progress from './Progress.vue';
+import {LabData, PuzzleData} from '../store'
 
 export default Vue.extend({
     data() {
         return {
             slide: 0,
-            bestPuzzle: null,
-            labSlideData: null,
-            sliding: null,
+            potw: <PuzzleData | null>null,
+            labSlideData: <LabData[]>[],
             isLoading: true
         }
     },
-    mounted: async function() {
+    async mounted() {
         try {
             const res = await Promise.all([
-                fetch(`${process.env.APP_SERVER_URL}/get/?type=side_project_roadmap`),
-                fetch(`${process.env.APP_SERVER_URL}/get/?type=carousel`),
-                fetch(`${process.env.APP_SERVER_URL}/get/?type=puzzle_of_the_week`),
+                this.$http.get(`${process.env.APP_SERVER_URL}/get/?type=side_project_roadmap`),
+                this.$http.get(`${process.env.APP_SERVER_URL}/get/?type=carousel`),
+                this.$http.get(`${process.env.APP_SERVER_URL}/get/?type=puzzle_of_the_week`),
             ]);
-            const carouselBody = await res[1].json();
-            const puzzleBody = await res[2].json();
-            this.labSlideData = carouselBody.data.labs[0];
-            this.bestPuzzle = puzzleBody.data;
+            const carouselBody = await res[1].data;
+            const puzzleBody = await res[2].data;
+            this.labSlideData = carouselBody.data.labs;
+            this.potw = puzzleBody.data;
             this.isLoading = false;
         } catch(e) {
             console.log('ERROR', e);
         }
     },
     methods: {
-        onSlideStart(slide) {
-            this.sliding = true
-        },
-        onSlideEnd(slide) {
-            this.sliding = false
-        },
         prev() {
-            this.$refs.myCarousel.prev()
+            (this.$refs.myCarousel as Element & {prev(): void}).prev()
         },
         next() {
-            this.$refs.myCarousel.next()
-        }
-    },
-    computed: {
-        closesDateFormat() {
-            if (!this.labSlideData.project_closes) return null;
-            const d = new Date(this.labSlideData.project_closes * 1000);
+            (this.$refs.myCarousel as Element & {next(): void}).next()
+        },
+        closesDateFormat(lab: LabData) {
+            if (!lab.project_closes) return null;
+            const d = new Date(lab.project_closes * 1000);
             console.log(`${[d.getFullYear(), d.getMonth() + 1 > 9 ? d.getMonth() + 1 : `0${d.getMonth() + 1}`, d.getDate() > 9 ? d.getDate() : `0${d.getDate()}`].join('-')} ${[
                 d.getHours() > 9 ? d.getHours() : `0${d.getHours()}`,
                 d.getMinutes() > 9 ? d.getMinutes() : `0${d.getMinutes()}`,

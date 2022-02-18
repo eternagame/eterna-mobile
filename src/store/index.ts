@@ -142,6 +142,10 @@ export interface LabData {
     total_submitted_solutions_of_user: number;
     max_designs: number;
     challenge: string;
+    carousel_title: string;
+    carousel_subtitle: string;
+    project_closes: number;
+    designs_to_be_synthesized: number;
   }
 
   export interface RoundData {
