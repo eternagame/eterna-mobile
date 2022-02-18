@@ -146,7 +146,7 @@ export default Vue.extend({
         return {
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
-            logoSourcePng: require('../assets/logo_eterna.svg').default,
+            logoSourcePng: require('../assets/logo_eterna.svg'),
         };
     },
     async mounted() {

@@ -34,9 +34,9 @@ import Vue from 'vue';
 export default Vue.extend({
     data() {
         return {
-            logoSourcePng: require('../assets/logo_eterna.svg').default,
-            videoSourceMp4: require('../assets/WhatIsEterna_360p.mp4').default,
-            videoPosterSourcePng: require('../assets/WhatIsEterna_snapshot.png').default,
+            logoSourcePng: require('../assets/logo_eterna.svg'),
+            videoSourceMp4: require('../assets/WhatIsEterna_360p.mp4'),
+            videoPosterSourcePng: require('../assets/WhatIsEterna_snapshot.png'),
         };
     },
     methods: {

@@ -98,7 +98,7 @@ import ChatManager from '../ChatManager';
 export default Vue.extend({
     data() {
         return {
-            logoSourcePng: require('../assets/logo_eterna.svg').default,
+            logoSourcePng: require('../assets/logo_eterna.svg'),
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null
         };

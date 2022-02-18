@@ -41,8 +41,8 @@ export default Vue.extend({
 <style lang="scss">
 @import 'src/styles/global.scss';
 
-@import '~bootstrap/scss/bootstrap.scss';
-@import '~bootstrap-vue/src/index.scss';
+@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap-vue/src/index.scss';
 
 @import 'src/styles/_bootswatch.scss';
 @import 'src/styles/custom.scss';
