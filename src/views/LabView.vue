@@ -4,11 +4,8 @@
     </div>
     <div v-else class="puzzle-view-container">
         <b-row id="puzzle-view-header">
-            <b-col>
-                <b-img :src="logoSourcePng" />
-            </b-col>
-            <b-col style="display:flex;">
-                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;">You did it!</b>
+            <b-col class="d-flex mh-100">
+                <b-img class="mh-100" :src="logoSourcePng" />
             </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">

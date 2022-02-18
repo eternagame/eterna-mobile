@@ -7,9 +7,6 @@
             <b-col class="d-flex mh-100">
                 <b-img class="mh-100" :src="logoSourcePng" />
             </b-col>
-            <b-col style="display:flex;">
-                <b v-if="true" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;"></b>
-            </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
                     <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button" menu-class="puzzle-view-button" no-caret>
