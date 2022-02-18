@@ -7,6 +7,9 @@
             <b-col class="d-flex mh-100">
                 <b-img class="mh-100" :src="logoSourcePng" />
             </b-col>
+            <b-col style="display:flex;">
+                <b v-if="lab_access" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;"></b>
+            </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
                     <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button" menu-class="puzzle-view-button" no-caret>
@@ -26,54 +29,43 @@
         <div class="content">
             <div class="left-block left-aligned">
                 <div>
-                    <p><strong>{{puzzle.title}}</strong></p>
-                    <p>{{puzzle.body}}</p>
+                    <p><strong>Puzzles</strong></p>
+                    <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
                 </div>
             </div>
-            <b-container id="puzzle-scroll">
-                <div id="puzzle-card-wrapper">
-                    <PuzzleCard
-                        :imgSrc="getPuzImg(puzzle.id)"
-                        :title="puzzle.title"
-                        :folder="puzzle.folder"
-                        :reward="puzzle.reward"
-                        :username="puzzle.username"
-                        :user_pfp="puzzle.userpicture"
-                        :num_cleared="puzzle['num-cleared']"
-                        :playable="true"
-                        @play="play(parseInt(puzzle.id, 10))"
-                    />
-                </div>
-                <div id="puzzle-info-wrapper">
-                    <h3 id="puzzle-info-title">puzzle info</h3>
-                    <ul id="puzzle-info-body">
-                        <li>
-                            <h3>{{ puzzle.username }}</h3>
-                        </li>
-                        <li>
-                            <h3>{{ puzzle.folder }}</h3>
-                        </li>
-                        <li>
-                            <h3>{{ puzzle.reward || 0 }}</h3>
-                        </li>
-                        <li>
-                            <h3>{{ puzzle["num-cleared"] || 0 }}</h3>
-                        </li>
-                        <li>
-                            <h3>{{ puzzle.created }}</h3>
-                        </li>
-                    </ul>
-                </div>
-            </b-container>
+            <div class="right-block">
+                <FilterBar 
+                v-bind:filters="availableFilters"
+                @filter="fetchNewPuzzles"/>
+                <b-container id="puzzle-scroll">
+                    <div id="puzzle-card-wrapper">
+                        <PuzzleCard
+                            v-for="(puzzle, index) in puzzles"
+                            :key="index"
+                            :imgSrc="getPuzImg(puzzle.id)"
+                            :title="puzzle.title"
+                            :folder="puzzle.folder"
+                            :reward="puzzle.reward"
+                            :username="puzzle.username"
+                            :user_pfp="puzzle.userpicture"
+                            :num_cleared="puzzle['num-cleared']"
+                            :id="puzzle.id"
+                            @play="play(parseInt(puzzle.id, 10))"
+                        />
+                        <button class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
+                    </div>
+                </b-container>
+            </div>
         </div>
         <b-row id="puzzle-view-footer">
             <b-col>
                 <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <router-link to="/about">
+                    <router-link to="about">
                         <div class="puzzle-view-about-button" />
                     </router-link>
                 </b-row>
             </b-col>
+            <!-- TODO: replace with correct logic -->
             <b-col class="col-8" style="padding:0" v-if="true">
                 <NavBar/>
             </b-col>
@@ -83,54 +75,109 @@
                     <div @click="openChat" class="puzzle-view-chat-button" />
                 </b-row>
             </b-col>
-        </b-row> 
+        </b-row>
         <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
+
 <script lang="ts">
-import Vue from 'vue';
-import PuzzleCard from '../components/PuzzleCard.vue';
+import Vue from 'vue'
+import FilterBar from '../components/FilterBar.vue';
 import NavBar from '../components/NavBar.vue'
-import { Achievement, Action, Puzzle } from '../store';
+import PuzzleCard from '../components/PuzzleCard.vue'
+import { Action, Achievement, PuzzleData, PuzzleItem } from '../store';
 import ChatManager from '../ChatManager';
 
 
 export default Vue.extend({
     data() {
         return {
-            logoSourcePng: require('../assets/logo_eterna.svg').default,
+            availableFilters: [
+                { value: 'challenge', text: 'Challenges' },
+                { value: 'player', text: 'Player' },
+                { value: 'single', text: 'Single State' },
+                { value: 'notcleared', text: 'Uncleared' },
+            ],
+            numberOfPuzzles: 9,
             playablePuzzleIndex: 0,
-            chat: <ChatManager | null>null
+            chat: <ChatManager | null>null,
+            logoSourcePng: require('../assets/logo_eterna.svg').default,
         };
     },
+    async mounted() {
+        try {
+            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            await this.fetchNewPuzzles();
+            this.setProgressFromRoadmap();
+            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
+            this.chat = new ChatManager('chat-container', this.$store);
+        } catch (error) {
+            console.error(error);
+        }
+    },
     components: {
+        FilterBar,
+        NavBar,
         PuzzleCard,
-        NavBar
     },
     computed: {
         isLoading(): boolean {
             return this.$store.getters.isLoading;
         },
-        
         loggedIn(): boolean {
             return this.$store.state.loggedIn;
         },
         username(): string {
             return this.$store.state.username;
         },
-        puzzle(): Puzzle {
-            return this.$store.state.current_puzzle;
-        },
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
+        },
+        puzzles(): PuzzleItem[]{
+            return this.$store.state.puzzle_list; 
+        },
+        lab_access(): boolean {
+            return this.playablePuzzleIndex >= this.roadmap.length;
         }
+        
     },
     methods: {
+        async fetchNewPuzzles() {
+            // Get filters from query, then convert to API's expected parameters
+            // Will change with Eterna-Next API
+            const query = this.$route.query;
+            const filters = `${query.filters}`.split(',');
+            let puzzleFilter = `puzzle_type=AllChallengesPuzzle`;
+            if (filters.includes("challenge") && !filters.includes("player"))    {puzzleFilter = `puzzle_type=Challenge`}
+            if (filters.includes("player")    && !filters.includes("challenge")) {puzzleFilter = `puzzle_type=PlayerPuzzle`}
+            const singleFilter = filters.includes("single") ? `single=checked` : `single=false`;
+            const clearedFilter = filters.includes("notcleared") ? `notcleared=true` : `notcleared=false`;
+            const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}`;
+            await this.$store.dispatch(Action.GET_PUZZLES, requestString);
+        },
+        async fetchMorePuzzles() {
+            this.numberOfPuzzles += 9;
+            await this.fetchNewPuzzles();
+        },
         async logout() {
             await this.$store.dispatch(Action.LOGOUT);
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
+        },
+        clamp(x: number, min: number, max: number) {
+            return Math.max(min, Math.min(max, x));
+        },
+        play(id: number) {
+            this.$router.replace(`game/${id}`);
+        },
+        openChat() {
+            if (this.chat) {
+                this.chat.toggleVisibility();
+            }
+        },
+        getAbsUrl(relUrl: string) {
+            return process.env.APP_SERVER_URL + relUrl;
         },
         setProgressFromRoadmap() {
             this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
@@ -150,27 +197,24 @@ export default Vue.extend({
             `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
             );
         },
-        play(id: number) {
-            this.$router.replace(`/game/${id}`);
-        },
-        openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
-        },
-    },
-    async mounted() {
-        try {
-            await this.$store.dispatch(Action.GET_PUZZLE, {id: this.$route.params.id});
-            this.chat = new ChatManager('chat-container', this.$store);
-        } catch (error) {
-            console.log(error);
-        }
     }
-})
+});
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.left-block > div {
+    margin: 0;
+    padding-top: 3vmin;
+    overflow-y: scroll;
+    font-size: 1.8vw;
+}
+
+.right-block {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+}
+
 .loading-spinner {
     position: absolute;
     margin: auto;
@@ -192,6 +236,7 @@ export default Vue.extend({
     padding-top: 3vmin;
     margin-left: 3vmin;
     margin-right: 3vmin;
+    margin-bottom: 3vmin;
 }
 
 #puzzle-scroll {
@@ -204,7 +249,6 @@ export default Vue.extend({
     padding-left: 25px;
     margin-top: 0vmin;
     max-width: unset;
-    display: flex; 
 }
 
 #puzzle-scroll::-webkit-scrollbar {
@@ -223,77 +267,6 @@ export default Vue.extend({
     position: relative;
     display: inline-block;
     scroll-margin: 0 50vw;
-    margin-right: 45px;
-}
-
-#puzzle-info-wrapper {
-    margin: 3vmin 0;
-}
-#puzzle-info-title {
-    color: #2f94d1;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 3vmin;
-    display: flex;
-    align-items: center;
-
-    &::before {
-        content: ""; 
-        display: inline-block; 
-        width: 2.8vmin;
-        height: 2.8vmin;
-        margin-right: 10px;
-        background: url('../assets/info.svg') no-repeat center / cover;  
-    }
-}
-#puzzle-info-body {
-    padding: 0;
-    margin: 0;
-    margin-top: 3vmin;
-    list-style: none;
-    li {
-        padding: inherit;
-        margin: inherit;
-        display: flex;
-        margin-top: 1vmin;
-        &:first-child {
-            margin-top: 0;
-        }
-        h3 {
-            font-size: 2.5vmin;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            &::before {
-                content: "";
-                display: inline-block;
-                width: 2.5vmin;
-                height: 2.5vmin;
-                background: url("../assets/profile.svg") no-repeat center / contain;
-                margin-right: 10px;    
-            }
-        }
-    }
-    li:nth-child(2) {
-        h3::before {
-            background-image: url("../assets/chemical_bond.svg");
-        }
-    }
-    li:nth-child(3) {
-        h3::before {
-            background-image: url("../assets/dollar.svg");
-        }
-    }
-    li:nth-child(4) {
-        h3::before {
-            background-image: url("../assets/people.svg");
-        }
-    }
-    li:nth-child(5) {
-        h3::before {
-            background-image: url("../assets/calendar.svg");
-        }
-    }
 }
 
 .puzzle-card-container {
@@ -395,7 +368,25 @@ export default Vue.extend({
         right: 5px;
     }
 }
+
 .hidden{
   opacity: 0;
+}
+
+.fetch-puzzles-btn {
+    width: 45vmin;
+    height: 45vmin;
+    display: inline-block;
+    border-radius: 2vmin;
+    background-color: #008cff15;
+    scroll-snap-align: center;
+    text-align: center;
+    margin-top: 3vmin;
+    margin-bottom: 3vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
+    padding: 0;
+    border: solid;
+    border-color: #21508C;
 }
 </style>

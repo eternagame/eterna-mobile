@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { BootstrapVue } from 'bootstrap-vue';
+import { BootstrapVue }  from 'bootstrap-vue';
 import Vue from 'vue';
 import VueAxios from 'vue-axios';
 import App from './App.vue';

@@ -55,7 +55,7 @@ export default Vue.extend({
                         this.showError = true;
                     }
                     if (this.loggedIn) {
-                        this.$router.replace('puzzles');
+                        this.$router.replace('home');
                     }
                 } catch (error) {
                     console.error('Error:', error);
@@ -65,7 +65,7 @@ export default Vue.extend({
             }
         },
         back() {
-            this.$router.replace('puzzles');
+            this.$router.replace('home');
         },
     },
 });

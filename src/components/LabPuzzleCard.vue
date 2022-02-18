@@ -1,29 +1,37 @@
 <template>
-    <b-button class="puzzle-card-container" @click="goToPuzzle">
+    <b-button class="puzzle-card-container lab-puzzle-card-container" @click="$emit('details')" >
         
-        <div v-if="!playable" class="puzzle-card-title">
+        <div class="puzzle-card-title">
             {{title}}
         </div>
         <b-img  class="puzzle-card-image" :src="imgSrc" />
-        <div v-if="!playable" class="row-position">
+        <div class="row-position">
         <b-row class="">
             <b-col cols="6" >
-                <div class="left-col">
+                <div class="left-col" v-if="numSynths">
                     <slot name="left-icon">
-                        <div class="chemical-bond">
+                        <div class="test-tube">
                         </div>
                         
                     </slot>
-                {{folder}}
+                {{numSynths}}
+                </div>
+                <div class="left-col">
+                    <slot name="left-icon">
+                        <div class="test-tube">
+                        </div>
+                        
+                    </slot>
+                {{leftNum}}
                 </div>
             </b-col>
             <b-col cols="6" >
-                <div class="right-col" style="margin-right: 2vmin;">
+                <div class="right-col" style="margin-right: 2vmin;" v-if="rightNum">
                     <slot name="right-icon">
-                        <div class="dollar">
+                        <div class="noun-globe">
                         </div>
                     </slot>
-                {{reward}}
+                {{rightNum}}
                 </div>
             </b-col>
         </b-row>
@@ -31,25 +39,26 @@
             <b-col cols="6" >
                 <div class="left-col" >
                     <slot name="left-icon">
-                        <div class="user">
+                        <div class="noun-puzzle">
                         </div>
                     </slot>
-                {{username}}
+                {{mySolutions}}
                 </div>
             </b-col>
             <b-col cols="6" >
                 <div class="right-col" style="margin-right: 2vmin;">
                     <slot name="right-icon">
-                        <div class="people" >
+                        <div class="noun-max">
                         </div>
                     </slot>
-                {{num_cleared}}
+                {{maxSubmissions}}
                 </div>
             </b-col>
         </b-row>
         </div>
-        <div v-if="playable" class="button-position">
-            <b-button variant="primary"  class="puzzle-card-button" @click="$emit('play')">Play Now</b-button>
+        <div class="button-position">
+            <b-button variant="primary" class="puzzle-card-button" @click="$emit('play')">Design</b-button>
+            <b-button variant="secondary" class="puzzle-card-button" @click="$emit('review')">Review</b-button>
         </div>
     </b-button>
 </template>
@@ -59,10 +68,6 @@ import Vue from 'vue'
 
 export default Vue.component('puzzle-card', {
     props: {
-        playable: {
-            type: Boolean,
-            default: false
-        },
         highlight: {
             type: Boolean,
             default: false
@@ -75,39 +80,41 @@ export default Vue.component('puzzle-card', {
             type: String,
             default: 'https://cdn.zeplin.io/5e88563a3843011f95808b2f/assets/5ED5D090-6F62-4DF8-8C54-CC71306A4B16.png'
         },
-        id: {
-            type: String
-        },
         title:{
             type: String
         },
-        folder:{
-            type: String
+        leftNum:{
+            type: Number
         },
-        reward:{
-            type: String
+        numSynths:{
+            type: Number,
         },
-        username:{
-            type: String
+        mySolutions:{
+            type: Number,
         },
-        user_pfp:{
-            type: String
+        maxSubmissions:{
+            type: Number,
         },
-        num_cleared:{
-            type: String
+        rightNum:{
+            type: Number,
         },
     },
-    methods: {
-        goToPuzzle: function() {
-            if(!this.playable) {
-                this.$router.push(`${this.$router.currentRoute.fullPath}/${this.id}`);
-            }
-        }
-    }
 })
 </script>
 
 <style lang="scss" scoped>
+.lab-puzzle-card-container {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        background: url('../assets/info.svg') no-repeat center / cover;
+        width: 16.87px;
+        height: 16.87px;
+    }
+}
 .puzzle-card-container {
     width: 45vmin;
     height: 45vmin;
@@ -131,23 +138,27 @@ export default Vue.component('puzzle-card', {
 
 
 .puzzle-card-image {
-    width: 50%;
+    width: 80%;
     height: 30vmin;
     object-fit: contain;
     position: relative;
-    top: 0;
+    top: -2vmin;
     z-index: -1;
 }
 
 .puzzle-card-button {
-    margin-top: 3%;
-    padding: 0;
-    width: 49%;
-    height: 6.5vmin;
+    width: 45%;
     border-radius: 1vmin;
     text-align: center;
-    font-size: 1.5vw;
-    line-height: 5.2vmin;
+    font-size: 2.5vmin;
+
+    &.btn {
+        padding: 0.2rem 0.5rem;
+
+        // @media screen and (min-height: 400px) {
+        //     padding: 0.375rem 0.75rem;
+        // }
+    }       
 }
 
 .puzzle-card-text {
@@ -189,18 +200,22 @@ export default Vue.component('puzzle-card', {
 }
 .row-position{
     position: relative;
-    top: -1vmin;
+    top: -9vmin;
 }
 .button-position{
     position: relative;
-    top: -1vmin;
+    bottom: 36px;
+
+    @media screen and (min-height: 400px) {
+        bottom: 40px;
+    }
 }
 .status-text{
     margin-top: .08vmin;
     margin-left: 1vmin;
 }
-.chemical-bond{
-    background: url('../assets/chemical_bond.svg');
+.test-tube{
+    background: url('../assets/test-tube.svg');
     background-repeat: no-repeat;
     background-size: cover;
     border: none;
@@ -209,8 +224,8 @@ export default Vue.component('puzzle-card', {
     margin-left: 2vmin;
     margin-right: 2vmin;
 }
-.dollar{
-    background: url('../assets/dollar.svg');
+.noun-globe{
+    background: url('../assets/noun_globe.svg');
     background-repeat: no-repeat;
     background-size: cover;
     border: none;
@@ -229,18 +244,8 @@ export default Vue.component('puzzle-card', {
     margin-left: 2vmin;
     margin-right: 2vmin;
 }
-.people{
-    background: url('../assets/people.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    height: 2vmin;
-    width: 2vmin;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
-}
-.user{
-    background: url('../assets/user.svg');
+.noun-max{
+    background: url('../assets/noun_max.svg');
     background-repeat: no-repeat;
     background-size: cover;
     border: none;

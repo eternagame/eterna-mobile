@@ -18,11 +18,168 @@ export interface Achievement {
     current_puzzle: number;
 }
 
+export interface PuzzleItem {
+    id: string;
+    title: string;
+    created: string;
+    username: string;
+    userpicture: string;
+    "made-by-player": string;
+    "num-cleared": string;
+    type: string;
+    "solved-by-bot": string | null;
+    reward: string;
+    "made-for-lab": string | null;
+    folder: string;
+    number_of_states: number;
+    'next-puzzle': string;
+}
+
+export interface Puzzle {
+    title: string;
+    created: string;
+    rna_type: string;
+    uid: string;
+    username: string;
+    userpicture: string;
+    reward: string;
+    secstruct: string;
+    "num-cleared": string;
+    "num-submissions": string;
+    id: string;
+    body: string;
+    folder: string | null;
+    "made-by-player": string;
+    type: string;
+    // Format of this stuff is a bit wacky, a bunch of it is specific to EternaJS, and we don't use it
+    // anyways, so let's just leave them excluded unless we really need them for some reason.
+    // "locks": null,
+    // "beginseq": null,
+    // "usetails": null,
+    // "constraints": "SHAPE,0",
+    // "scoring": null,
+    // "tutorial-level": "123",
+    // "ui-specs": ""
+    // "rscript": null,
+    // "solved-by-bot": null,
+    // "object": null,
+    // "annotations": null,
+    // "last-round": null,
+    // "next-puzzle": null,
+    // "objective": null,
+    // "check_hairpin": null,
+    // "cloud_round": null,
+    // "hint": null,
+    // "coauthor": "[\"Eterna100\"]",
+    // "max-votes": 0
+}
+
+export interface LabCardData {
+    affiliation: string;
+    cover_image?: string;
+    created: string;
+    exp_phase: string;
+    exp_phase_end?: any;
+    exp_phase_start?: any;
+    founder: string;
+    founder_uid: string;
+    is_active: boolean;
+    nid: string;
+    num_slots: string;
+    puzzles: string;
+    selection?: any;
+    title: string;
+    banner_image: string;
+}  
+export interface LabViewData {
+    lab: LabData;
+    comments: CommentItem[]; // do we need comments ?
+    supercomments: []; // ?
+    follow: []; // ?
+    sum_picks: null;
+    my_votes: number;
+    uid: string;
+}
+export interface CommentItem {
+    cid: string;
+    name: string;
+    uid: string;
+    comment: string;
+    created: string;
+    picture: string;
+}
+export interface LabData {
+    nid: string;
+    created: string; // timestamp; change to int?
+    title: string;
+    body: string;
+    uid: string;
+    puzzles: RoundData[];
+    is_featured: null;
+    coadmins: string[]; // uids
+    project_type: null;
+    winner: string; // "1"
+    exp_phase: string; // "2"
+    exp_phase_start: null;
+    exp_phase_end: null;
+    synthesis_date: null;
+    proposed_date: null;
+    affiliation: string;
+    email: string;
+    selection: null;
+    pending: null;
+    voters: null;
+    cover_image: string;
+    conclusion: string | null;
+    coadmin_names: string[];
+    username: string; // of whome?
+    synthesized_solutions: [];
+    current_cloud_round: number;
+    curr_time: number;
+    banner_image: string;
+    total_submitted_solutions: number;
+    total_designs: number;
+    total_submitted_solutions_of_user: number;
+    max_designs: number;
+    challenge: string;
+  }
+
+  export interface RoundData {
+    puzzles: PuzzleData[];
+    round: number;
+    is_playable: boolean;
+  }
+
+  export interface PuzzleData {
+    id: string;
+    nid: string;
+    title: string;
+    secstruct: string;
+    sequence: string;
+    rna_type: string;
+    object: string;
+    constraint: string;
+    cover_image: null;
+    num_slots: number;
+    constraints: string;
+    switch_struct?: string[];
+    synthesized_solutions: [];
+    num_solutions: number;
+    my_votes: number;
+    submitted: number;
+    num_synthesized: number;
+    player_max_submissions: number;
+  }
+
 export const Action = {
     AUTHENTICATE: 'AUTHENTICATE',
     LOGIN: 'LOGIN',
     LOGOUT: 'LOGOUT',
     GET_ACHIEVEMENT_ROADMAP: 'GET_ACHIEVEMENT_ROADMAP',
+    GET_LABS: 'GET_LABS',
+    GET_LAB: 'GET_LAB',
+    GET_PUZZLES: 'GET_PUZZLES',
+    GET_PUZZLE: 'GET_PUZZLE',
 };
 
 const MAX_LEVEL = 8;
@@ -36,6 +193,10 @@ export default function createStore(http: AxiosInstance) {
             uid: <number | null>null,
             username: <string | null>null,
             roadmap: <Achievement[]>[],
+            labdata: <LabCardData[]>[],
+            current_lab: <LabData | null>null,
+            puzzle_list: <PuzzleItem[]> [], 
+            current_puzzle: <Puzzle | null>null,
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -65,6 +226,18 @@ export default function createStore(http: AxiosInstance) {
             },
             setRoadmap(state, roadmap) {
                 state.roadmap = roadmap;
+            },
+            setLabs(state, labs){
+                state.labdata = labs;
+            },
+            setCurrentLab(state, lab){
+                state.current_lab = lab;
+            },
+            setPuzzles(state, puzzles){
+                state.puzzle_list = puzzles;
+            },
+            setCurrentPuzzle(state, puzzle){
+                state.current_puzzle = puzzle;
             },
         },
         actions: {
@@ -126,6 +299,48 @@ export default function createStore(http: AxiosInstance) {
                         commit('setRoadmap', roadmap.filter(a => a.key === 'eterna_essentials' && a.level <= MAX_LEVEL).sort((a, b) => a.level - b.level));
                     }
                 } finally {
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_LABS]({ commit }, queryString: string){
+                // commit('pushIsLoading');
+                try{
+                    const { data } = (await http.get(`/get/?${queryString}`)).data;
+                    const labdata = <LabCardData[]>data.labs;
+                    commit('setLabs', labdata);
+                }
+                finally{
+                    // commit('popIsLoading');
+                }
+            },
+            async [Action.GET_LAB]({ commit }, { id }: { id: string}){
+                commit('pushIsLoading');
+                try{
+                    const { data } = (await http.get(`/get/?type=project&nid=${id}`)).data;
+                    const labdata = <LabData>data;
+                    commit('setCurrentLab', labdata);
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_PUZZLES]({ commit }, queryString: string){
+                // commit('pushIsLoading');
+                try{
+                    const { puzzles } = (await http.get(`/get/?${queryString}`)).data.data;
+                    commit('setPuzzles', puzzles);
+                }
+                finally{
+                    // commit('popIsLoading');
+                }
+            },
+            async [Action.GET_PUZZLE]({ commit }, { id }: { id: string}){
+                commit('pushIsLoading');
+                try{
+                    const { puzzle } = (await http.get(`/get/?type=puzzle&nid=${id}&script=-1`)).data.data;
+                    commit('setCurrentPuzzle', puzzle);
+                }
+                finally{
                     commit('popIsLoading');
                 }
             },
