@@ -152,7 +152,8 @@ export default Vue.extend({
             if (filters.includes("player")    && !filters.includes("challenge")) {puzzleFilter = `puzzle_type=PlayerPuzzle`}
             const singleFilter = filters.includes("single") ? `single=checked` : `single=false`;
             const clearedFilter = filters.includes("notcleared") ? `notcleared=true` : `notcleared=false`;
-            const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}`;
+            const clearedUIDFilter = `uid=${this.$store.state.uid}`;
+            const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}&${clearedUIDFilter}`;
             await this.$store.dispatch(Action.GET_PUZZLES, requestString);
         },
         async fetchMorePuzzles() {
