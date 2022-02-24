@@ -59,7 +59,8 @@ export default Vue.extend({
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    this.error = error;
+                    // TODO: Is this necessarily a string?
+                    this.error = error as string;
                     this.showError = true;
                 }
             }

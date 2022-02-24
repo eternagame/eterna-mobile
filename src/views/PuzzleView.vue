@@ -7,9 +7,6 @@
             <b-col class="d-flex mh-100">
                 <b-img class="mh-100" :src="logoSourcePng" />
             </b-col>
-            <b-col style="display:flex;">
-                <b v-if="true" style="margin:auto auto 0 auto;font-size:4vw;text-transform:uppercase;"></b>
-            </b-col>
             <b-col>
                 <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
                     <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button" menu-class="puzzle-view-button" no-caret>
@@ -72,7 +69,7 @@
         <b-row id="puzzle-view-footer">
             <b-col>
                 <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <router-link to="about">
+                    <router-link to="/about">
                         <div class="puzzle-view-about-button" />
                     </router-link>
                 </b-row>
@@ -87,6 +84,7 @@
                 </b-row>
             </b-col>
         </b-row> 
+        <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 <script lang="ts">
@@ -100,7 +98,7 @@ import ChatManager from '../ChatManager';
 export default Vue.extend({
     data() {
         return {
-            logoSourcePng: require('../assets/logo_eterna.svg').default,
+            logoSourcePng: require('../assets/logo_eterna.svg'),
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null
         };

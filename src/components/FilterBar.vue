@@ -5,7 +5,9 @@
       v-model="selected" 
       :options="filters" 
       @input="onCheck" 
-      size="sm" />
+      size="sm"
+      class="filter-checkboxes"
+    />
   </section>
 </template>
 
@@ -53,6 +55,15 @@ export default Vue.extend({
     width: 100%;
   }
   
+  .filter-checkboxes {
+    overflow-y: scroll;
+  }
+
+  .filter-checkboxes .custom-control-inline {
+    display: inline;
+    white-space: nowrap;
+  }
+
   p {
     font-weight: 600;
     margin-bottom: 0;

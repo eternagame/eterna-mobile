@@ -13,6 +13,7 @@ module.exports = function(mode, eternajs_copy) {
             path: path.resolve(__dirname, 'www'),
             filename: 'bundle.js?[chunkHash]',
             chunkFilename: '[name].js?[chunkHash]',
+            assetModuleFilename: '[name].[ext]?[hash]'
         },
         resolve: {
             extensions: ['.ts', '.js', '.vue', '.json'],
@@ -42,10 +43,7 @@ module.exports = function(mode, eternajs_copy) {
                 },
                 {
                     test: /\.(png|jpg|gif|svg|mp4)$/,
-                    loader: 'file-loader',
-                    options: {
-                    name: '[name].[ext]?[hash]',
-                    },
+                    type: 'asset/resource'
                 },
             ],
         },

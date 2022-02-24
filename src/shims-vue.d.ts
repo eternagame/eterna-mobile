@@ -4,3 +4,9 @@ declare module '*.vue' {
 }
 
 declare module "*.png";
+
+declare module 'vue2-flip-countdown' {
+  import { ExtendedVue } from 'vue/types/vue';
+  const FlipCountdown: ExtendedVue<Vue, {}, {}, {}, {}>;
+  export default FlipCountdown;
+}
