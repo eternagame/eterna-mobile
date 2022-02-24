@@ -41,6 +41,7 @@
                         :user_pfp="puzzle.userpicture"
                         :num_cleared="puzzle['num-cleared']"
                         :playable="true"
+                        :cleared="puzzle.cleared"
                         @play="play(parseInt(puzzle.id, 10))"
                     />
                 </div>
@@ -118,7 +119,7 @@ export default Vue.extend({
         username(): string {
             return this.$store.state.username;
         },
-        puzzle(): Puzzle {
+        puzzle(): Puzzle & {cleared: boolean} {
             return this.$store.state.current_puzzle;
         },
         roadmap(): Achievement[] {

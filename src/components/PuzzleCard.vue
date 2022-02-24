@@ -1,6 +1,6 @@
 <template>
     <b-button class="puzzle-card-container" @click="goToPuzzle">
-        
+        <img v-if="cleared" src="../assets/noun_checkmark_lg.png" alt="Completed" class="puzzle-card-icon-checkmark" />
         <div v-if="!playable" class="puzzle-card-title">
             {{title}}
         </div>
@@ -96,6 +96,9 @@ export default Vue.component('puzzle-card', {
         num_cleared:{
             type: String
         },
+        cleared:{
+            type: Boolean
+        },
     },
     methods: {
         goToPuzzle: function() {
@@ -109,6 +112,7 @@ export default Vue.component('puzzle-card', {
 
 <style lang="scss" scoped>
 .puzzle-card-container {
+    position: relative;
     width: 45vmin;
     height: 45vmin;
     display: inline-block;
@@ -178,14 +182,11 @@ export default Vue.component('puzzle-card', {
 }
 
 .puzzle-card-icon-checkmark {
-    background-image: url('../assets/noun_checkmark_lg.png');
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
+    position: absolute;
+    right: 1vmin;
+    top: 1vmin;
     width: 0.8 * 4.9vmin;
     height: 0.8 * 3.7vmin;
-    margin-right: 1vmin;
-    display: inline-block;
 }
 .row-position{
     position: relative;

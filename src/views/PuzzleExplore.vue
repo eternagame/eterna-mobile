@@ -50,6 +50,7 @@
                             :user_pfp="puzzle.userpicture"
                             :num_cleared="puzzle['num-cleared']"
                             :id="puzzle.id"
+                            :cleared="puzzle.cleared"
                             @play="play(parseInt(puzzle.id, 10))"
                         />
                         <button class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
@@ -85,7 +86,7 @@ import Vue from 'vue'
 import FilterBar from '../components/FilterBar.vue';
 import NavBar from '../components/NavBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
-import { Action, Achievement, PuzzleData, PuzzleItem } from '../store';
+import { Action, Achievement, PuzzleData, PuzzleItem, PuzzleList } from '../store';
 import ChatManager from '../ChatManager';
 
 
@@ -133,8 +134,12 @@ export default Vue.extend({
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
         },
-        puzzles(): PuzzleItem[]{
-            return this.$store.state.puzzle_list; 
+        puzzles(): (PuzzleItem & {cleared: boolean})[] {
+            const puzzleList = this.$store.state.puzzle_list as PuzzleList;
+            return puzzleList.puzzles.map(puzzle => ({
+                ...puzzle,
+                cleared: puzzleList.cleared.some(cleared => cleared.nid === puzzle.id)
+            }));
         },
         lab_access(): boolean {
             return this.playablePuzzleIndex >= this.roadmap.length;
@@ -152,7 +157,8 @@ export default Vue.extend({
             if (filters.includes("player")    && !filters.includes("challenge")) {puzzleFilter = `puzzle_type=PlayerPuzzle`}
             const singleFilter = filters.includes("single") ? `single=checked` : `single=false`;
             const clearedFilter = filters.includes("notcleared") ? `notcleared=true` : `notcleared=false`;
-            const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}`;
+            const clearedUIDFilter = `uid=${this.$store.state.uid}`;
+            const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}&${clearedUIDFilter}`;
             await this.$store.dispatch(Action.GET_PUZZLES, requestString);
         },
         async fetchMorePuzzles() {
