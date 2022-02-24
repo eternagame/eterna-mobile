@@ -388,5 +388,12 @@ export default Vue.extend({
     padding: 0;
     border: solid;
     border-color: #21508C;
+
+    // Removes Bootstrap's defaults, which cause sticky active style issue on mobile
+    // https://github.com/eternagame/eterna-mobile/issues/29
+    &:focus {
+        background-color: inherit;
+        border-color: #21508C;
+    }
 }
 </style>
