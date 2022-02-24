@@ -35,6 +35,19 @@ export interface PuzzleItem {
     'next-puzzle': string;
 }
 
+export interface ClearedPuzzle {
+    nid: string;
+    title: string;
+    type: string;
+    id: string;
+}
+
+export interface PuzzleList {
+    puzzles: PuzzleItem[];
+    cleared: ClearedPuzzle[];
+}
+
+
 export interface Puzzle {
     title: string;
     created: string;
@@ -199,8 +212,8 @@ export default function createStore(http: AxiosInstance) {
             roadmap: <Achievement[]>[],
             labdata: <LabCardData[]>[],
             current_lab: <LabData | null>null,
-            puzzle_list: <PuzzleItem[]> [], 
-            current_puzzle: <Puzzle | null>null,
+            puzzle_list: <PuzzleList | null> null, 
+            current_puzzle: <(Puzzle & { cleared: boolean }) | null>null,
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -331,8 +344,8 @@ export default function createStore(http: AxiosInstance) {
             async [Action.GET_PUZZLES]({ commit }, queryString: string){
                 // commit('pushIsLoading');
                 try{
-                    const { puzzles } = (await http.get(`/get/?${queryString}`)).data.data;
-                    commit('setPuzzles', puzzles);
+                    const { data } = (await http.get(`/get/?${queryString}`)).data;
+                    commit('setPuzzles', data);
                 }
                 finally{
                     // commit('popIsLoading');
@@ -341,8 +354,8 @@ export default function createStore(http: AxiosInstance) {
             async [Action.GET_PUZZLE]({ commit }, { id }: { id: string}){
                 commit('pushIsLoading');
                 try{
-                    const { puzzle } = (await http.get(`/get/?type=puzzle&nid=${id}&script=-1`)).data.data;
-                    commit('setCurrentPuzzle', puzzle);
+                    const { puzzle, cleared } = (await http.get(`/get/?type=puzzle&nid=${id}&script=-1`)).data.data;
+                    commit('setCurrentPuzzle', {...puzzle, cleared: (cleared as ClearedPuzzle[]).some(clear => clear.nid === puzzle.id)});
                 }
                 finally{
                     commit('popIsLoading');
