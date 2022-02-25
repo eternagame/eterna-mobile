@@ -385,13 +385,13 @@ export default Vue.extend({
     height: calc(64vh - 15px);
 }
 
-.left-block {
+.left-block {  
     overflow: overlay;
+    overflow-wrap: break-word;
     max-height: 100%;
-
     position: relative;
     display: flex;
-    flex: 0 0 30vw;
+    flex: 0 0 40vw;
     padding-right: 25px;
     padding-left: 50px;
 
@@ -404,7 +404,7 @@ export default Vue.extend({
         margin: auto;
 
         p {
-            font-size: 1.8vw;
+            font-size: 1.7vw;
         }
         strong {
             font-size: larger;
