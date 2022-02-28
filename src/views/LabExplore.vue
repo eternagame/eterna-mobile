@@ -386,6 +386,7 @@ export default Vue.extend({
 }
 
 .left-block {  
+    overflow: auto;
     overflow: overlay;
     overflow-wrap: break-word;
     max-height: 100%;
