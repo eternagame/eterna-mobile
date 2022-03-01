@@ -27,7 +27,7 @@
             <div class="left-block left-aligned">
                 <div>
                     <p><strong>{{puzzle.title}}</strong></p>
-                    <p>{{puzzle.body}}</p>
+                    <p class="puzzle-description-body">{{puzzle.body}}</p>
                 </div>
             </div>
             <b-container id="puzzle-scroll">
@@ -398,5 +398,10 @@ export default Vue.extend({
 }
 .hidden{
   opacity: 0;
+}
+
+.puzzle-description-body {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
 }
 </style>

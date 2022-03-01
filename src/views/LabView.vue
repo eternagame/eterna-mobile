@@ -42,7 +42,7 @@
                             {{ status }}
                         </div>
                     </div>
-                    <div  style="font-size: 0.75rem; font-style: normal; font-weight: 400; margin-bottom: 2vmin;" v-html="descriptiontoShow">
+                    <div  style="lab-description-body" v-html="descriptiontoShow">
                     </div>
                             <div >
                             <b-button size="lg" v-b-modal.full-description-modal>Read More</b-button>
@@ -378,6 +378,14 @@ export default Vue.extend({
             font-weight: 700;
         }
     }
+}
+.lab-description-body {
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    margin-bottom: 2vmin;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
 }
 .puzzle-card-image {
     width: 100%;
