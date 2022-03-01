@@ -103,7 +103,7 @@ export default Vue.component('puzzle-card', {
     methods: {
         goToPuzzle: function() {
             if(!this.playable) {
-                this.$router.push(`${this.$router.currentRoute.fullPath}/${this.id}`);
+                this.$router.push(`${this.$router.currentRoute.path}/${this.id}`);
             }
         }
     }
