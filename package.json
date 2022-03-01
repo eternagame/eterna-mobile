@@ -25,6 +25,7 @@
     "cordova-plugin-navigationbar": "^1.0.31",
     "cordova-plugin-splashscreen": "^6.0.0",
     "cordova-plugin-statusbar": "^3.0.0",
+    "dompurify": "^2.3.6",
     "es6-promise-plugin": "^4.2.2",
     "eterna-chat-wrapper": "https://github.com/eternagame/eterna-chat-wrapper/archive/dd47b03753aeae81c3a8450933b274216515d1bc.tar.gz",
     "vue": "^2.6.14",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@globules-io/cordova-plugin-ios-xhr": "^1.2.1",
     "@npmcli/run-script": "^2.0.0",
+    "@types/dompurify": "^2.3.3",
     "@types/node": "^17.0.18",
     "@types/webpack": "^5.28.0",
     "coffeescript": "^1.12.7",

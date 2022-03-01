@@ -130,6 +130,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import DOMPurify from 'dompurify';
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/TutorialCard.vue'
 import LabPuzzleCard from '../components/LabPuzzleCard.vue'
@@ -187,11 +188,11 @@ export default Vue.extend({
             return this.$store.state.current_lab.lab.title;
         },
         descriptiontoShow(): string{
-            // strip all html, only take the first MAX_CHARS characters and add ending ... tag
-            return this.$store.state.current_lab.lab.body.replace(/<[^>]+>/ig,"").substr(0, MAX_CHARS) + ". . .";
+            // Limit to MAX_CHARS and add ellipsis
+            return DOMPurify.sanitize(`${this.$store.state.current_lab.lab.body.substr(0, MAX_CHARS)}...`)
         },
         full_description(): string{
-            return this.$store.state.current_lab.lab.body;
+            return DOMPurify.sanitize(this.$store.state.current_lab.lab.body);
         },
         puzzles(): PuzzleData[] {
             // loop through all rounds? or get first index
