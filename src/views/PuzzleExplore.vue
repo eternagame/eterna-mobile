@@ -175,7 +175,7 @@ export default Vue.extend({
             return Math.max(min, Math.min(max, x));
         },
         play(id: number) {
-            this.$router.replace(`game/${id}`);
+            this.$router.push(`game/${id}`);
         },
         openChat() {
             if (this.chat) {
