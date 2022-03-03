@@ -72,16 +72,16 @@ export default Vue.component('puzzle-view-progress-bar', {
     },
     methods:{
         goToPuzzles(){
-            this.$router.replace('/puzzles');
+            this.$router.push('/puzzles');
         },
         goToLabs() {
-            this.$router.replace('/labs');
+            this.$router.push('/labs');
         },
         goToHome() {
-            this.$router.replace('/home');
+            this.$router.push('/home');
         },
         goToQuests() {
-            this.$router.replace('/quests');
+            this.$router.push('/quests');
         },
     }
 })
