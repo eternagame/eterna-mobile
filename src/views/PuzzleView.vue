@@ -70,9 +70,13 @@
         <b-row id="puzzle-view-footer">
             <b-col>
                 <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <router-link to="/about">
-                        <div class="puzzle-view-about-button" />
-                    </router-link>
+                    <button @click="$router.go(-1)" class="back-button">
+                        <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 8 8 12 12 16"></polyline>
+                            <line x1="16" y1="12" x2="8" y2="12"></line>
+                        </svg>
+                    </button>
                 </b-row>
             </b-col>
             <b-col class="col-8" style="padding:0" v-if="true">
@@ -152,7 +156,7 @@ export default Vue.extend({
             );
         },
         play(id: number) {
-            this.$router.replace(`/game/${id}`);
+            this.$router.push(`/game/${id}`);
         },
         openChat() {
             if (this.chat) {
@@ -403,5 +407,20 @@ export default Vue.extend({
 .puzzle-description-body {
     white-space: pre-wrap;
     overflow-wrap: break-word;
+}
+
+.back-button {
+    background-color: transparent;
+    border: none;
+
+    svg {
+        width: 6vmin;
+        height: 6vmin;
+        fill: none;
+        stroke: white;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
 }
 </style>
