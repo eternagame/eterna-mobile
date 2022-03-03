@@ -53,6 +53,12 @@ export default Vue.extend({
     padding-left: 15px;
     padding-top: 3vmin;
     width: 100%;
+
+    p {
+      font-weight: 600;
+      margin-bottom: 0;
+      margin-right: 12px;
+    }
   }
   
   .filter-checkboxes {
@@ -62,11 +68,5 @@ export default Vue.extend({
   .filter-checkboxes .custom-control-inline {
     display: inline;
     white-space: nowrap;
-  }
-
-  p {
-    font-weight: 600;
-    margin-bottom: 0;
-    margin-right: 12px;
   }
 </style>
