@@ -54,7 +54,7 @@
                             :imgSrc="lab.banner_image ? getAbsUrl(lab.banner_image) : defaultLabImage"
                             @link_lab="link_lab(lab.nid)"
                         />
-                        <button class="btn btn-secondary fetch-labs-btn" @click="fetchMoreLabs">Load More Labs</button>
+                        <button v-if="moreLabsAvailable" class="btn btn-secondary fetch-labs-btn" @click="fetchMoreLabs">Load More Labs</button>
                     </div>
                 </b-container>
             </div>
@@ -139,8 +139,10 @@ export default Vue.extend({
         },
         labs(): LabData[]{
             return this.$store.state.labdata;
+        },
+        moreLabsAvailable(): boolean {
+            return this.numberOfLabs < this.$store.state.lab_total;
         }
-        
     },
     methods: {
         async fetchNewLabs() {

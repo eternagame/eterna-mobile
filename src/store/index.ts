@@ -211,6 +211,7 @@ export default function createStore(http: AxiosInstance) {
             username: <string | null>null,
             roadmap: <Achievement[]>[],
             labdata: <LabCardData[]>[],
+            lab_total: 0,
             current_lab: <LabData | null>null,
             puzzle_list: <PuzzleList | null> null, 
             current_puzzle: <(Puzzle & { cleared: boolean }) | null>null,
@@ -246,6 +247,9 @@ export default function createStore(http: AxiosInstance) {
             },
             setLabs(state, labs){
                 state.labdata = labs;
+            },
+            setLabTotal(state, num_labs) {
+                state.lab_total = num_labs;
             },
             setCurrentLab(state, lab){
                 state.current_lab = lab;
@@ -323,8 +327,8 @@ export default function createStore(http: AxiosInstance) {
                 // commit('pushIsLoading');
                 try{
                     const { data } = (await http.get(`/get/?${queryString}`)).data;
-                    const labdata = <LabCardData[]>data.labs;
-                    commit('setLabs', labdata);
+                    commit('setLabTotal', parseInt(data.num_labs));
+                    commit('setLabs', data.labs);
                 }
                 finally{
                     // commit('popIsLoading');
