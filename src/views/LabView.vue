@@ -41,7 +41,7 @@
                             {{ status }}
                         </div>
                     </div>
-                    <div class="lab-description-body" v-html="descriptiontoShow">
+                    <div class="lab-description-body" v-html="description">
                     </div>
                     <div class="lab-description-more">
                         <b-button block v-b-modal.full-description-modal>Read More</b-button>
@@ -58,7 +58,7 @@
                                 <b-img  class="img-fluid" :src="getBanner" />
                                 <div class="modal_title">{{lab_title}}</div>
                                 </div>
-                                <div class="modal_body" v-html="full_description"/>
+                                <div class="modal_body" v-html="description"/>
                             </div>
                             </b-modal>
                         <b-button block v-b-modal.lab-updates-modal v-if="labUpdates">Lab Updates</b-button>
@@ -187,10 +187,7 @@ export default Vue.extend({
         lab_title(): string{
             return this.$store.state.current_lab.lab.title;
         },
-        descriptiontoShow(): string{
-            return DOMPurify.sanitize(this.$store.state.current_lab.lab.body)
-        },
-        full_description(): string{
+        description(): string{
             return DOMPurify.sanitize(this.$store.state.current_lab.lab.body);
         },
         puzzles(): PuzzleData[] {
