@@ -31,15 +31,8 @@
                         {{lab_title}}
                         </strong>
                     </p>
-                    <div style="display:flex;">
-                        <div
-                        class="status-indicator"
-                        :style="{ 'background-color': status_color }"
-                        > 
-                        </div>
-                        <div class="status-text">
-                            {{ status }}
-                        </div>
+                    <div class="status-text" :class="`phase_${status_phase}`">
+                        {{ status }}
                     </div>
                     <div class="lab-description-body" v-html="description">
                     </div>
@@ -197,8 +190,8 @@ export default Vue.extend({
         status(): string{
             return this.getStatus(this.$store.state.current_lab.lab.exp_phase);
         },
-        status_color(): string{
-            return this.getStatusColor(this.$store.state.current_lab.lab.exp_phase);
+        status_phase(): string{
+            return this.$store.state.current_lab.lab.exp_phase;
         },
         getBanner(): string{
             if (this.$store.state.current_lab.lab.banner_image?.startsWith('http')) {
@@ -258,21 +251,6 @@ export default Vue.extend({
             case '5':
             default:
                 return 'Results Posted';
-            }
-        },
-        getStatusColor(exp_phase: string){
-            switch (exp_phase) {
-            case '1':
-                return 'lime';
-            case '2':
-                return 'yellow';
-            case '3':
-                return 'purple';
-            case '4':
-                return 'blue';
-            case '5':
-            default:
-                return 'red';
             }
         },
         setProgressFromRoadmap() {
@@ -408,10 +386,35 @@ export default Vue.extend({
     // margin-top: .8vmin;
     margin-right: 2vmin;
   }
-  .status-text{
-      font-size: 2vmin;
-      margin-bottom: 2vmin;
-  }
+.status-text {
+    --margin-left: 16px;
+    font-size: 2vmin;
+    position: relative;
+    margin: 0 0 var(--margin-left) var(--margin-left);
+
+    &::before {
+        content: '';
+        width: 1.5vmin;
+        height: 1.5vmin;
+        position: absolute;
+        left: calc(-1 * var(--margin-left));
+        top: calc(50% - 0.75vmin);
+        border-radius: 50%;
+        background-color: red;
+    }
+    &.phase_1::before {
+        background-color: lime;
+    }
+    &.phase_2::before {
+        background-color: yellow;
+    }
+    &.phase_3::before {
+        background-color: purple;
+    }
+    &.phase_4::before {
+        background-color: blue;
+    }
+}
 .puzzle-view-container {
     padding: 0;
     margin: 0;
