@@ -25,8 +25,7 @@
         </b-row>
         <div class="content">
             <div class="left-block left-aligned">
-            <div>
-                 <div class="lab-description">
+                <div class="lab-description">
                     <p>
                         <strong>
                         {{lab_title}}
@@ -42,47 +41,46 @@
                             {{ status }}
                         </div>
                     </div>
-                    <div  style="lab-description-body" v-html="descriptiontoShow">
+                    <div class="lab-description-body" v-html="descriptiontoShow">
                     </div>
-                            <div >
-                            <b-button size="lg" v-b-modal.full-description-modal>Read More</b-button>
-                                <b-modal
-                                id="full-description-modal"
-                                ref="modal"
-                                size="xl"
-                                header-border-variant="primary"
-                                hide-header
-                                hide-footer
-                                >
-                                <div class="modal_container">
-                                    <div class="modal_header">
-                                    <b-img  class="img-fluid" :src="getBanner" />
-                                    <div class="modal_title">{{lab_title}}</div>
-                                    </div>
-                                    <div class="modal_body" v-html="full_description"/>
-                                </div>
-                                </b-modal>
-                            <b-button size="lg" v-b-modal.lab-updates-modal v-if="labUpdates">Lab Updates</b-button>
+                    <div class="lab-description-more">
+                        <b-button block v-b-modal.full-description-modal>Read More</b-button>
                             <b-modal
-                                id="lab-updates-modal"
-                                ref="modal"
-                                size="xl"
-                                header-border-variant="primary"
-                                hide-header
-                                hide-footer
-                                >
-                                <div class="readmore-scroll">
-                                    <b-img  class="puzzle-card-image" :src="getBanner" />
-                                    <div style="padding: 2vmin;">
-                                            <div class="modal-title">
-                                                    Lab Updates!
-                                            </div>
-                                            <div  style="font-size: 2vmin;" v-html="labUpdates">
-                                            </div>
-                                    </div>
+                            id="full-description-modal"
+                            ref="modal"
+                            size="xl"
+                            header-border-variant="primary"
+                            hide-header
+                            hide-footer
+                            >
+                            <div class="modal_container">
+                                <div class="modal_header">
+                                <b-img  class="img-fluid" :src="getBanner" />
+                                <div class="modal_title">{{lab_title}}</div>
                                 </div>
-                                </b-modal>
+                                <div class="modal_body" v-html="full_description"/>
                             </div>
+                            </b-modal>
+                        <b-button block v-b-modal.lab-updates-modal v-if="labUpdates">Lab Updates</b-button>
+                        <b-modal
+                            id="lab-updates-modal"
+                            ref="modal"
+                            size="xl"
+                            header-border-variant="primary"
+                            hide-header
+                            hide-footer
+                            >
+                            <div class="readmore-scroll">
+                                <b-img  class="puzzle-card-image" :src="getBanner" />
+                                <div style="padding: 2vmin;">
+                                        <div class="modal-title">
+                                                Lab Updates!
+                                        </div>
+                                        <div  style="font-size: 2vmin;" v-html="labUpdates">
+                                        </div>
+                                </div>
+                            </div>
+                        </b-modal>
                     </div>
             </div>
         </div>
@@ -372,6 +370,17 @@ export default Vue.extend({
 .lab-description{
     position: relative;
     top: -1vmin;
+    overflow: hidden !important;
+
+    &::after {
+        // Horrible hack to add fade-out to bottom of description
+        content: "";
+        width: 100%;
+        height: 80px;
+        position: absolute;
+        bottom: 0px;
+        background-image: linear-gradient(to bottom, transparent, #032a4f 50%);
+    }
 
     p {
         strong {
@@ -382,7 +391,6 @@ export default Vue.extend({
     }
 }
 .lab-description-body {
-    font-size: 0.75rem;
     font-style: normal;
     font-weight: 400;
     margin-bottom: 2vmin;
@@ -564,5 +572,12 @@ export default Vue.extend({
         stroke-linecap: round;
         stroke-linejoin: round;
     }
+}
+
+.lab-description-more {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    z-index: 5;
 }
 </style>
