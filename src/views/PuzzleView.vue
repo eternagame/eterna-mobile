@@ -26,7 +26,7 @@
         <div class="content">
             <div class="left-block left-aligned">
                 <div>
-                    <p><strong>{{title}}</strong></p>
+                    <p><strong>{{puzzle.title}}</strong></p>
                     <p v-html="description"></p>
                 </div>
             </div>
@@ -129,9 +129,6 @@ export default Vue.extend({
         },
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
-        },
-        title(): string{
-            return DOMPurify.sanitize(this.puzzle.title);
         },
         description(): string{
             return DOMPurify.sanitize(this.puzzle.body);
