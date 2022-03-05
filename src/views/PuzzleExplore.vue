@@ -53,7 +53,7 @@
                             :cleared="puzzle.cleared"
                             @play="play(parseInt(puzzle.id, 10))"
                         />
-                        <button class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
+                        <button v-if="morePuzzlesAvailable" class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
                     </div>
                 </b-container>
             </div>
@@ -143,8 +143,10 @@ export default Vue.extend({
         },
         lab_access(): boolean {
             return this.playablePuzzleIndex >= this.roadmap.length;
+        },
+        morePuzzlesAvailable(): boolean {
+            return this.numberOfPuzzles < parseInt(this.$store.state.puzzle_list.num_puzzles);
         }
-        
     },
     methods: {
         async fetchNewPuzzles() {
