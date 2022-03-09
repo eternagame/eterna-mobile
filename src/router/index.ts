@@ -71,9 +71,7 @@ const router = new VueRouter({
 });
 
 router.afterEach(( to, from ) => {
-    console.log(to.path);
-    gtag('set', 'page_path', to.path);
-    gtag('event', 'page_view');
+    gtag('config', 'G-022RW9V497', {'page_path': to.path});
 });
 
 export default router;
