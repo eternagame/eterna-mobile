@@ -49,7 +49,7 @@
                             v-for="(lab, index) in labs"
                             :key="index"
                             :title="lab.title"
-                            :status_color="getStatusColor(lab.exp_phase)"
+                            :status_phase="lab.exp_phase"
                             :status="getStatus(lab.exp_phase)"
                             :imgSrc="lab.banner_image ? getAbsUrl(lab.banner_image) : defaultLabImage"
                             @link_lab="link_lab(lab.nid)"
