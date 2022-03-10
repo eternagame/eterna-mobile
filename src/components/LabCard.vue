@@ -5,11 +5,7 @@
         </div >
         <img  class="lab-card-image" :src="imgSrc" />
         <div class="lab-card-footer d-flex">
-          <div
-            class="status-indicator"
-            :style="{ 'background-color': status_color }"
-          ></div>
-        <div class="status-text">
+        <div class="status-text" :class="`phase_${status_phase}`">
           {{ status }}
           </div>
         </div>
@@ -40,7 +36,7 @@ export default Vue.component('lab-card', {
         status:{
             type: String,
         },
-        status_color:{
+        status_phase:{
             type: String,
         }
     },
@@ -84,15 +80,41 @@ export default Vue.component('lab-card', {
     text-align: center;
   }
 
-.status-text{
-    // margin-top: .08vmin;
-    margin-left: 1vmin;
-    font-size: 2.5vmin;
+.status-text {
+    --margin-left: 16px;
+    font-size: 2vmin;
+    position: relative;
+    margin: 0 0 var(--margin-left) var(--margin-left);
+
+    &::before {
+        content: '';
+        width: 1.5vmin;
+        height: 1.5vmin;
+        position: absolute;
+        left: calc(-1 * var(--margin-left));
+        top: calc(50% - 0.75vmin);
+        border-radius: 50%;
+        background-color: red;
+    }
+    &.phase_1::before {
+        background-color: lime;
+    }
+    &.phase_2::before {
+        background-color: yellow;
+    }
+    &.phase_3::before {
+        background-color: purple;
+    }
+    &.phase_4::before {
+        background-color: blue;
+    }
 }
 .status-indicator {
     width: 1.5vmin;
     height: 1.5vmin;
     border-radius: 50%;
+    // margin-top: .8vmin;
+    margin-right: 2vmin;
   }
 
 
