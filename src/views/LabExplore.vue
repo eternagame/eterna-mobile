@@ -258,7 +258,7 @@ export default Vue.extend({
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
-    padding-right: calc(50% - 22.5vmin);
+    padding-right: 0px;
     padding-left: 25px;
     margin-top: 0vmin;
     max-width: unset;
