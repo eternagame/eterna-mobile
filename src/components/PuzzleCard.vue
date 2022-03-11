@@ -4,49 +4,41 @@
         <div v-if="!playable" class="puzzle-card-title">
             {{title}}
         </div>
-        <b-img  class="puzzle-card-image" :src="imgSrc" />
+        <b-img class="puzzle-card-thumbnail" :src="imgSrc" />
         <div v-if="!playable" class="row-position">
-        <b-row class="">
-            <b-col cols="6" >
-                <div class="left-col">
-                    <slot name="left-icon">
-                        <div class="chemical-bond">
-                        </div>
-                        
+            <div class="meta-row meta-gameplay">
+                <div class="meta-tag meta-engine">
+                    <slot name="engine-icon">
+                        <div class="chemical-bond"></div>
                     </slot>
-                {{folder}}
+                    {{folder}}
                 </div>
-            </b-col>
-            <b-col cols="6" >
-                <div class="right-col" style="margin-right: 2vmin;">
-                    <slot name="right-icon">
-                        <div class="dollar">
-                        </div>
+                <div class="meta-tag meta-puzzleFeatures">
+                    <div v-if="is3d" class="icon-3d" title="3D puzzle">3D</div>
+                    <div v-if="stateCount" class="icon-multistate"></div>
+                    <StateCounter v-if="stateCount > 1" :value="stateCount" :title="`${stateCount} state switch`"/>
+                </div>  
+            </div>
+            <div class="meta-row">
+                <div class="meta-tag meta-user">
+                    <slot name="user-icon">
+                        <div class="user"></div>
                     </slot>
-                {{reward}}
+                    {{username}}
                 </div>
-            </b-col>
-        </b-row>
-        <b-row class="mb-2">
-            <b-col cols="6" >
-                <div class="left-col" >
-                    <slot name="left-icon">
-                        <div class="user">
-                        </div>
+                <div class="meta-tag meta-reward">
+                    <slot name="reward-icon">
+                        <div class="dollar"></div>
                     </slot>
-                {{username}}
+                    {{reward ? reward : "-"}}
                 </div>
-            </b-col>
-            <b-col cols="6" >
-                <div class="right-col" style="margin-right: 2vmin;">
-                    <slot name="right-icon">
-                        <div class="people" >
-                        </div>
+                <div class="meta-tag meta-cleared">
+                    <slot name="cleared-icon">
+                        <div class="people"></div>
                     </slot>
-                {{num_cleared}}
+                    {{num_cleared ? num_cleared : "0"}}
                 </div>
-            </b-col>
-        </b-row>
+            </div>
         </div>
         <div v-if="playable" class="button-position">
             <b-button variant="primary"  class="puzzle-card-button" @click="$emit('play')">Play Now</b-button>
@@ -56,6 +48,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import StateCounter from './StateCounter.vue'
 
 export default Vue.component('puzzle-card', {
     props: {
@@ -99,6 +92,12 @@ export default Vue.component('puzzle-card', {
         cleared:{
             type: Boolean
         },
+        is3d:{
+            type: Boolean
+        },
+        stateCount:{
+            type: String
+        }
     },
     methods: {
         goToPuzzle: function() {
@@ -106,6 +105,9 @@ export default Vue.component('puzzle-card', {
                 this.$router.push(`${this.$router.currentRoute.path}/${this.id}`);
             }
         }
+    },
+    components: {
+        StateCounter
     }
 })
 </script>
@@ -120,13 +122,17 @@ export default Vue.component('puzzle-card', {
     background-color: #008cff15;
     scroll-snap-align: center;
     text-align: center;
-    margin-top: 3vmin;
-    margin-bottom: 3vmin;
+    margin-top: 2.5vmin;
+    margin-bottom: 2.5vmin;
     margin-left: 1vmin;
     margin-right: 1vmin;
     padding: 0;
     border: solid;
     border-color: #21508C;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .puzzle-card-locked {
@@ -134,12 +140,10 @@ export default Vue.component('puzzle-card', {
 }
 
 
-.puzzle-card-image {
-    width: 50%;
-    height: 30vmin;
+.puzzle-card-thumbnail {
+    height: 60%;
+    max-width: 100%;
     object-fit: contain;
-    position: relative;
-    top: 0;
     z-index: -1;
 }
 
@@ -162,13 +166,14 @@ export default Vue.component('puzzle-card', {
 }
 .puzzle-card-title {
     white-space: nowrap;
-    margin: 0 12px;
-    font-size: 3vmin;
-    height: 6vmin;
+    padding: 0 8px;
+    font-size: 12px;
+    height: 20%;
+    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
-    position: relative;
-    top: 3vmin;
+    padding: 4px 8px;
+    margin: 0px;
 }
 .puzzle-card-icon-lock {
     background-image: url('../assets/noun_lock_lg.png');
@@ -190,11 +195,12 @@ export default Vue.component('puzzle-card', {
 }
 .row-position{
     position: relative;
-    top: -1vmin;
+    width: 100%;
+    margin: 4px;
+    height: 20%;
 }
 .button-position{
-    position: relative;
-    top: -1vmin;
+    width: 100%;
 }
 .status-text{
     margin-top: .08vmin;
@@ -205,50 +211,50 @@ export default Vue.component('puzzle-card', {
     background-repeat: no-repeat;
     background-size: cover;
     border: none;
-    height: 2vmin;
-    width: 2vmin;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
+    height: 2.5vmin;
+    width: 2.5vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
 }
 .dollar{
     background: url('../assets/dollar.svg');
     background-repeat: no-repeat;
     background-size: cover;
     border: none;
-    height: 2vmin;
-    width: 2vmin;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
+    height: 2.5vmin;
+    width: 2.5vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
 }
 .noun-puzzle{
     background: url('../assets/noun_puzzle.svg');
     background-repeat: no-repeat;
     background-size: cover;
     border: none;
-    height: 2vmin;
-    width: 2vmin;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
+    height: 2.5vmin;
+    width: 2.5vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
 }
 .people{
     background: url('../assets/people.svg');
     background-repeat: no-repeat;
     background-size: cover;
     border: none;
-    height: 2vmin;
-    width: 2vmin;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
+    height: 2.5vmin;
+    width: 2.5vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
 }
 .user{
     background: url('../assets/user.svg');
     background-repeat: no-repeat;
     background-size: cover;
     border: none;
-    height: 2vmin;
-    width: 2vmin;
-    margin-left: 2vmin;
-    margin-right: 2vmin;
+    height: 2.5vmin;
+    width: 2.5vmin;
+    margin-left: 1vmin;
+    margin-right: 1vmin;
 }
 .icon {
     width: 19vmin;
@@ -264,4 +270,22 @@ export default Vue.component('puzzle-card', {
 .right-col {
     justify-content: flex-end;
   }
+.meta-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1px;
+}
+.meta-tag {
+    display: flex;
+    font-size: 10px;
+    align-items: center;
+}
+.icon-3d {
+    background-color: var(--med-blue);
+    padding: 1px 3px;
+    border-radius: 2px;
+    margin: 0 5px;
+}
 </style>

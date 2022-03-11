@@ -51,6 +51,8 @@
                             :num_cleared="puzzle['num-cleared']"
                             :id="puzzle.id"
                             :cleared="puzzle.cleared"
+                            :is3d="parseInt(puzzle.has3d)"
+                            :stateCount="puzzle.number_of_states"
                             @play="play(parseInt(puzzle.id, 10))"
                         />
                         <button v-if="morePuzzlesAvailable" class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
