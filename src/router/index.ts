@@ -70,4 +70,8 @@ const router = new VueRouter({
     routes
 });
 
+router.afterEach(( to, from ) => {
+    ga('send', 'pageview', to.path);
+});
+
 export default router;

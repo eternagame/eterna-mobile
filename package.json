@@ -39,6 +39,7 @@
     "@globules-io/cordova-plugin-ios-xhr": "^1.2.1",
     "@npmcli/run-script": "^2.0.0",
     "@types/dompurify": "^2.3.3",
+    "@types/google.analytics": "^0.0.42",
     "@types/node": "^17.0.18",
     "@types/webpack": "^5.28.0",
     "coffeescript": "^1.12.7",
