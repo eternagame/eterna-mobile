@@ -44,7 +44,7 @@ export default Vue.extend({
             }
         },
         back() {
-            this.$router.replace('puzzles');
+            this.$router.back();
         },
     },
 })

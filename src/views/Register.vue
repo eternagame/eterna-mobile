@@ -76,12 +76,12 @@ export default Vue.extend({
                     this.showError = true;
                 }
                 if (this.loggedIn) {
-                    this.$router.replace('puzzles');
+                    this.$router.replace('/');
                 }
             }
         },
         back() {
-            this.$router.replace('puzzles');
+            this.$router.back();
         },
     },
 })

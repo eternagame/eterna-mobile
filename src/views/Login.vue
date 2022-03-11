@@ -66,7 +66,7 @@ export default Vue.extend({
             }
         },
         back() {
-            this.$router.replace('home');
+            this.$router.back();
         },
     },
 });
