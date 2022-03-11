@@ -14,7 +14,10 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-022RW9V497', { 'send_page_view': false });
+        gtag('config', 'G-022RW9V497', { 'send_page_view': false, checkProtocolTask: null, storage: 'none' });
+        gtag('get', 'G-022RW9V497', 'client_id', (clientId) => {
+            localStorage.setItem('ga-client-id', clientId);
+        });
         </script>
         <%= htmlWebpackPlugin.tags.bodyTags %>
         <script src="cordova.js"></script>
