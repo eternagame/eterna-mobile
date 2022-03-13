@@ -38,25 +38,11 @@
                 </b-container>
             </div>
         </div>
-        <b-row id="puzzle-view-footer">
-            <b-col>
-                <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <router-link to="about">
-                        <div class="puzzle-view-about-button" />
-                    </router-link>
-                </b-row>
-            </b-col>
-            <!-- TODO: replace with correct logic -->
-            <b-col class="col-8" style="padding:0" v-if="true">
-                <NavBar/>
-            </b-col>
-            
-            <b-col>
-                <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <div @click="openChat" class="puzzle-view-chat-button" />
-                </b-row>
-            </b-col>
-        </b-row>
+        <NavBar>
+            <template v-slot:right>
+                <div @click="openChat" class="puzzle-view-chat-button" />
+            </template>
+        </NavBar>
         <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>

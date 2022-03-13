@@ -1,5 +1,5 @@
 <template>
-    <b-container style="padding:0">
+    <b-container style="padding:0; width: 70%;">
         <b-progress :max="circleCount" class="puzzle-progress-bar">
             <b-progress-bar :value="progressBarFill" style="background-color: rgb(21, 194, 231);"/>
         </b-progress>

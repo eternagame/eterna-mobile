@@ -78,28 +78,20 @@
             </div>
         </b-container>
         </div>
-       
-        <b-row id="puzzle-view-footer">
-            <b-col>
-                <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <button @click="$router.go(-1)" class="back-button">
-                        <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 8 8 12 12 16"></polyline>
-                            <line x1="16" y1="12" x2="8" y2="12"></line>
-                        </svg>
-                    </button>
-                </b-row>
-            </b-col>
-            <b-col class="col-8" style="padding:0">
-                <NavBar/>
-            </b-col>
-            <b-col>
-                <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <div @click="openChat" class="puzzle-view-chat-button" />
-                </b-row>
-            </b-col>
-        </b-row>
+        <NavBar>
+            <template v-slot:left>
+                <button @click="$router.go(-1)" class="back-button">
+                    <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 8 8 12 12 16"></polyline>
+                        <line x1="16" y1="12" x2="8" y2="12"></line>
+                    </svg>
+                </button>
+            </template>
+            <template v-slot:right>
+                <div @click="openChat" class="puzzle-view-chat-button" />
+            </template>
+        </NavBar>
         <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
@@ -538,6 +530,7 @@ export default Vue.extend({
 .back-button {
     background-color: transparent;
     border: none;
+    padding: 0px;
 
     svg {
         width: 6vmin;
