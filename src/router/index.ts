@@ -1,16 +1,17 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import About from '../views/About.vue';
+import BrowseView from '../views/BrowseView.vue';
 import Game from '../views/Game.vue';
-import Login from '../views/Login.vue';
-import LandingPage from '../views/LandingPage.vue';
-import Register from '../views/Register.vue';
-import ResetPassword from '../views/ResetPassword.vue';
 import LabExplore from '../views/LabExplore.vue';
 import LabView from '../views/LabView.vue';
+import LandingPage from '../views/LandingPage.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import ResetPassword from '../views/ResetPassword.vue';
+import Profile from '../views/Profile.vue'
 import PuzzleExplore from '../views/PuzzleExplore.vue';
 import PuzzleView from '../views/PuzzleView.vue';
-import BrowseView from '../views/BrowseView.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,10 @@ const routes: Array<RouteConfig> = [
     {
         path: '/reset-password',
         component: ResetPassword,
+    },
+    {
+        path: '/profile',
+        component: Profile,
     },
     {
         path: '/game/:puzzle',

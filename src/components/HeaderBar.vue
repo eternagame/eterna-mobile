@@ -7,6 +7,7 @@
             <b style="line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
             <div class="puzzle-view-icon-people" />
         </template>
+        <b-dropdown-item to="/profile">Profile</b-dropdown-item>
         <b-dropdown-item @click="logout">Logout</b-dropdown-item>
       </b-dropdown>
     </div>
@@ -50,10 +51,7 @@ export default Vue.extend({
   header {
     height: 18vh;
     width: 100%;
-    padding-top: 3vmin;
-    margin-left: 3vmin;
-    margin-right: 3vmin;
-    margin-bottom: 3vmin;
+    padding: 3vmin;
     display: flex;
     justify-content: space-between;
   }
