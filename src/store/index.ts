@@ -385,8 +385,8 @@ export default function createStore(http: AxiosInstance) {
                 commit('pushIsLoading');
                 try{
                     const { user, achievements } = (await http.get(`/get/?type=user&uid=${id}&tab_type=about`)).data.data;
-                    const mail_notification = user["Mail notification"] === "off" ? true : false;
-                    const news_notification = user["News Mail notification"] === "off" ? true : false;
+                    const mail_notification = user["Mail notification"] === "on" ? true : false;
+                    const news_notification = user["News mail notification"] === "on" ? true : false;
 
                     commit('setUserData', {
                         mail: user.mail,

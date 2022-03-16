@@ -3,6 +3,8 @@
     <HeaderBar></HeaderBar>
       <div class="settings-form">
         <h1>Settings</h1>
+        <b-alert variant="success" :show="success">Updated successfully</b-alert>
+        <b-alert variant="danger" :show="error !== ''">{{error}}</b-alert>
         <b-row>
           <b-col>
             <b-form-group
@@ -29,6 +31,13 @@
             >
               <b-form-input class="notifications-checkbox" id="password" type="password" v-model="newPassword" placeholder="New Password" trim></b-form-input>
               <b-form-input class="notifications-checkbox" id="confirm-password" type="password" v-model="confirmPassword" placeholder="Confirm Password" trim></b-form-input>
+            </b-form-group>
+            <b-form-group
+              description="Current password must be provided in order to change any profile settings"
+              label="Current Password:"
+              label-for="current-password"
+            >
+              <b-form-input class="notifications-checkbox" id="current-password" type="password" v-model="currentPassword" placeholder="Current Password" trim></b-form-input>
             </b-form-group>
           <b-button variant="primary" :disabled="!formValid" @click="update">Update Settings</b-button>
           </b-col>
@@ -64,9 +73,12 @@ export default Vue.extend({
   data() {
     return {
       isLoading: false,
+      error: '',
+      success: false,
       email: '',
       newPassword: '',
       confirmPassword: '',
+      currentPassword: '',
       notifications: false,
       news: false,
     }
@@ -75,8 +87,8 @@ export default Vue.extend({
     await(this.$store.dispatch('GET_PROFILE', {id: this.$store.state.uid}));
     if (this.$store.state.user) {
       this.email = this.$store.state.user.mail;
-      this.notifications = this.$store.state.user.mail_notifications ? this.$store.state.user.mail_notifications : false;
-      this.news = this.$store.state.user.news_notifications ? this.$store.state.user.news_notifications : false;
+      this.notifications = this.$store.state.user.mail_notification;
+      this.news = this.$store.state.user.news_notification;
     }
   },
   computed: {
@@ -97,20 +109,24 @@ export default Vue.extend({
     },
     async update() {
       this.isLoading = true;
+      this.success = false;
+      this.error = '';
       const data = new FormData();
+      data.set('pass[current]', this.currentPassword);
       if (this.newPassword && this.newPassword === this.confirmPassword) {
         data.set('pass[pass1]', this.newPassword);
         data.set('pass[pass2]', this.confirmPassword);
       }
       data.set('profile_mail_notification', this.notifications ? 'on' : 'off');
       data.set('profile_news_mail_notification', this.news ? 'on' : 'off');
+      data.set('profile_blog_mail_notification', this.news ? 'on' : 'off');
       if (this.validateEmail(this.email)) {
         data.set('mail', this.email.toLowerCase());
       }
       data.set('type', 'edit');
 
       try {
-        const res = await this.$http.post('/login', data, {
+        const res = await this.$http.post('/login/', data, {
           headers: {
             'Content-type': 'multipart/form-data',
           },
@@ -119,8 +135,9 @@ export default Vue.extend({
         const error = res?.data?.data?.error;
         if (error) throw new Error(error);
         // this.$router.push(`/players/${this.$vxm.user.uid}`);
+        this.success = true;
       } catch (e: any) {
-          console.log(e);
+        if (e instanceof Error) this.error = e.message;
       }
     }
   },
