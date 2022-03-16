@@ -29,8 +29,8 @@
         <h1>Achievements</h1>
           <b-container id="puzzle-scroll">
             <ul id="puzzle-card-wrapper">
-              <li v-for="item in achievements" :key="item.title" class="achievement-card">
-                <img :src="item.image" :alt="item.desc"/>
+              <li v-for="item in achievements" :key="`${item.title} (${item.level})`" class="achievement-card">
+                <img :src="resolveUrl(item.image)" :alt="item.desc"/>
                 <h3 class="achievement-title">{{item.title}}</h3>
               </li>
             </ul>
@@ -69,7 +69,7 @@ export default Vue.extend({
       },
       avatarUrl(): string {
         const condition = this.$store.state.user && this.$store.state.user.picture !== "";
-        return condition ? this.$store.state.user.picture : "../assets/user.svg";
+        return condition ? this.resolveUrl(this.$store.state.user.picture) : "../assets/user.svg";
       },
       points(): string {
         return this.$store.state.user ? this.$store.state.user.points : "0";
@@ -83,6 +83,13 @@ export default Vue.extend({
       achievements() {
         return this.$store.state.user ? Object.values(this.$store.state.user.achievements) : [];
       },
+    },
+    methods: {
+      resolveUrl(path: string) {
+        if (path.startsWith('http')) return path;
+        if (path.startsWith('/')) return process.env.APP_SERVER_URL + path;
+        return process.env.APP_SERVER_URL + '/' + path;
+      }
     },
     components: {
       HeaderBar,
