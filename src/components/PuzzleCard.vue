@@ -16,15 +16,17 @@
                 <div class="meta-tag meta-puzzleFeatures">
                     <div v-if="is3d" class="icon-3d" title="3D puzzle">3D</div>
                     <div v-if="stateCount" class="icon-multistate"></div>
-                    <StateCounter v-if="stateCount > 1" :value="stateCount" :title="`${stateCount} state switch`"/>
+                    <StateCounter v-if="+stateCount > 1" :value="stateCount" :title="`${stateCount} state switch`"/>
                 </div>  
             </div>
             <div class="meta-row">
                 <div class="meta-tag meta-user">
-                    <slot name="user-icon">
-                        <div class="user"></div>
-                    </slot>
-                    {{username}}
+                    <template v-if="madeByPlayer">
+                        <slot name="user-icon">
+                            <div class="user"></div>
+                        </slot>
+                        {{username}}
+                    </template>
                 </div>
                 <div class="meta-tag meta-reward">
                     <slot name="reward-icon">
@@ -97,12 +99,16 @@ export default Vue.component('puzzle-card', {
         },
         stateCount:{
             type: String
+        },
+        madeByPlayer: {
+            type: Boolean,
+            default: true
         }
     },
     methods: {
         goToPuzzle: function() {
             if(!this.playable) {
-                this.$router.push(`${this.$router.currentRoute.path}/${this.id}`);
+                this.$router.push(`/puzzles/${this.id}`);
             }
         }
     },

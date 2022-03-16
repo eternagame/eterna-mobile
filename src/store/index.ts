@@ -33,6 +33,7 @@ export interface PuzzleItem {
     folder: string;
     number_of_states: number;
     'next-puzzle': string;
+    has3d: string;
 }
 
 export interface ClearedPuzzle {
@@ -204,6 +205,7 @@ export const Action = {
     LOGIN: 'LOGIN',
     LOGOUT: 'LOGOUT',
     GET_ACHIEVEMENT_ROADMAP: 'GET_ACHIEVEMENT_ROADMAP',
+    GET_QUEST_ACHIEVEMENT_ROADMAP: 'GET_QUEST_ACHIEVEMENT_ROADMAP',
     GET_LABS: 'GET_LABS',
     GET_LAB: 'GET_LAB',
     GET_PUZZLES: 'GET_PUZZLES',
@@ -223,6 +225,7 @@ export default function createStore(http: AxiosInstance) {
             username: <string | null>null,
             user: <UserData | null>null,
             roadmap: <Achievement[]>[],
+            quest_roadmap: <Achievement[]>[],
             labdata: <LabCardData[]>[],
             lab_total: 0,
             current_lab: <LabData | null>null,
@@ -257,6 +260,9 @@ export default function createStore(http: AxiosInstance) {
             },
             setRoadmap(state, roadmap) {
                 state.roadmap = roadmap;
+            },
+            setQuestRoadmap(state, roadmap) {
+                state.quest_roadmap = roadmap;
             },
             setLabs(state, labs){
                 state.labdata = labs;
@@ -334,6 +340,18 @@ export default function createStore(http: AxiosInstance) {
                     if (data.achievement_roadmap) {
                         const roadmap = <Achievement[]>data.achievement_roadmap;
                         commit('setRoadmap', roadmap.filter(a => a.key === 'eterna_essentials' && a.level <= MAX_LEVEL).sort((a, b) => a.level - b.level));
+                    }
+                } finally {
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_QUEST_ACHIEVEMENT_ROADMAP]({ commit }) {
+                commit('pushIsLoading');
+                try {
+                    const { data } = (await http.get('/get/?type=side_project_roadmap')).data;
+                    if (data.achievement_roadmap) {
+                        const roadmap = <Achievement[]>data.achievement_roadmap;
+                        commit('setQuestRoadmap', roadmap);
                     }
                 } finally {
                     commit('popIsLoading');

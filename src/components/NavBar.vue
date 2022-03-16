@@ -14,6 +14,10 @@
                 <div v-bind:class="atLabs ? `flask-icon` : `flask-disabled`"></div>
                 Labs
             </b-button>
+            <b-button variant="primary" size="lg" class="nav-button" id="quest-btn" :disabled="atQuests" @click="goToQuests">
+                <div v-bind:class="atQuests ? `quests-icon` : `quests-disabled`"></div>
+                Quests
+            </b-button>
             <b-button variant="primary" size="lg" class="nav-button" id="puzzle-btn" :disabled="atPuzzles" @click="goToPuzzles">
                 <div v-bind:class="atPuzzles ? `puzzle-icon` : `puzzle-disabled`"></div>
                 Puzzles

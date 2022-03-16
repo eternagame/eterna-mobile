@@ -4,51 +4,45 @@
     </div>
     <div v-else class="puzzle-view-container">
         <HeaderBar></HeaderBar>
-        <div class="content" v-if="lab_access">
-            <Carousel />
-        </div>
-        <div class="content" v-else>
-            <div class="left-block ">
+        <div class="content">
+            <div class="left-block left-aligned">
                 <div>
-                    <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
-                    <p>Complete these puzzles to unlock access to advanced lab challenges.</p>
-                    <p><strong>Ready?</strong></p>
+                    <img :src="resolveUrl(achievement.image)" :alt="achievement.title" style="object-fit: contain; width: 100%; max-height: 60%;"/>
+                    <p>
+                        {{achievement.desc}}
+                    </p>
                 </div>
             </div>
-             <b-container id="puzzle-scroll">
+            <b-container id="puzzle-scroll">
                 <div id="puzzle-card-wrapper">
-                <TutorialCard
-                    v-for="(puzzle, index) in roadmap"
-                    :key="index"
-                    :highlight="index === Math.floor(playablePuzzleIndex)"
-                    :imgSrc="getAbsUrl(puzzle.image)"
-                    @play="play(puzzle.current_puzzle)"
-                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
-                    v-b-popover.click.blur.top.html="{
-                        content: puzzle.desc,
-                        fallbackPlacement: ['top'],
-                        customClass: 'puzzle-card-popover',
-                        boundary: 'viewport'
-                    }"
-                />
-                <TutorialCard
-                    key="lab"
-                    :highlight="lab_access"
-                    :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
-                    :state="lab_access ? 'completed' : 'locked'"
-                />
-                <div class="finish-card" style="left:100%;" v-if="lab_access">
-                    <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the lab!</strong></p>
-                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
-                    </div>
+                    <PuzzleCard
+                            v-for="(puzzle, index) in puzzles"
+                            :key="index"
+                            :imgSrc="getPuzImg(puzzle.id)"
+                            :title="puzzle.title"
+                            :folder="puzzle.folder"
+                            :reward="puzzle.reward"
+                            :username="puzzle.username"
+                            :user_pfp="puzzle.userpicture"
+                            :num_cleared="puzzle['num-cleared']"
+                            :id="puzzle.id"
+                            :cleared="puzzle.cleared"
+                            :is3d="parseInt(puzzle.has3d)"
+                            :stateCount="puzzle.number_of_states"
+                            :madeByPlayer="puzzle['made-by-player'] === '1'"
+                        />
                 </div>
-            </div>
-        </b-container>
+            </b-container>
         </div>
         <NavBar>
-            <template v-if="!lab_access" v-slot:center>
-                <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
+            <template v-slot:left>
+                <button @click="$router.go(-1)" class="back-button">
+                    <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 8 8 12 12 16"></polyline>
+                        <line x1="16" y1="12" x2="8" y2="12"></line>
+                    </svg>
+                </button>
             </template>
             <template v-slot:right>
                 <div @click="openChat" class="puzzle-view-chat-button" />
@@ -65,25 +59,26 @@ import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import TutorialCard from '../components/TutorialCard.vue'
+import PuzzleCard from '../components/PuzzleCard.vue'
 
-import { Action, Achievement } from '../store';
+import { Action, Achievement, PuzzleItem, PuzzleList } from '../store';
 import ChatManager from '../ChatManager';
 
 
 export default Vue.extend({
     data() {
         return {
-            playablePuzzleIndex: 0,
+            isLoading: true,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
         };
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
+            await this.$store.dispatch(Action.GET_QUEST_ACHIEVEMENT_ROADMAP);
+            await this.$store.dispatch(Action.GET_PUZZLES, new URLSearchParams({type: 'puzzles', ...this.$route.query}));
             this.chat = new ChatManager('chat-container', this.$store);
+            this.isLoading = false;
         } catch (error) {
             console.error(error);
         }
@@ -94,50 +89,37 @@ export default Vue.extend({
         NavBar,
         ProgressBar,
         TutorialCard,
+        PuzzleCard
     },
     computed: {
-        isLoading(): boolean {
-            return this.$store.getters.isLoading;
+        achievement(): Achievement {
+            return (this.$store.state.quest_roadmap as Achievement[]).find(a => a.key == this.$route.params.id && a.level == +this.$route.params.level)!;
         },
-        roadmap(): Achievement[] {
-            return this.$store.state.roadmap;
+        puzzles(): (PuzzleItem & {cleared: boolean})[] {
+            const puzzleList = this.$store.state.puzzle_list as PuzzleList;
+            return puzzleList.puzzles.map(puzzle => ({
+                ...puzzle,
+                cleared: puzzleList.cleared.some(cleared => cleared.nid === puzzle.id)
+            }));
         },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
-        }
     },
     methods: {
-        async logout() {
-            await this.$store.dispatch(Action.LOGOUT);
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-        },
-        clamp(x: number, min: number, max: number) {
-            return Math.max(min, Math.min(max, x));
-        },
-        play(id: number) {
-            this.$router.push(`game/${id}`);
-        },
         openChat() {
             if (this.chat) {
                 this.chat.toggleVisibility();
             }
         },
-        getAbsUrl(relUrl: string) {
-            return process.env.APP_SERVER_URL + relUrl;
+        resolveUrl(path: string) {
+            if (path.startsWith('http')) return path;
+            if (path.startsWith('/')) return process.env.APP_SERVER_URL + path;
+            return process.env.APP_SERVER_URL + '/' + path;
         },
-        setProgressFromRoadmap() {
-            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
-            this.$forceUpdate();
-        },
-        scrollToPuzzleIndex(index : number) {
-            var scroll = document.getElementById('puzzle-scroll');
-            var wrapper = document.getElementById('puzzle-card-wrapper');
-            if (scroll !== null && wrapper !== null) {
-                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
-            }
-        },
+        getPuzImg(nid: string | null){
+            return (
+            nid &&
+            `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
+            );
+        }
     }
 });
 </script>

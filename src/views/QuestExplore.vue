@@ -4,52 +4,47 @@
     </div>
     <div v-else class="puzzle-view-container">
         <HeaderBar></HeaderBar>
-        <div class="content" v-if="lab_access">
-            <Carousel />
-        </div>
-        <div class="content" v-else>
-            <div class="left-block ">
+        <div class="content">
+            <div class="left-block left-aligned">
                 <div>
-                    <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
-                    <p>Complete these puzzles to unlock access to advanced lab challenges.</p>
-                    <p><strong>Ready?</strong></p>
+                    <p><strong>Quests</strong></p>
+                    <p>Master Eterna and unlock new achievements by completing these challenging quests.</p>
                 </div>
             </div>
-             <b-container id="puzzle-scroll">
+            <b-container id="puzzle-scroll">
                 <div id="puzzle-card-wrapper">
-                <TutorialCard
-                    v-for="(puzzle, index) in roadmap"
-                    :key="index"
-                    :highlight="index === Math.floor(playablePuzzleIndex)"
-                    :imgSrc="getAbsUrl(puzzle.image)"
-                    @play="play(puzzle.current_puzzle)"
-                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
-                    v-b-popover.click.blur.top.html="{
-                        content: puzzle.desc,
-                        fallbackPlacement: ['top'],
-                        customClass: 'puzzle-card-popover',
-                        boundary: 'viewport'
-                    }"
-                />
-                <TutorialCard
-                    key="lab"
-                    :highlight="lab_access"
-                    :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
-                    :state="lab_access ? 'completed' : 'locked'"
-                />
-                <div class="finish-card" style="left:100%;" v-if="lab_access">
-                    <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the lab!</strong></p>
-                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
-                    </div>
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('eterna_essentials').image)"
+                        @play="$router.push(`/quests/category/eterna_essentials`)"
+                    />
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('ten_tools').image)"
+                        @play="$router.push(`/quests/category/ten_tools`)"
+                    />
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna3d_expo').image)"
+                        @play="$router.push(`/quests/side_quest_eterna3d_expo/${getAchAtCurrentLevel('side_quest_eterna3d_expo').level}?puzzle_type=AllChallengesPuzzle&search=:Eterna3D Expo&sort=date_asc`)"
+                    />
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_just_for_fun').image)"
+                        @play="$router.push(`/quests/side_quest_just_for_fun/${getAchAtCurrentLevel('side_quest_just_for_fun').level}?puzzle_type=AllChallengesPuzzle&search=Fun&sort=date`)"
+                    />
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna100').image)"
+                        @play="$router.push(`/quests/side_quest_eterna100/${getAchAtCurrentLevel('side_quest_eterna100').level}?puzzle_type=AllChallengesPuzzle&search=:Eterna100&sort=solved`)"
+                    />
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_best_lab_practices').image)"
+                        @play="$router.push(`/quests/side_quest_best_lab_practices/${getAchAtCurrentLevel('side_quest_best_lab_practices').level}?puzzle_type=AllChallengesPuzzle&search=%5BLab%20Tutorial%5D&sort=date`)"
+                    />
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_switch_puzzles').image)"
+                        @play="$router.push(`/quests/side_quest_switch_puzzles/${getAchAtCurrentLevel('side_quest_switch_puzzles').level}?puzzle_type=AllChallengesPuzzle&search=switch&switch=checked&sort=date`)"
+                    />
                 </div>
-            </div>
-        </b-container>
+            </b-container>
         </div>
         <NavBar>
-            <template v-if="!lab_access" v-slot:center>
-                <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
-            </template>
             <template v-slot:right>
                 <div @click="openChat" class="puzzle-view-chat-button" />
             </template>
@@ -73,16 +68,13 @@ import ChatManager from '../ChatManager';
 export default Vue.extend({
     data() {
         return {
-            playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
         };
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
+            await this.$store.dispatch(Action.GET_QUEST_ACHIEVEMENT_ROADMAP);
             this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
             console.error(error);
@@ -100,44 +92,25 @@ export default Vue.extend({
             return this.$store.getters.isLoading;
         },
         roadmap(): Achievement[] {
-            return this.$store.state.roadmap;
-        },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
+            return this.$store.state.quest_roadmap;
         }
     },
     methods: {
-        async logout() {
-            await this.$store.dispatch(Action.LOGOUT);
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-        },
-        clamp(x: number, min: number, max: number) {
-            return Math.max(min, Math.min(max, x));
-        },
-        play(id: number) {
-            this.$router.push(`game/${id}`);
-        },
         openChat() {
             if (this.chat) {
                 this.chat.toggleVisibility();
             }
         },
-        getAbsUrl(relUrl: string) {
-            return process.env.APP_SERVER_URL + relUrl;
+        resolveUrl(path: string) {
+            if (path.startsWith('http')) return path;
+            if (path.startsWith('/')) return process.env.APP_SERVER_URL + path;
+            return process.env.APP_SERVER_URL + '/' + path;
         },
-        setProgressFromRoadmap() {
-            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
-            this.$forceUpdate();
-        },
-        scrollToPuzzleIndex(index : number) {
-            var scroll = document.getElementById('puzzle-scroll');
-            var wrapper = document.getElementById('puzzle-card-wrapper');
-            if (scroll !== null && wrapper !== null) {
-                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
-            }
-        },
+        getAchAtCurrentLevel(key: string) {
+            const allLevels = this.roadmap.filter(a => a.key === key);
+            if (allLevels[0].current_level == allLevels[0].maxlevel) return allLevels.find(a => a.level === a.current_level)!;
+            return allLevels.find(a => a.level === a.current_level + 1)!;
+        }
     }
 });
 </script>

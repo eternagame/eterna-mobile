@@ -4,51 +4,33 @@
     </div>
     <div v-else class="puzzle-view-container">
         <HeaderBar></HeaderBar>
-        <div class="content" v-if="lab_access">
-            <Carousel />
-        </div>
-        <div class="content" v-else>
-            <div class="left-block ">
+        <div class="content">
+            <div class="left-block left-aligned">
                 <div>
-                    <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
-                    <p>Complete these puzzles to unlock access to advanced lab challenges.</p>
-                    <p><strong>Ready?</strong></p>
+                    <p><strong>{{title}}</strong></p>
+                    <p>{{description}}</p>
                 </div>
             </div>
-             <b-container id="puzzle-scroll">
+            <b-container id="puzzle-scroll">
                 <div id="puzzle-card-wrapper">
-                <TutorialCard
-                    v-for="(puzzle, index) in roadmap"
-                    :key="index"
-                    :highlight="index === Math.floor(playablePuzzleIndex)"
-                    :imgSrc="getAbsUrl(puzzle.image)"
-                    @play="play(puzzle.current_puzzle)"
-                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
-                    v-b-popover.click.blur.top.html="{
-                        content: puzzle.desc,
-                        fallbackPlacement: ['top'],
-                        customClass: 'puzzle-card-popover',
-                        boundary: 'viewport'
-                    }"
-                />
-                <TutorialCard
-                    key="lab"
-                    :highlight="lab_access"
-                    :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
-                    :state="lab_access ? 'completed' : 'locked'"
-                />
-                <div class="finish-card" style="left:100%;" v-if="lab_access">
-                    <div>
-                        <p><strong>Now continue to<br/><a href="https://eternagame.org" target="_blank">eternagame.org</a><br/>to keep playing and<br/>join the lab!</strong></p>
-                        <p><b-button variant="primary" style="margin-top:10px;text-transform:uppercase;" href="https://eternagame.org">Let's go</b-button></p>
-                    </div>
+                    <TutorialCard
+                        v-for="ach in roadmap"
+                        :key="ach.title"
+                        :imgSrc="resolveUrl(ach.image)"
+                        @play="$router.push(`/quests/${ach.key}/${ach.level}?puzzle_type=Progression&tags=${ach.title}`)"
+                    />
                 </div>
-            </div>
-        </b-container>
+            </b-container>
         </div>
         <NavBar>
-            <template v-if="!lab_access" v-slot:center>
-                <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
+            <template v-slot:left>
+                <button @click="$router.go(-1)" class="back-button">
+                    <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 8 8 12 12 16"></polyline>
+                        <line x1="16" y1="12" x2="8" y2="12"></line>
+                    </svg>
+                </button>
             </template>
             <template v-slot:right>
                 <div @click="openChat" class="puzzle-view-chat-button" />
@@ -73,16 +55,13 @@ import ChatManager from '../ChatManager';
 export default Vue.extend({
     data() {
         return {
-            playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
         };
     },
     async mounted() {
         try {
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
+            await this.$store.dispatch(Action.GET_QUEST_ACHIEVEMENT_ROADMAP);
             this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
             console.error(error);
@@ -100,44 +79,30 @@ export default Vue.extend({
             return this.$store.getters.isLoading;
         },
         roadmap(): Achievement[] {
-            return this.$store.state.roadmap;
+            return (this.$store.state.quest_roadmap as Achievement[]).filter(a => a.key == this.$route.params.id);
         },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
+        title() {
+            if (this.$route.params.id === 'eterna_essentials') return 'Eterna Essentials';
+            else if (this.$route.params.id === 'ten_tools') return 'Advanced Tutorials';
+            else return '';
+        },
+        description() {
+            if (this.$route.params.id === 'eterna_essentials') return 'Review the basics of puzzle solving';
+            else if (this.$route.params.id === 'ten_tools') return 'Keep learning with these advanced tutorials';
+            else return '';
         }
     },
     methods: {
-        async logout() {
-            await this.$store.dispatch(Action.LOGOUT);
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-        },
-        clamp(x: number, min: number, max: number) {
-            return Math.max(min, Math.min(max, x));
-        },
-        play(id: number) {
-            this.$router.push(`game/${id}`);
-        },
         openChat() {
             if (this.chat) {
                 this.chat.toggleVisibility();
             }
         },
-        getAbsUrl(relUrl: string) {
-            return process.env.APP_SERVER_URL + relUrl;
-        },
-        setProgressFromRoadmap() {
-            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
-            this.$forceUpdate();
-        },
-        scrollToPuzzleIndex(index : number) {
-            var scroll = document.getElementById('puzzle-scroll');
-            var wrapper = document.getElementById('puzzle-card-wrapper');
-            if (scroll !== null && wrapper !== null) {
-                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
-            }
-        },
+        resolveUrl(path: string) {
+            if (path.startsWith('http')) return path;
+            if (path.startsWith('/')) return process.env.APP_SERVER_URL + path;
+            return process.env.APP_SERVER_URL + '/' + path;
+        }
     }
 });
 </script>
