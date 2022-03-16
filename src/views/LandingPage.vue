@@ -3,26 +3,7 @@
         <b-spinner class="loading-spinner" />
     </div>
     <div v-else class="puzzle-view-container">
-        <b-row id="puzzle-view-header">
-            <b-col class="text-left" style="height: 100%; padding-top: 14px;">
-                <b-img class="header-logo" :src="logoSourcePng" />
-            </b-col>
-            <b-col>
-                <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
-                    <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button" menu-class="puzzle-view-button" no-caret>
-                        <template #button-content>
-                            <b style="line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
-                            <div class="puzzle-view-icon-people" />
-                        </template>
-                        <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                    </b-dropdown>
-                </b-row>
-                <b-row v-else style="justify-content:flex-end;margin-top:12px;">
-                    <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin" to="login">Log in</b-button>
-                    <b-button class="puzzle-view-button" variant="secondary" to="register">Register</b-button>
-                </b-row>
-            </b-col>
-        </b-row>
+        <HeaderBar></HeaderBar>
         <div class="content" v-if="lab_access">
             <Carousel />
         </div>
@@ -65,39 +46,26 @@
             </div>
         </b-container>
         </div>
-        <b-row id="puzzle-view-footer">
-            <b-col>
-                <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <router-link to="about">
-                        <div class="puzzle-view-about-button" />
-                    </router-link>
-                </b-row>
-            </b-col>
-            <b-col class="col-8" style="padding:0" v-if="!lab_access">
-                <div>
-                    <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
-                </div>
-            </b-col>
-            <b-col class="col-8" style="padding:0" v-if="lab_access">
-                <NavBar/>
-            </b-col>
-            
-            <b-col>
-                <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <div @click="openChat" class="puzzle-view-chat-button" />
-                </b-row>
-            </b-col>
-        </b-row>
+        <NavBar>
+            <template v-if="!lab_access" v-slot:center>
+                <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
+            </template>
+            <template v-slot:right>
+                <div @click="openChat" class="puzzle-view-chat-button" />
+            </template>
+        </NavBar>
         <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import Carousel from '../components/Carousel.vue'
+import HeaderBar from '../components/HeaderBar.vue'
+import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import TutorialCard from '../components/TutorialCard.vue'
-import NavBar from '../components/NavBar.vue'
-import Carousel from '../components/Carousel.vue'
+
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
 
@@ -122,20 +90,15 @@ export default Vue.extend({
         }
     },
     components: {
+        Carousel,
+        HeaderBar,
+        NavBar,
         ProgressBar,
         TutorialCard,
-        NavBar,
-        Carousel,
     },
     computed: {
         isLoading(): boolean {
             return this.$store.getters.isLoading;
-        },
-        loggedIn(): boolean {
-            return this.$store.state.loggedIn;
-        },
-        username(): string {
-            return this.$store.state.username;
         },
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;

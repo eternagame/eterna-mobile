@@ -188,6 +188,17 @@ export interface LabData {
     player_max_submissions: number;
   }
 
+  export interface UserData {
+      mail: string,
+      picture: string,
+      points: string
+      rank: number,
+      synthesized_count: number,
+      mail_notification: boolean,
+      news_notification: boolean,
+      achievements: {}
+  }
+
 export const Action = {
     AUTHENTICATE: 'AUTHENTICATE',
     LOGIN: 'LOGIN',
@@ -197,6 +208,7 @@ export const Action = {
     GET_LAB: 'GET_LAB',
     GET_PUZZLES: 'GET_PUZZLES',
     GET_PUZZLE: 'GET_PUZZLE',
+    GET_PROFILE: 'GET_PROFILE'
 };
 
 const MAX_LEVEL = 8;
@@ -209,6 +221,7 @@ export default function createStore(http: AxiosInstance) {
             loggedIn: false,
             uid: <number | null>null,
             username: <string | null>null,
+            user: <UserData | null>null,
             roadmap: <Achievement[]>[],
             labdata: <LabCardData[]>[],
             lab_total: 0,
@@ -260,6 +273,9 @@ export default function createStore(http: AxiosInstance) {
             setCurrentPuzzle(state, puzzle){
                 state.current_puzzle = puzzle;
             },
+            setUserData(state, user) {
+                state.user = user
+            }
         },
         actions: {
             async [Action.AUTHENTICATE]({ commit }) {
@@ -360,6 +376,28 @@ export default function createStore(http: AxiosInstance) {
                 try{
                     const { puzzle, cleared } = (await http.get(`/get/?type=puzzle&nid=${id}&script=-1`)).data.data;
                     commit('setCurrentPuzzle', {...puzzle, cleared: (cleared as ClearedPuzzle[]).some(clear => clear.nid === puzzle.id)});
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_PROFILE]({ commit }, { id }: { id: string}){
+                commit('pushIsLoading');
+                try{
+                    const { user, achievements } = (await http.get(`/get/?type=user&uid=${id}&tab_type=about`)).data.data;
+                    const mail_notification = user["Mail notification"] === "on" ? true : false;
+                    const news_notification = user["News mail notification"] === "on" ? true : false;
+
+                    commit('setUserData', {
+                        mail: user.mail,
+                        picture: user.picture,
+                        points: user.points,
+                        rank: user.rank,
+                        synthesized_count: user.synthesized_count,
+                        mail_notification: mail_notification,
+                        news_notification: news_notification,
+                        achievements
+                    });
                 }
                 finally{
                     commit('popIsLoading');

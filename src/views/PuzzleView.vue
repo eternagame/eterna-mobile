@@ -3,26 +3,7 @@
         <b-spinner class="loading-spinner" />
     </div>
     <div v-else class="puzzle-view-container">
-        <b-row id="puzzle-view-header">
-            <b-col class="d-flex mh-100">
-                <b-img class="mh-100" :src="logoSourcePng" />
-            </b-col>
-            <b-col>
-                <b-row v-if="loggedIn" style="justify-content:flex-end;margin-top:12px;">
-                    <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button" menu-class="puzzle-view-button" no-caret>
-                        <template #button-content>
-                            <b style="line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
-                            <div class="puzzle-view-icon-people" />
-                        </template>
-                        <b-dropdown-item @click="logout">Logout</b-dropdown-item>
-                    </b-dropdown>
-                </b-row>
-                <b-row v-else style="justify-content:flex-end;margin-top:12px;">
-                    <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin" to="login">Log in</b-button>
-                    <b-button class="puzzle-view-button" variant="secondary" to="register">Register</b-button>
-                </b-row>
-            </b-col>
-        </b-row>
+        <HeaderBar></HeaderBar>
         <div class="content">
             <div class="left-block left-aligned">
                 <div>
@@ -67,36 +48,29 @@
                 </div>
             </b-container>
         </div>
-        <b-row id="puzzle-view-footer">
-            <b-col>
-                <b-row style="justify-content:flex-start;align-items:flex-start;">
-                    <button @click="$router.go(-1)" class="back-button">
-                        <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 8 8 12 12 16"></polyline>
-                            <line x1="16" y1="12" x2="8" y2="12"></line>
-                        </svg>
-                    </button>
-                </b-row>
-            </b-col>
-            <b-col class="col-8" style="padding:0" v-if="true">
-                <NavBar/>
-            </b-col>
-            
-            <b-col>
-                <b-row style="justify-content:flex-end;align-items:flex-end;">
-                    <div @click="openChat" class="puzzle-view-chat-button" />
-                </b-row>
-            </b-col>
-        </b-row> 
+        <NavBar>
+            <template v-slot:left>
+                <button @click="$router.go(-1)" class="back-button">
+                    <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 8 8 12 12 16"></polyline>
+                        <line x1="16" y1="12" x2="8" y2="12"></line>
+                    </svg>
+                </button>
+            </template>
+            <template v-slot:right>
+                <div @click="openChat" class="puzzle-view-chat-button" />
+            </template>
+        </NavBar>
         <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 <script lang="ts">
 import Vue from 'vue';
 import DOMPurify from 'dompurify';
-import PuzzleCard from '../components/PuzzleCard.vue';
+import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
+import PuzzleCard from '../components/PuzzleCard.vue';
 import { Achievement, Action, Puzzle } from '../store';
 import ChatManager from '../ChatManager';
 
@@ -110,19 +84,13 @@ export default Vue.extend({
         };
     },
     components: {
+        HeaderBar,
+        NavBar,
         PuzzleCard,
-        NavBar
     },
     computed: {
         isLoading(): boolean {
             return this.$store.getters.isLoading;
-        },
-        
-        loggedIn(): boolean {
-            return this.$store.state.loggedIn;
-        },
-        username(): string {
-            return this.$store.state.username;
         },
         puzzle(): Puzzle & {cleared: boolean} {
             return this.$store.state.current_puzzle;

@@ -1,42 +1,30 @@
 <template>
-    <b-container style="padding:0; display: flex; position: relative; top: -2vmin;" class="nav-bar">
-            <b-col>
-                <b-button variant="primary" size="lg"  class="nav-button" id="home-btn" :disabled="atHome" @click="goToHome()">
-                    <div class="home-icon" v-if="atHome">
-                    </div>
-                    <div class="home-disabled" v-else>
-                    </div>
-                    Home
-                </b-button>
-            </b-col>
-            <b-col>
-                <b-button variant="primary" size="lg" class="nav-button" id="lab-btn" :disabled="atLabs" @click="goToLabs()">
-                    <div class="flask-icon" v-if="atLabs">
-                    </div>
-                    <div class="flask-disabled" v-else>
-                    </div>
-                    Labs
-                </b-button>
-            </b-col>
-            <!-- <b-col>
-                <b-button variant="primary" size="lg" class="nav-button" id="quests-btn" :disabled="atQuests" @click="goToQuests()">
-                    <div class="quests-icon" v-if="atQuests">
-                    </div>
-                    <div class="quests-disabled" v-else>
-                    </div>
-                    Quests
-                </b-button>
-            </b-col> -->
-            <b-col>
-                <b-button variant="primary" size="lg" class="nav-button" id="puzzle-btn" :disabled="atPuzzles" @click="goToPuzzles()">
-                    <div class="puzzle-icon" v-if="atPuzzles">
-                    </div>
-                    <div class="puzzle-disabled" v-else>
-                    </div>
-                    Puzzles
-                </b-button>
-            </b-col>
-    </b-container>
+    <section class="nav-bar">
+        <div class="nav-button">
+            <slot name="left">
+                <div @click="goToAbout" class="puzzle-view-about-btn" />
+            </slot>
+        </div>
+        <slot name="center">
+            <b-button variant="primary" size="lg"  class="nav-button" id="home-btn" :disabled="atHome" @click="goToHome">
+                <div v-bind:class="atHome ? `home-icon` : `home-disabled`"></div>
+                Home
+            </b-button>
+            <b-button variant="primary" size="lg" class="nav-button" id="lab-btn" :disabled="atLabs" @click="goToLabs">
+                <div v-bind:class="atLabs ? `flask-icon` : `flask-disabled`"></div>
+                Labs
+            </b-button>
+            <b-button variant="primary" size="lg" class="nav-button" id="puzzle-btn" :disabled="atPuzzles" @click="goToPuzzles">
+                <div v-bind:class="atPuzzles ? `puzzle-icon` : `puzzle-disabled`"></div>
+                Puzzles
+            </b-button>
+        </slot>
+        <div class="nav-button">
+            <slot name="right">
+                <div class="puzzle-view-chat-btn" />
+            </slot>
+        </div>
+    </section>
 </template>
 
 <script lang="ts">
@@ -71,14 +59,17 @@ export default Vue.component('puzzle-view-progress-bar', {
         }
     },
     methods:{
-        goToPuzzles(){
-            this.$router.push('/puzzles');
+        goToAbout() {
+            this.$router.push('/about');
+        },
+        goToHome() {
+            this.$router.push('/home');
         },
         goToLabs() {
             this.$router.push('/labs');
         },
-        goToHome() {
-            this.$router.push('/home');
+        goToPuzzles(){
+            this.$router.push('/puzzles');
         },
         goToQuests() {
             this.$router.push('/quests');
@@ -89,10 +80,44 @@ export default Vue.component('puzzle-view-progress-bar', {
 
 <style lang="scss" scoped>
 
+section.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 3vmin;
+    position: absolute;
+    bottom: 0;
+}
+
+.puzzle-view-about-btn {
+    background: url('../assets/noun_info.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    width: 6vmin;
+    height: 6vmin;
+}
+
+.puzzle-view-chat-btn {
+    background: url('../assets/Chat.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+    width: 9vmin;
+    height: 8vmin;
+}
+
 button:disabled,
 button[disabled]{
   color: #fff; // highlight current tab and also disable it
   opacity: 1;
+}
+
+.nav-bar {
+    padding: 0;
+    display: flex;
+    width: 100%;
 }
 
 .nav-bar .btn-primary{
@@ -101,10 +126,8 @@ button[disabled]{
 }
 
 .nav-button{
-    margin-top: 3%;
     color: #ffffff7a; //grey until set by the page
     padding: 0;
-    width: 49%;
     // height: 6.5vmin; Comment this to show labels on mobile
     border-radius: 1vmin;
     text-align: center;
