@@ -1,7 +1,10 @@
 <template>
   <section id="profile-page">
     <HeaderBar class="header-bar"></HeaderBar>
-    <div class="content">
+    <div v-if="isLoading">
+        <b-spinner class="loading-spinner" />
+    </div>
+    <div v-else class="content">
       <div class="user-data">
         <div class="user-avatar">
           <img :src="avatarUrl" alt="Profile Picture" class="r">
@@ -34,7 +37,17 @@
           </b-container>
       </div>
     </div>
-    <NavBar class="nav-bar"></NavBar>
+    <NavBar class="nav-bar">
+      <template v-slot:left>
+        <button @click="$router.go(-1)" class="back-button">
+          <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 8 8 12 12 16"></polyline>
+            <line x1="16" y1="12" x2="8" y2="12"></line>
+          </svg>
+        </button>
+      </template>
+    </NavBar>
   </section>
 </template>
 
@@ -48,6 +61,9 @@ export default Vue.extend({
       return {};
     },
     computed: {
+      isLoading(): boolean {
+        return this.$store.getters.isLoading;
+      },
       username(): string {
         return this.$store.state?.username;
       },
