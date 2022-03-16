@@ -8,6 +8,7 @@
             <div class="puzzle-view-icon-people" />
         </template>
         <b-dropdown-item to="/profile">Profile</b-dropdown-item>
+        <b-dropdown-item to="/settings">Settings</b-dropdown-item>
         <b-dropdown-item @click="logout">Logout</b-dropdown-item>
       </b-dropdown>
     </div>

@@ -187,13 +187,15 @@ export interface LabData {
     num_synthesized: number;
     player_max_submissions: number;
   }
-  
+
   export interface UserData {
       mail: string,
       picture: string,
       points: string
       rank: number,
       synthesized_count: number,
+      mail_notification: boolean,
+      news_notification: boolean,
       achievements: {}
   }
 
@@ -383,6 +385,8 @@ export default function createStore(http: AxiosInstance) {
                 commit('pushIsLoading');
                 try{
                     const { user, achievements } = (await http.get(`/get/?type=user&uid=${id}&tab_type=about`)).data.data;
+                    const mail_notification = user["Mail notification"] === "off" ? true : false;
+                    const news_notification = user["News Mail notification"] === "off" ? true : false;
 
                     commit('setUserData', {
                         mail: user.mail,
@@ -390,6 +394,8 @@ export default function createStore(http: AxiosInstance) {
                         points: user.points,
                         rank: user.rank,
                         synthesized_count: user.synthesized_count,
+                        mail_notification: mail_notification,
+                        news_notification: news_notification,
                         achievements
                     });
                 }

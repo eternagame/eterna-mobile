@@ -9,7 +9,8 @@ import LandingPage from '../views/LandingPage.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import ResetPassword from '../views/ResetPassword.vue';
-import Profile from '../views/Profile.vue'
+import Settings from '../views/Settings.vue';
+import Profile from '../views/Profile.vue';
 import PuzzleExplore from '../views/PuzzleExplore.vue';
 import PuzzleView from '../views/PuzzleView.vue';
 
@@ -39,6 +40,10 @@ const routes: Array<RouteConfig> = [
     {
         path: '/profile',
         component: Profile,
+    },
+    {
+        path: '/settings',
+        component: Settings,
     },
     {
         path: '/game/:puzzle',
