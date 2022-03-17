@@ -97,10 +97,25 @@ export default Vue.extend({
         },
         puzzles(): (PuzzleItem & {cleared: boolean})[] {
             const puzzleList = this.$store.state.puzzle_list as PuzzleList;
-            return puzzleList.puzzles.map(puzzle => ({
+            const puzzlesWithCleared = puzzleList.puzzles.map(puzzle => ({
                 ...puzzle,
                 cleared: puzzleList.cleared.some(cleared => cleared.nid === puzzle.id)
             }));
+
+            // Sort such that puzzle A which specifies its next puzzle is puzzle B is sorted before puzzle A
+            // The first puzzle is the one that has no other puzzle pointing to it
+            const orderedPuzzles: (PuzzleItem & {cleared: boolean})[] = [];
+            let puzzle = puzzlesWithCleared.find(
+                candidatePuzzle => !puzzlesWithCleared.some(otherPuzzle => otherPuzzle['next-puzzle'] === candidatePuzzle.id)
+            );
+            while (puzzle) {
+                orderedPuzzles.push(puzzle);
+                const nextPuzzle = puzzle['next-puzzle'];
+                puzzle = puzzlesWithCleared.find(candidatePuzzle => candidatePuzzle.id === nextPuzzle);
+            }
+            // Add any additional puzzles not part of the next puzzle "chain"
+            orderedPuzzles.push(...puzzlesWithCleared.filter(candidatePuzzle => !orderedPuzzles.includes(candidatePuzzle)));
+            return orderedPuzzles;
         },
     },
     methods: {
