@@ -47,6 +47,12 @@
           </svg>
         </button>
       </template>
+      <template v-if="!lab_access" v-slot:center>
+        <b-button variant="primary" size="lg" class="nav-button" id="home-btn" @click="$router.push('/')">
+          <div class="home-disabled"></div>
+          Home
+        </b-button>
+      </template>
       <template v-slot:right><div></div></template>
     </NavBar>
   </section>
@@ -84,6 +90,9 @@ export default Vue.extend({
       achievements() {
         return this.$store.state.user ? Object.values(this.$store.state.user.achievements) : [];
       },
+      lab_access() {
+        return this.$store.state.user.lab_access;
+      }
     },
     methods: {
       resolveUrl(path: string) {
