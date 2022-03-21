@@ -10,13 +10,13 @@
             </b-alert>
         </div>
         <b-form-group>
-            <router-link to="reset-password">Forgot your password?</router-link>
+            <router-link to="/reset-password">Forgot your password?</router-link>
         </b-form-group>
         <b-form-group>
             <b-button variant="primary" :disabled="isLoading" size="md" @click="doLogin">Enter</b-button>
         </b-form-group>
         <b-form-group>
-            <router-link to="register">Register</router-link>
+            <router-link to="/register">Register</router-link>
         </b-form-group>
     </b-form>
 </template>
@@ -55,7 +55,7 @@ export default Vue.extend({
                         this.showError = true;
                     }
                     if (this.loggedIn) {
-                        this.$router.replace('home');
+                        this.$router.replace('/home');
                     }
                 } catch (error) {
                     console.error('Error:', error);

@@ -1,10 +1,11 @@
 <template>
-    <b-button class="puzzle-card-container" @click="goToPuzzle">
+    <b-button :class="{'puzzle-card-locked': locked}" class="puzzle-card-container" @click="goToPuzzle">
         <img v-if="cleared" src="../assets/noun_checkmark_lg.png" alt="Completed" class="puzzle-card-icon-checkmark" />
         <div v-if="!playable" class="puzzle-card-title">
             {{title}}
         </div>
         <b-img class="puzzle-card-thumbnail" :src="imgSrc" />
+        <div v-if="locked" class="puzzle-card-icon-lock" />
         <div v-if="!playable" class="row-position">
             <div class="meta-row meta-gameplay">
                 <div class="meta-tag meta-engine">
@@ -42,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="playable" class="button-position">
+        <div v-if="playable && !locked" class="button-position">
             <b-button variant="primary"  class="puzzle-card-button" @click="$emit('play')">Play Now</b-button>
         </div>
     </b-button>
@@ -103,6 +104,10 @@ export default Vue.component('puzzle-card', {
         madeByPlayer: {
             type: Boolean,
             default: true
+        },
+        locked: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
@@ -293,5 +298,15 @@ export default Vue.component('puzzle-card', {
     padding: 1px 3px;
     border-radius: 2px;
     margin: 0 5px;
+}
+.puzzle-card-icon-lock {
+    background-image: url('../assets/noun_lock_lg.png');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    width: 4.0vmin;
+    height: 5.8vmin;
+    margin-top: 1vmin;
+    display: inline-block;
 }
 </style>

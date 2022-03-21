@@ -27,11 +27,13 @@
                             :user_pfp="puzzle.userpicture"
                             :num_cleared="puzzle['num-cleared']"
                             :id="puzzle.id"
-                            :cleared="puzzle.cleared"
+                            :cleared="isCleared(puzzle)"
                             :is3d="parseInt(puzzle.has3d) === 1"
                             :stateCount="puzzle.number_of_states.toString(10)"
                             :madeByPlayer="puzzle['made-by-player'] === '1'"
                             @play="play(parseInt(puzzle.id, 10))"
+                            :locked="isLocked(puzzle.id)"
+                            :playable="firstQuest"
                         />
                         <button v-if="morePuzzlesAvailable" class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
                     </div>
@@ -48,6 +50,12 @@
                     </svg>
                 </button>
             </template>
+            <template v-if="!lab_access" v-slot:center>
+                <b-button variant="primary" size="lg" class="nav-button" id="home-btn" @click="$router.push('/')">
+                <div class="home-disabled"></div>
+                Home
+                </b-button>
+            </template>
             <template v-slot:right>
                 <div @click="openChat" class="puzzle-view-chat-button" />
             </template>
@@ -62,13 +70,17 @@ import FilterBar from '../components/FilterBar.vue';
 import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
-import { Action, Achievement, PuzzleData, PuzzleItem, PuzzleList } from '../store';
+import { Action, Achievement, PuzzleItem, PuzzleList } from '../store';
 import ChatManager from '../ChatManager';
 
 
 export default Vue.extend({
     props: {
-        forQuest: Boolean
+        forQuest: Boolean,
+        quest: {
+            type: Object,
+            default: null
+        }
     },
     data() {
         return {
@@ -95,6 +107,7 @@ export default Vue.extend({
                 ]
             }
 
+            await this.$store.dispatch('GET_PROFILE', {id: this.$store.state.uid});
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
             await this.fetchNewPuzzles();
             this.setProgressFromRoadmap();
@@ -148,11 +161,14 @@ export default Vue.extend({
                 return [];
             }
         },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
+        lab_access() {
+            return this.$store.state.user.lab_access;
         },
         morePuzzlesAvailable(): boolean {
             return this.numberOfPuzzles < parseInt(this.$store.state.puzzle_list.num_puzzles);
+        },
+        firstQuest(): boolean {
+            return !!this.$route.query.firstQuest;
         }
     },
     methods: {
@@ -190,7 +206,7 @@ export default Vue.extend({
             return Math.max(min, Math.min(max, x));
         },
         play(id: number) {
-            this.$router.push(`game/${id}`);
+            this.$router.push(`/game/${id}`);
         },
         openChat() {
             if (this.chat) {
@@ -218,6 +234,20 @@ export default Vue.extend({
             `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
             );
         },
+        isCleared(puzzle: PuzzleItem & {cleared: boolean}) {
+            if (!this.firstQuest) return puzzle.cleared;
+            const thispuzidx = this.puzzles.findIndex(puz => puz.id === puzzle.id);
+            const currpuzidx = this.puzzles.findIndex(puz => puz.id === this.quest.current_puzzle);
+            if (currpuzidx === -1) return true;
+            return thispuzidx < currpuzidx;
+        },
+        isLocked(puzId: string) {
+            if (!this.firstQuest || !this.quest) return false;
+            const thispuzidx = this.puzzles.findIndex(puz => puz.id === puzId);
+            const currpuzidx = this.puzzles.findIndex(puz => puz.id === this.quest.current_puzzle);
+            if (currpuzidx === -1) return false;
+            return thispuzidx > currpuzidx;
+        }
     }
 });
 </script>

@@ -18,14 +18,14 @@
              <b-container id="puzzle-scroll">
                 <div id="puzzle-card-wrapper">
                 <TutorialCard
-                    v-for="(puzzle, index) in roadmap"
+                    v-for="(quest, index) in roadmap"
                     :key="index"
                     :highlight="index === Math.floor(playablePuzzleIndex)"
-                    :imgSrc="getAbsUrl(puzzle.image)"
-                    @play="play(puzzle.current_puzzle)"
-                    :state="puzzle.to_next >= 1 ? 'completed' : (puzzle.level - 1) > puzzle.current_level ? 'locked' : 'unlocked'"
+                    :imgSrc="getAbsUrl(quest.image)"
+                    @play="$router.push(`/quests/${quest.key}/${quest.level}?progression=true&tags=${quest.title}&firstQuest=true`)"
+                    :state="quest.to_next >= 1 ? 'completed' : (quest.level - 1) > quest.current_level ? 'locked' : 'unlocked'"
                     v-b-popover.click.blur.top.html="{
-                        content: puzzle.desc,
+                        content: quest.desc,
                         fallbackPlacement: ['top'],
                         customClass: 'puzzle-card-popover',
                         boundary: 'viewport'
@@ -81,6 +81,7 @@ export default Vue.extend({
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+            await this.$store.dispatch('GET_PROFILE', {id: this.$store.state.uid});
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
             this.chat = new ChatManager('chat-container', this.$store);
@@ -102,8 +103,8 @@ export default Vue.extend({
         roadmap(): Achievement[] {
             return this.$store.state.roadmap;
         },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
+        lab_access() {
+            return this.$store.state.user.lab_access;
         }
     },
     methods: {
@@ -115,9 +116,6 @@ export default Vue.extend({
         },
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
-        },
-        play(id: number) {
-            this.$router.push(`game/${id}`);
         },
         openChat() {
             if (this.chat) {

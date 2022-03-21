@@ -35,7 +35,7 @@ export default Vue.extend({
                 });
                 const {data} = (await this.$http.post('/login/', params)).data;
                 if (data.success) {
-                    this.$router.replace('puzzles');
+                    this.$router.replace('/home');
                 } else {
                     console.error('Error:', data.error);
                     this.error = data.error;
