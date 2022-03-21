@@ -8,9 +8,7 @@
             <div class="left-block left-aligned">
                 <div>
                     <img :src="resolveUrl(achievement.image)" :alt="achievement.title" style="object-fit: contain; width: 100%; max-height: 60%;"/>
-                    <p>
-                        {{achievement.desc}}
-                    </p>
+                    <p v-html="description"></p>
                 </div>
             </div>
             <b-container id="puzzle-scroll">
@@ -60,6 +58,7 @@ import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import TutorialCard from '../components/TutorialCard.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
+import DOMPurify from 'dompurify'
 
 import { Action, Achievement, PuzzleItem, PuzzleList } from '../store';
 import ChatManager from '../ChatManager';
@@ -117,6 +116,9 @@ export default Vue.extend({
             orderedPuzzles.push(...puzzlesWithCleared.filter(candidatePuzzle => !orderedPuzzles.includes(candidatePuzzle)));
             return orderedPuzzles;
         },
+        description(): string{
+            return DOMPurify.sanitize(this.achievement.desc);
+        }
     },
     methods: {
         openChat() {
