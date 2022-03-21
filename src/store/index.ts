@@ -193,6 +193,7 @@ export interface LabData {
       picture: string,
       points: string
       rank: number,
+      lab_access: boolean,
       synthesized_count: number,
       mail_notification: boolean,
       news_notification: boolean,
@@ -393,6 +394,7 @@ export default function createStore(http: AxiosInstance) {
                         picture: user.picture,
                         points: user.points,
                         rank: user.rank,
+                        lab_access: user.is_lab_member,
                         synthesized_count: user.synthesized_count,
                         mail_notification: mail_notification,
                         news_notification: news_notification,
