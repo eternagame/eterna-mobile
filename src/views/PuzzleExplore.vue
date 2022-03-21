@@ -98,10 +98,14 @@ export default Vue.extend({
         },
         puzzles(): (PuzzleItem & {cleared: boolean})[] {
             const puzzleList = this.$store.state.puzzle_list as PuzzleList;
-            return puzzleList.puzzles.map(puzzle => ({
-                ...puzzle,
-                cleared: puzzleList.cleared.some(cleared => cleared.nid === puzzle.id)
-            }));
+            if (puzzleList) {
+                return puzzleList.puzzles.map(puzzle => ({
+                    ...puzzle,
+                    cleared: puzzleList.cleared ? puzzleList.cleared.some(cleared => cleared.nid === puzzle.id) : false,
+                }));
+            } else {
+                return [];
+            }
         },
         lab_access(): boolean {
             return this.playablePuzzleIndex >= this.roadmap.length;
