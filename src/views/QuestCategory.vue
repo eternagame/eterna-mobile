@@ -17,7 +17,7 @@
                         v-for="ach in roadmap"
                         :key="ach.title"
                         :imgSrc="resolveUrl(ach.image)"
-                        @play="$router.push(`/quests/${ach.key}/${ach.level}?puzzle_type=Progression&tags=${ach.title}`)"
+                        @play="$router.push(`/quests/${ach.key}/${ach.level}?progression=true&tags=${ach.title}`)"
                     />
                 </div>
             </b-container>

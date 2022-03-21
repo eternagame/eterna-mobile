@@ -1,176 +1,19 @@
 <template>
-    <div v-if="isLoading">
-        <b-spinner class="loading-spinner" />
-    </div>
-    <div v-else class="puzzle-view-container">
-       <HeaderBar></HeaderBar>
-        <div class="content">
-            <div class="left-block left-aligned">
-                <div>
-                    <p><strong>Puzzles</strong></p>
-                    <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
-                </div>
-            </div>
-            <div class="right-block">
-                <FilterBar 
-                v-bind:filters="availableFilters"
-                @filter="fetchNewPuzzles"/>
-                <b-container id="puzzle-scroll">
-                    <div id="puzzle-card-wrapper">
-                        <PuzzleCard
-                            v-for="(puzzle, index) in puzzles"
-                            :key="index"
-                            :imgSrc="getPuzImg(puzzle.id)"
-                            :title="puzzle.title"
-                            :folder="puzzle.folder"
-                            :reward="puzzle.reward"
-                            :username="puzzle.username"
-                            :user_pfp="puzzle.userpicture"
-                            :num_cleared="puzzle['num-cleared']"
-                            :id="puzzle.id"
-                            :cleared="puzzle.cleared"
-                            :is3d="parseInt(puzzle.has3d)"
-                            :stateCount="puzzle.number_of_states"
-                            @play="play(parseInt(puzzle.id, 10))"
-                        />
-                        <button v-if="morePuzzlesAvailable" class="btn btn-secondary fetch-puzzles-btn" @click="fetchMorePuzzles">Load More Puzzles</button>
-                    </div>
-                </b-container>
-            </div>
-        </div>
-        <NavBar>
-            <template v-slot:right>
-                <div @click="openChat" class="puzzle-view-chat-button" />
-            </template>
-        </NavBar>
-        <div id="chat-container" class="chat hidden"></div>
-    </div>
+    <BasePuzzleListPage :forQuest="false">
+        <template v-slot:left-block>
+            <p><strong>Puzzles</strong></p>
+            <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
+        </template>
+    </BasePuzzleListPage>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import FilterBar from '../components/FilterBar.vue';
-import HeaderBar from '../components/HeaderBar.vue'
-import NavBar from '../components/NavBar.vue'
-import PuzzleCard from '../components/PuzzleCard.vue'
-import { Action, Achievement, PuzzleData, PuzzleItem, PuzzleList } from '../store';
-import ChatManager from '../ChatManager';
-
+import BasePuzzleListPage from '../components/BasePuzzleListPage.vue'
 
 export default Vue.extend({
-    data() {
-        return {
-            availableFilters: [
-                { value: 'challenge', text: 'Challenges' },
-                { value: 'player', text: 'Player' },
-                { value: 'single', text: 'Single State' },
-                { value: 'notcleared', text: 'Uncleared' },
-            ],
-            numberOfPuzzles: 9,
-            playablePuzzleIndex: 0,
-            chat: <ChatManager | null>null,
-            logoSourcePng: require('../assets/logo_eterna.svg'),
-        };
-    },
-    async mounted() {
-        try {
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            await this.fetchNewPuzzles();
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-            this.chat = new ChatManager('chat-container', this.$store);
-        } catch (error) {
-            console.error(error);
-        }
-    },
     components: {
-        FilterBar,
-        HeaderBar,
-        NavBar,
-        PuzzleCard,
-    },
-    computed: {
-        isLoading(): boolean {
-            return this.$store.getters.isLoading;
-        },
-        roadmap(): Achievement[] {
-            return this.$store.state.roadmap;
-        },
-        puzzles(): (PuzzleItem & {cleared: boolean})[] {
-            const puzzleList = this.$store.state.puzzle_list as PuzzleList;
-            if (puzzleList) {
-                return puzzleList.puzzles.map(puzzle => ({
-                    ...puzzle,
-                    cleared: puzzleList.cleared ? puzzleList.cleared.some(cleared => cleared.nid === puzzle.id) : false,
-                }));
-            } else {
-                return [];
-            }
-        },
-        lab_access(): boolean {
-            return this.playablePuzzleIndex >= this.roadmap.length;
-        },
-        morePuzzlesAvailable(): boolean {
-            return this.numberOfPuzzles < parseInt(this.$store.state.puzzle_list.num_puzzles);
-        }
-    },
-    methods: {
-        async fetchNewPuzzles() {
-            // Get filters from query, then convert to API's expected parameters
-            // Will change with Eterna-Next API
-            const query = this.$route.query;
-            const filters = `${query.filters}`.split(',');
-            let puzzleFilter = `puzzle_type=AllChallengesPuzzle`;
-            if (filters.includes("challenge") && !filters.includes("player"))    {puzzleFilter = `puzzle_type=Challenge`}
-            if (filters.includes("player")    && !filters.includes("challenge")) {puzzleFilter = `puzzle_type=PlayerPuzzle`}
-            const singleFilter = filters.includes("single") ? `single=checked` : `single=false`;
-            const clearedFilter = filters.includes("notcleared") ? `notcleared=true` : `notcleared=false`;
-            const clearedUIDFilter = `uid=${this.$store.state.uid}`;
-            const requestString = `type=puzzles&sort=date&size=${this.numberOfPuzzles}&${puzzleFilter}&${singleFilter}&${clearedFilter}&${clearedUIDFilter}`;
-            await this.$store.dispatch(Action.GET_PUZZLES, requestString);
-        },
-        async fetchMorePuzzles() {
-            this.numberOfPuzzles += 9;
-            await this.fetchNewPuzzles();
-        },
-        async logout() {
-            await this.$store.dispatch(Action.LOGOUT);
-            await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
-            this.setProgressFromRoadmap();
-            this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-        },
-        clamp(x: number, min: number, max: number) {
-            return Math.max(min, Math.min(max, x));
-        },
-        play(id: number) {
-            this.$router.push(`game/${id}`);
-        },
-        openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
-        },
-        getAbsUrl(relUrl: string) {
-            return process.env.APP_SERVER_URL + relUrl;
-        },
-        setProgressFromRoadmap() {
-            this.playablePuzzleIndex = Number(this.roadmap[0].current_level);
-            this.$forceUpdate();
-        },
-        scrollToPuzzleIndex(index : number) {
-            var scroll = document.getElementById('puzzle-scroll');
-            var wrapper = document.getElementById('puzzle-card-wrapper');
-            if (scroll !== null && wrapper !== null) {
-                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
-                // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
-            }
-        },
-        getPuzImg(nid: string | null){
-            return (
-            nid &&
-            `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
-            );
-        },
+        BasePuzzleListPage
     }
 });
 </script>

@@ -23,23 +23,23 @@
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna3d_expo').image)"
-                        @play="$router.push(`/quests/side_quest_eterna3d_expo/${getAchAtCurrentLevel('side_quest_eterna3d_expo').level}?puzzle_type=AllChallengesPuzzle&search=:Eterna3D Expo&sort=date_asc`)"
+                        @play="$router.push(`/quests/side_quest_eterna3d_expo/${getAchAtCurrentLevel('side_quest_eterna3d_expo').level}?search=:Eterna3D Expo&sort=date_asc`)"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_just_for_fun').image)"
-                        @play="$router.push(`/quests/side_quest_just_for_fun/${getAchAtCurrentLevel('side_quest_just_for_fun').level}?puzzle_type=AllChallengesPuzzle&search=Fun&sort=date`)"
+                        @play="$router.push(`/quests/side_quest_just_for_fun/${getAchAtCurrentLevel('side_quest_just_for_fun').level}?search=Fun&sort=date`)"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna100').image)"
-                        @play="$router.push(`/quests/side_quest_eterna100/${getAchAtCurrentLevel('side_quest_eterna100').level}?puzzle_type=AllChallengesPuzzle&search=:Eterna100&sort=solved`)"
+                        @play="$router.push(`/quests/side_quest_eterna100/${getAchAtCurrentLevel('side_quest_eterna100').level}?search=:Eterna100&sort=solved`)"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_best_lab_practices').image)"
-                        @play="$router.push(`/quests/side_quest_best_lab_practices/${getAchAtCurrentLevel('side_quest_best_lab_practices').level}?puzzle_type=AllChallengesPuzzle&search=%5BLab%20Tutorial%5D&sort=date`)"
+                        @play="$router.push(`/quests/side_quest_best_lab_practices/${getAchAtCurrentLevel('side_quest_best_lab_practices').level}?search=%5BLab%20Tutorial%5D&sort=date`)"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_switch_puzzles').image)"
-                        @play="$router.push(`/quests/side_quest_switch_puzzles/${getAchAtCurrentLevel('side_quest_switch_puzzles').level}?puzzle_type=AllChallengesPuzzle&search=switch&switch=checked&sort=date`)"
+                        @play="$router.push(`/quests/side_quest_switch_puzzles/${getAchAtCurrentLevel('side_quest_switch_puzzles').level}?switch=true&search=switch&sort=date`)"
                     />
                 </div>
             </b-container>

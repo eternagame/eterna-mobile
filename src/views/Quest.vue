@@ -1,141 +1,40 @@
 <template>
-    <div v-if="isLoading">
-        <b-spinner class="loading-spinner" />
-    </div>
-    <div v-else class="puzzle-view-container">
-        <HeaderBar></HeaderBar>
-        <div class="content">
-            <div class="left-block left-aligned">
-                <div>
-                    <img :src="resolveUrl(achievement.image)" :alt="achievement.title" style="object-fit: contain; width: 100%; max-height: 60%;"/>
-                    <p v-html="description"></p>
-                </div>
-            </div>
-            <b-container id="puzzle-scroll">
-                <div id="puzzle-card-wrapper">
-                    <PuzzleCard
-                            v-for="(puzzle, index) in puzzles"
-                            :key="index"
-                            :imgSrc="getPuzImg(puzzle.id)"
-                            :title="puzzle.title"
-                            :folder="puzzle.folder"
-                            :reward="puzzle.reward"
-                            :username="puzzle.username"
-                            :user_pfp="puzzle.userpicture"
-                            :num_cleared="puzzle['num-cleared']"
-                            :id="puzzle.id"
-                            :cleared="puzzle.cleared"
-                            :is3d="parseInt(puzzle.has3d)"
-                            :stateCount="puzzle.number_of_states"
-                            :madeByPlayer="puzzle['made-by-player'] === '1'"
-                        />
-                </div>
-            </b-container>
-        </div>
-        <NavBar>
-            <template v-slot:left>
-                <button @click="$router.go(-1)" class="back-button">
-                    <svg viewBox="0 0 24 24" class="feather feather-arrow-left-circle">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 8 8 12 12 16"></polyline>
-                        <line x1="16" y1="12" x2="8" y2="12"></line>
-                    </svg>
-                </button>
-            </template>
-            <template v-slot:right>
-                <div @click="openChat" class="puzzle-view-chat-button" />
-            </template>
-        </NavBar>
-        <div id="chat-container" class="chat hidden"></div>
-    </div>
+    <BasePuzzleListPage :forQuest="true">
+        <template v-slot:left-block>
+            <img :src="resolveUrl(achievement.image)" :alt="achievement.title" style="object-fit: contain; width: 100%; max-height: 60%;"/>
+            <p v-html="description"></p>
+        </template>
+    </BasePuzzleListPage>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Carousel from '../components/Carousel.vue'
-import HeaderBar from '../components/HeaderBar.vue'
-import NavBar from '../components/NavBar.vue'
-import ProgressBar from '../components/ProgressBar.vue'
-import TutorialCard from '../components/TutorialCard.vue'
-import PuzzleCard from '../components/PuzzleCard.vue'
 import DOMPurify from 'dompurify'
+import BasePuzzleListPage from '../components/BasePuzzleListPage.vue'
 
-import { Action, Achievement, PuzzleItem, PuzzleList } from '../store';
-import ChatManager from '../ChatManager';
+import { Achievement, Action } from '../store';
 
 
 export default Vue.extend({
-    data() {
-        return {
-            isLoading: true,
-            chat: <ChatManager | null>null,
-            logoSourcePng: require('../assets/logo_eterna.svg'),
-        };
-    },
     async mounted() {
-        try {
-            await this.$store.dispatch(Action.GET_QUEST_ACHIEVEMENT_ROADMAP);
-            await this.$store.dispatch(Action.GET_PUZZLES, new URLSearchParams({type: 'puzzles', ...this.$route.query}));
-            this.chat = new ChatManager('chat-container', this.$store);
-            this.isLoading = false;
-        } catch (error) {
-            console.error(error);
-        }
+        await this.$store.dispatch(Action.GET_QUEST_ACHIEVEMENT_ROADMAP);
     },
     components: {
-        Carousel,
-        HeaderBar,
-        NavBar,
-        ProgressBar,
-        TutorialCard,
-        PuzzleCard
+        BasePuzzleListPage
     },
     computed: {
         achievement(): Achievement {
-            return (this.$store.state.quest_roadmap as Achievement[]).find(a => a.key == this.$route.params.id && a.level == +this.$route.params.level)!;
-        },
-        puzzles(): (PuzzleItem & {cleared: boolean})[] {
-            const puzzleList = this.$store.state.puzzle_list as PuzzleList;
-            const puzzlesWithCleared = puzzleList.puzzles.map(puzzle => ({
-                ...puzzle,
-                cleared: puzzleList.cleared.some(cleared => cleared.nid === puzzle.id)
-            }));
-
-            // Sort such that puzzle A which specifies its next puzzle is puzzle B is sorted before puzzle A
-            // The first puzzle is the one that has no other puzzle pointing to it
-            const orderedPuzzles: (PuzzleItem & {cleared: boolean})[] = [];
-            let puzzle = puzzlesWithCleared.find(
-                candidatePuzzle => !puzzlesWithCleared.some(otherPuzzle => otherPuzzle['next-puzzle'] === candidatePuzzle.id)
-            );
-            while (puzzle) {
-                orderedPuzzles.push(puzzle);
-                const nextPuzzle = puzzle['next-puzzle'];
-                puzzle = puzzlesWithCleared.find(candidatePuzzle => candidatePuzzle.id === nextPuzzle);
-            }
-            // Add any additional puzzles not part of the next puzzle "chain"
-            orderedPuzzles.push(...puzzlesWithCleared.filter(candidatePuzzle => !orderedPuzzles.includes(candidatePuzzle)));
-            return orderedPuzzles;
+            return (this.$store.state.quest_roadmap as Achievement[] || []).find(a => a.key == this.$route.params.id && a.level == +this.$route.params.level)!;
         },
         description(): string{
             return DOMPurify.sanitize(this.achievement.desc);
         }
     },
     methods: {
-        openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
-        },
         resolveUrl(path: string) {
             if (path.startsWith('http')) return path;
             if (path.startsWith('/')) return process.env.APP_SERVER_URL + path;
             return process.env.APP_SERVER_URL + '/' + path;
-        },
-        getPuzImg(nid: string | null){
-            return (
-            nid &&
-            `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
-            );
         }
     }
 });
