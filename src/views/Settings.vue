@@ -53,6 +53,12 @@
           </svg>
         </button>
       </template>
+      <template v-if="!lab_access" v-slot:center>
+        <b-button variant="primary" size="lg" class="nav-button" id="home-btn" @click="$router.push('/')">
+          <div class="home-disabled"></div>
+          Home
+        </b-button>
+      </template>
       <template v-slot:right><div></div></template>
     </NavBar>
     <div class="loading-container" v-if="isLoading">
@@ -101,6 +107,9 @@ export default Vue.extend({
     },
     formValid(): boolean {
       return this.emailValid && this.passwordValid;
+    },
+    lab_access() {
+      return this.$store.state.user.lab_access;
     }
   },
   methods: {
