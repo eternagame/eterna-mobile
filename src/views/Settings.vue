@@ -53,6 +53,7 @@
           </svg>
         </button>
       </template>
+      <template v-slot:right><div></div></template>
     </NavBar>
     <div class="loading-container" v-if="isLoading">
         <b-spinner class="loading-spinner" />
