@@ -9,10 +9,15 @@
         </div>
         <div class="content" v-else>
             <div class="left-block ">
-                <div>
+                <div v-if="playablePuzzleIndex < roadmap.length">
                     <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
                     <p>Complete these puzzles to unlock access to advanced lab challenges.</p>
                     <p><strong>Ready?</strong></p>
+                </div>
+                <div v-else>
+                    <p><strong>Congratulations for completing the tutorials!</strong></p>
+                    <p>Log in to help researchers with lab puzzles and solve challenging player-created puzzles.</p>
+                    <p><strong>Let's go!</strong></p>
                 </div>
             </div>
              <b-container id="puzzle-scroll">
