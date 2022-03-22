@@ -35,6 +35,10 @@ export default Vue.component('tutorial-card', {
 </script>
 
 <style lang="scss" scoped>
+::v-deep img {
+    -webkit-user-drag: none;
+}
+
 .puzzle-card-container {
     width: 45vmin;
     height: 45vmin;

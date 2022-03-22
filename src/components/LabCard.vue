@@ -44,6 +44,10 @@ export default Vue.component('lab-card', {
 </script>
 
 <style lang="scss" scoped>
+::v-deep img {
+    -webkit-user-drag: none;
+}
+
 .lab-card-container {
     width: 45vmin;
     height: 45vmin;

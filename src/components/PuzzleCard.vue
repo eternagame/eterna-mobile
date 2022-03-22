@@ -124,6 +124,10 @@ export default Vue.component('puzzle-card', {
 </script>
 
 <style lang="scss" scoped>
+::v-deep img {
+    -webkit-user-drag: none;
+}
+
 .puzzle-card-container {
     position: relative;
     width: 45vmin;
