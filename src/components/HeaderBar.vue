@@ -48,7 +48,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .app-header {
     height: 18vh;
     width: 100%;
@@ -57,7 +57,7 @@ export default Vue.extend({
     justify-content: space-between;
   }
 
-  .menu-button:focus {
+  ::v-deep .menu-button:focus {
     background-color: transparent;
     color: var(--white);
   }
