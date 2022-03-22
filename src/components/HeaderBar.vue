@@ -1,8 +1,8 @@
 <template>
-  <header>
+  <header class="app-header">
     <b-img class="header-logo" :src="logoSourcePng" />
     <div v-if="loggedIn" class="account-dropdown">
-      <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button" menu-class="puzzle-view-button" no-caret>
+      <b-dropdown right variant="link" toggle-class="text-decoration-none puzzle-view-button menu-button" menu-class="puzzle-view-button" no-caret>
         <template #button-content>
             <b style="line-height:6vmin;margin-right:2vmin;vertical-align:bottom;">{{ username }}</b>
             <div class="puzzle-view-icon-people" />
@@ -51,11 +51,16 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-  header {
+  .app-header {
     height: 18vh;
     width: 100%;
     padding: 3vmin;
     display: flex;
     justify-content: space-between;
+  }
+
+  ::v-deep .menu-button:focus {
+    background-color: transparent;
+    color: var(--white);
   }
 </style>
