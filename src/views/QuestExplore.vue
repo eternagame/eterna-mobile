@@ -108,8 +108,8 @@ export default Vue.extend({
         },
         getAchAtCurrentLevel(key: string) {
             const allLevels = this.roadmap.filter(a => a.key === key);
-            if (allLevels[0].current_level == allLevels[0].maxlevel) return allLevels.find(a => a.level === a.current_level)!;
-            return allLevels.find(a => a.level === a.current_level + 1)!;
+            if (+allLevels[0].current_level === +allLevels[0].maxlevel) return allLevels.find(a => +a.level === +a.current_level)!;
+            return allLevels.find(a => a.level === +a.current_level + 1)!;
         }
     }
 });
