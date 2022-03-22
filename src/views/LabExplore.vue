@@ -129,7 +129,7 @@ export default Vue.extend({
             return Math.max(min, Math.min(max, x));
         },
         link_lab(nid: String) {
-            this.$router.push(`labs/${nid}`);
+            this.$router.push(`/labs/${nid}`);
         },
         openChat() {
             if (this.chat) {

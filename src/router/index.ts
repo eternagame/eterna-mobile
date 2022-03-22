@@ -13,6 +13,9 @@ import Settings from '../views/Settings.vue';
 import Profile from '../views/Profile.vue';
 import PuzzleExplore from '../views/PuzzleExplore.vue';
 import PuzzleView from '../views/PuzzleView.vue';
+import QuestExplore from '../views/QuestExplore.vue';
+import QuestCategory from '../views/QuestCategory.vue';
+import Quest from '../views/Quest.vue';
 
 Vue.use(VueRouter);
 
@@ -72,8 +75,19 @@ const routes: Array<RouteConfig> = [
     {
         path: '/game/browse/:id',
         component: BrowseView,
+    },
+    {
+        path: '/quests',
+        component: QuestExplore
+    },
+    {
+        path: '/quests/category/:id',
+        component: QuestCategory
+    },
+    {
+        path: '/quests/:id/:level',
+        component: Quest
     }
-    
 ];
 
 const router = new VueRouter({

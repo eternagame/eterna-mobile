@@ -6,10 +6,9 @@
                 <b>PLAY</b>
             </b-button>
             <div v-else-if="state === 'locked'" class="puzzle-card-icon-lock" />
-            <b-row v-else-if="state === 'completed'" class="puzzle-card-text" style="justify-content:center;align-items:center;">
-                <div class="puzzle-card-icon-checkmark" />
-                <b>COMPLETED!</b>
-            </b-row>
+            <b-button v-else-if="state === 'completed'" class="puzzle-card-button" variant="primary" @click="$emit('play')">
+                <b>REVIEW</b>
+            </b-button>
         </div>
     </b-button>
 </template>

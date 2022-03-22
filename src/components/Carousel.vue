@@ -18,7 +18,7 @@
                             <div class="info">
                                 <h2>{{ lab.carousel_title }}</h2>
                                 <h3>{{ lab.carousel_subtitle || lab.title }}</h3>
-                                <router-link :to="`labs/${lab.nid}`" class="route-btn">Enter Lab</router-link>
+                                <router-link :to="`/labs/${lab.nid}`" class="route-btn">Enter Lab</router-link>
                             </div>
                             <div class="status">
                                 <div class="mr-4" v-if="lab.project_closes && lab.project_closes * 1000 > Date.now()">
@@ -44,7 +44,7 @@
                             <div class="info">
                                 <h2>Puzzle of the Week</h2>
                                 <h3>{{ potw.title }}</h3>
-                                <router-link :to="`puzzles/${potw.nid}`" class="route-btn">Solve Now</router-link>
+                                <router-link :to="`/puzzles/${potw.nid}`" class="route-btn">Solve Now</router-link>
                             </div>
                         </div>
                     </template>

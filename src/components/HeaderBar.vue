@@ -13,8 +13,8 @@
       </b-dropdown>
     </div>
     <div v-else class="login-buttons">
-      <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin" to="login">Log in</b-button>
-      <b-button class="puzzle-view-button" variant="secondary" to="register">Register</b-button>
+      <b-button class="puzzle-view-button" variant="primary" style="margin-right:3vmin" to="/login">Log in</b-button>
+      <b-button class="puzzle-view-button" variant="secondary" to="/register">Register</b-button>
     </div>
   </header>
 </template>
@@ -40,9 +40,11 @@ export default Vue.extend({
     },
   },
   methods: {
-    logout() {
-      this.$store.dispatch(Action.LOGOUT);
-      this.$router.replace('/')
+    async logout() {
+      await this.$store.dispatch(Action.LOGOUT);
+      this.$router.replace('/');
+      // If logging out while on the homepage, ensure that the homepage properly refreshes with new data
+      this.$router.go(0);
     },
   }
 })

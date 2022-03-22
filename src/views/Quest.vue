@@ -1,37 +1,46 @@
 <template>
-    <BasePuzzleListPage :forQuest="false">
+    <BasePuzzleListPage :forQuest="true" :quest="achievement">
         <template v-slot:left-block>
-            <p><strong>Puzzles</strong></p>
-            <p>Browse and solve the latest player-created puzzles, from simple shapes to complex and creative designs. New puzzles are added by the community every day.</p>
+            <img :src="resolveUrl(achievement.image)" :alt="achievement.title" style="object-fit: contain; width: 100%; max-height: 60%;"/>
+            <p v-html="description"></p>
         </template>
     </BasePuzzleListPage>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import DOMPurify from 'dompurify'
 import BasePuzzleListPage from '../components/BasePuzzleListPage.vue'
 
+import { Achievement, Action } from '../store';
+
+
 export default Vue.extend({
+    async mounted() {
+        await this.$store.dispatch(Action.GET_QUEST_ACHIEVEMENT_ROADMAP);
+    },
     components: {
         BasePuzzleListPage
+    },
+    computed: {
+        achievement(): Achievement {
+            return (this.$store.state.quest_roadmap as Achievement[] || []).find(a => a.key == this.$route.params.id && a.level == +this.$route.params.level)!;
+        },
+        description(): string{
+            return DOMPurify.sanitize(this.achievement.desc);
+        }
+    },
+    methods: {
+        resolveUrl(path: string) {
+            if (path.startsWith('http')) return path;
+            if (path.startsWith('/')) return process.env.APP_SERVER_URL + path;
+            return process.env.APP_SERVER_URL + '/' + path;
+        }
     }
 });
 </script>
 
-<style lang="scss">
-.left-block > div {
-    margin: 0;
-    padding-top: 3vmin;
-    overflow-y: scroll;
-    font-size: 1.8vw;
-}
-
-.right-block {
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
-}
-
+<style lang="scss" scoped>
 .loading-spinner {
     position: absolute;
     margin: auto;
@@ -49,11 +58,11 @@ export default Vue.extend({
 }
 
 #puzzle-view-header {
-    height: 18vh;
-    padding-top: 3vmin;
+    height: 18vh !important;
+    margin-bottom: 15px;
+    padding-top: 0 !important;
     margin-left: 3vmin;
     margin-right: 3vmin;
-    margin-bottom: 3vmin;
 }
 
 #puzzle-scroll {
@@ -62,7 +71,7 @@ export default Vue.extend({
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
-    padding-right: 0px;
+    padding-right: calc(50% - 22.5vmin);
     padding-left: 25px;
     margin-top: 0vmin;
     max-width: unset;
@@ -74,10 +83,11 @@ export default Vue.extend({
 
 
 #puzzle-view-footer {
+    height: 18vh !important;
+    display: flex;
+    align-items: center;
     margin-left: 3vmin;
     margin-right: 3vmin;
-    height: 18vh;
-    align-items: center;
 }
 
 #puzzle-card-wrapper {
@@ -185,32 +195,11 @@ export default Vue.extend({
         right: 5px;
     }
 }
-
 .hidden{
   opacity: 0;
 }
-
-.fetch-puzzles-btn {
-    width: 45vmin;
-    height: 45vmin;
-    display: inline-block;
-    border-radius: 2vmin;
-    background-color: #008cff15;
-    scroll-snap-align: center;
-    text-align: center;
-    margin-top: 3vmin;
-    margin-bottom: 3vmin;
-    margin-left: 1vmin;
-    margin-right: 1vmin;
-    padding: 0;
-    border: solid;
-    border-color: #21508C;
-
-    // Removes Bootstrap's defaults, which cause sticky active style issue on mobile
-    // https://github.com/eternagame/eterna-mobile/issues/29
-    &:focus {
-        background-color: inherit;
-        border-color: #21508C;
-    }
+.header-logo {
+    max-width: 100%;
+    height: 100%;
 }
 </style>
