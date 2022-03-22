@@ -35,5 +35,6 @@ export default Vue.extend({
     width: 100vw;
     height: 100vh;
     border: 0;
+    user-select: none;
 }
 </style>
