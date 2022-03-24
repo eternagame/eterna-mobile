@@ -177,20 +177,30 @@ export default Vue.extend({
             // Will change with Eterna-Next API
             const query = this.$route.query;
             const filters = `${query.filters}`.split(',');
-            let puzzleFilter = `puzzle_type=AllChallengesPuzzle`;
-            if (filters.includes("challenge") && !filters.includes("player"))    {puzzleFilter = `puzzle_type=Challenge`}
-            if (filters.includes("player")    && !filters.includes("challenge")) {puzzleFilter = `puzzle_type=PlayerPuzzle`}
-            if (query.progression) {puzzleFilter = `puzzle_type=Progression`}
-            const singleFilter = filters.includes("single") ? `single=checked` : `single=false`;
-            const switchFilter = query.switch ? `switch=checked` : `switch=false`
-            const clearedFilter = filters.includes("notcleared") ? `notcleared=true` : `notcleared=false`;
-            const clearedUIDFilter = `uid=${this.$store.state.uid}`;
-            const tagsFilter = query.tags ? `&tags=${query.tags}` : '';
-            const searchFilter = query.search ? `&search=${query.search}` : '';
-            const sort = `sort=${query.sort ? query.sort : 'date'}`;
-            const sizeFilter = this.$route.query.progression ? '' : `&size=${this.numberOfPuzzles}`;
-            const requestString = `type=puzzles&${sort}${sizeFilter}&${puzzleFilter}&${singleFilter}&${switchFilter}&${clearedFilter}&${clearedUIDFilter}${tagsFilter}${searchFilter}`;
-            await this.$store.dispatch(Action.GET_PUZZLES, requestString);
+
+            const queryParams = new URLSearchParams({type: 'puzzles'});
+            
+            if (filters.includes("challenge") && !filters.includes("player")) queryParams.append('puzzle_type', 'Challenge');
+            else if (filters.includes("player")    && !filters.includes("challenge")) queryParams.append('puzzle_type', 'PlayerPuzzle');
+            else if (query.progression) queryParams.append('puzzle_type', 'Progression');
+            else queryParams.append('puzzle_type', 'AllChallengesPuzzle')
+            
+            if (filters.includes("single")) queryParams.append('single', 'checked');
+            if (query.switch) queryParams.append('switch', 'checked');
+            
+            if(filters.includes("notcleared")) queryParams.append('notcleared', 'true');
+
+            if (this.$store.state.uid) queryParams.append('uid', this.$store.state.uid);
+
+            if (query.tags) queryParams.append('tags', query.tags as string);
+
+            if (query.search) queryParams.append('search', query.search as string);
+            
+            queryParams.append('sort', query.sort ? query.sort as string : 'date');
+
+            if (!query.progression) queryParams.append('size', this.numberOfPuzzles.toString(10));
+
+            await this.$store.dispatch(Action.GET_PUZZLES, queryParams.toString());
         },
         async fetchMorePuzzles() {
             this.numberOfPuzzles += 9;
