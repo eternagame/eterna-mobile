@@ -51,6 +51,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+  ::v-deep img {
+      -webkit-user-drag: none;
+  }
+  
   .app-header {
     height: 18vh;
     width: 100%;
