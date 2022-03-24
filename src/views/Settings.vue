@@ -82,7 +82,7 @@ export default Vue.extend({
       isLoading: false,
       error: '',
       success: false,
-      email: '',
+      email: <string | undefined> undefined,
       newPassword: '',
       confirmPassword: '',
       currentPassword: '',
@@ -91,22 +91,37 @@ export default Vue.extend({
     }
   },
   async created() {
+    this.isLoading = true;
     await(this.$store.dispatch('GET_PROFILE', {id: this.$store.state.uid}));
     if (this.$store.state.user) {
       this.email = this.$store.state.user.mail;
       this.notifications = this.$store.state.user.mail_notification;
       this.news = this.$store.state.user.news_notification;
+      this.isLoading = false;
     }
   },
   computed: {
-    emailValid(): boolean {
-      return this.validateEmail(this.email);
+    emailValid(): boolean | null {
+      if (this.email === undefined) {
+        return null;
+      } else {
+        return this.validateEmail(this.email);
+      }
     },
-    passwordValid(): boolean {
+    passwordValid(): boolean | null {
+      if (this.newPassword === '' && this.confirmPassword === '') {
+        return null
+      }
       return this.newPassword === this.confirmPassword;
     },
     formValid(): boolean {
-      return this.emailValid && this.passwordValid;
+      if (this.emailValid === null || this.emailValid === false) {
+        return false;
+      } else if (this.passwordValid === false || this.currentPassword === '') {
+        return false;
+      } else {
+        return true;
+      }
     },
     lab_access() {
       return this.$store.state.user.lab_access;
@@ -130,7 +145,7 @@ export default Vue.extend({
       data.set('profile_mail_notification', this.notifications ? 'on' : 'off');
       data.set('profile_news_mail_notification', this.news ? 'on' : 'off');
       data.set('profile_blog_mail_notification', this.news ? 'on' : 'off');
-      if (this.validateEmail(this.email)) {
+      if (this.email && this.validateEmail(this.email)) {
         data.set('mail', this.email.toLowerCase());
       }
       data.set('type', 'edit');
