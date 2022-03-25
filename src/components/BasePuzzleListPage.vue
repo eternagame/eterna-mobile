@@ -12,8 +12,10 @@
             </div>
             <div class="right-block">
                 <FilterBar 
-                v-bind:filters="availableFilters"
-                @filter="fetchNewPuzzles"/>
+                    v-bind:filters="availableFilters"
+                    @filter="fetchNewPuzzles"
+                    v-if="!firstQuest"
+                />
                 <b-container id="puzzle-scroll">
                     <div id="puzzle-card-wrapper">
                         <PuzzleCard
