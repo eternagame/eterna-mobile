@@ -418,8 +418,10 @@ export default function createStore(http: AxiosInstance) {
                         news_notification: news_notification,
                         achievements
                     });
-                }
-                finally{
+                } catch(e) {
+                    console.error(e);
+                    commit('setUserData', {});
+                } finally{
                     commit('popIsLoading');
                 }
             },

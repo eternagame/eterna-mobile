@@ -109,7 +109,7 @@ export default Vue.extend({
             return this.$store.state.roadmap;
         },
         lab_access() {
-            return this.$store.state.user.lab_access;
+            return this.$store.state.user?.lab_access;
         }
     },
     methods: {

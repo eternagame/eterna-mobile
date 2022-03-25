@@ -42,9 +42,9 @@ export default Vue.extend({
   methods: {
     async logout() {
       await this.$store.dispatch(Action.LOGOUT);
+      await this.$store.dispatch(Action.GET_ACHIEVEMENT_ROADMAP);
+      await this.$store.dispatch('GET_PROFILE', {id: this.$store.state.uid});
       this.$router.replace('/');
-      // If logging out while on the homepage, ensure that the homepage properly refreshes with new data
-      this.$router.go(0);
     },
   }
 })
