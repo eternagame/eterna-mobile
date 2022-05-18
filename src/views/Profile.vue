@@ -88,7 +88,7 @@ export default Vue.extend({
         return this.$store.state.user ? this.$store.state.user.synthesized_count : 0;
       },
       achievements() {
-        return this.$store.state.user ? Object.values(this.$store.state.user.achievements) : [];
+        return this.$store.state.user ? Object.values(this.$store.state.user.achievements).reverse() : [];
       },
       lab_access() {
         return this.$store.state.user.lab_access;
