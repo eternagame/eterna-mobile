@@ -39,7 +39,8 @@
             >
               <b-form-input class="notifications-checkbox" id="current-password" type="password" v-model="currentPassword" placeholder="Current Password" trim></b-form-input>
             </b-form-group>
-          <b-button variant="primary" :disabled="!formValid" @click="update">Update Settings</b-button>
+          <b-button style="margin: 5px 0;" variant="primary" :disabled="!formValid" @click="update">Update Settings</b-button>
+          <b-button style="margin: 5px 0;" variant="danger" @click="$router.push('/delete-account')">Delete Account</b-button>
           </b-col>
         </b-row>
       </div>
