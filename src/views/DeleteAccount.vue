@@ -5,7 +5,7 @@
         
         <p style="font-weight: bold">Are you sure you want to delete your account?</p>
         <p>
-            We're sorry to hear that you're leaving us! Something wrong that we can help with?
+            We're sorry to hear that you're leaving us! Is there something wrong that we can help with?
             Please get in touch at <a href="mailto:support@eternagame.org">support@eternagame.org</a>.
         </p>
         <p>
@@ -24,9 +24,11 @@
         <b-form-input type="text" size="md" :disabled="isLoading" v-model="username" placeholder="username"></b-form-input>
         <b-form-input type="password" size="md" :disabled="isLoading" v-model="password" placeholder="password"></b-form-input>
         <div class="alert-container">
-            <b-alert v-if="error" variant="danger" dismissable>
-                {{error}}
-            </b-alert>
+            <transition name="fade">
+                <b-alert :show="showError" variant="danger" dismissable>
+                    {{error}}
+                </b-alert>
+            </transition>
         </div>
         <b-form-group>
             <b-button variant="danger" :disabled="isLoading" size="md" @click="deleteAccount">
@@ -42,7 +44,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import router from '../router';
 import { Action } from '../store';
 
 export default Vue.extend({
@@ -51,7 +52,8 @@ export default Vue.extend({
             username: '',
             password: '',
             error: '',
-            isLoading: false
+            isLoading: false,
+            showError: false
         };
     },
     computed: {
@@ -62,19 +64,23 @@ export default Vue.extend({
     methods: {
         async deleteAccount() {
             this.error = '';
+            this.showError = false;
 
             if (!this.username) {
                 this.error = 'Please enter your username';
+                this.showError = true;
                 return;
             }
 
             if (!this.password) {
                 this.error = 'Please enter your password';
+                this.showError = true;
                 return;
             }
 
             if (this.username !== this.$store.state.username) {
                 this.error = 'This is not your current username';
+                this.showError = true;
                 return;
             }
 
@@ -90,6 +96,7 @@ export default Vue.extend({
                 await this.$router.push('/');
             } else {
                 this.error = data.error;
+                this.showError = true;
             }
 
             this.isLoading = false;
