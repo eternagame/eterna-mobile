@@ -16,6 +16,7 @@ import PuzzleView from '../views/PuzzleView.vue';
 import QuestExplore from '../views/QuestExplore.vue';
 import QuestCategory from '../views/QuestCategory.vue';
 import Quest from '../views/Quest.vue';
+import DeleteAccount from '../views/DeleteAccount.vue';
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,10 @@ const routes: Array<RouteConfig> = [
     {
         path: '/settings',
         component: Settings,
+    },
+    {
+        path: '/delete-account',
+        component: DeleteAccount,
     },
     {
         path: '/game/:puzzle',
