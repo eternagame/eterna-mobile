@@ -51,7 +51,7 @@
     "dotenv-webpack": "^7.1.0",
     "html-webpack-plugin": "^5.5.0",
     "is-ci": "^3.0.1",
-    "node-sass": "^7.0.1",
+    "node-sass": "^7.0.3",
     "sass-loader": "^12.6.0",
     "shelljs": "^0.8.5",
     "shx": "^0.3.4",
