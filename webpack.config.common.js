@@ -32,7 +32,6 @@ module.exports = function(mode, eternajs_copy) {
                     test: /\.s[ac]ss$/,
                     use: [
                         'vue-style-loader',
-                        'style-loader',
                         'css-loader',
                         'sass-loader',
                     ],
