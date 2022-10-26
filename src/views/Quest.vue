@@ -1,7 +1,7 @@
 <template>
     <BasePuzzleListPage :forQuest="true" :quest="achievement">
         <template v-slot:left-block>
-            <img :src="resolveUrl(achievement.image)" :alt="achievement.title" style="object-fit: contain; width: 100%; max-height: 60%;"/>
+            <img :src="resolveUrl(achievement.image)" :alt="achievement.title" style="object-fit: contain; width: 100%; height: 100%; max-height: 60%;"/>
             <p v-html="description"></p>
         </template>
     </BasePuzzleListPage>
