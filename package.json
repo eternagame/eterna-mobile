@@ -1,6 +1,6 @@
 {
   "name": "eterna-mobile",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "private": true,
   "scripts": {
     "postinstall": "shx mkdir -p www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
@@ -27,7 +27,7 @@
     "cordova-plugin-statusbar": "^3.0.0",
     "dompurify": "^2.3.6",
     "es6-promise-plugin": "^4.2.2",
-    "eterna-chat-wrapper": "https://github.com/eternagame/eterna-chat-wrapper/archive/8b27fffb7c692820abda58679850e534c0c73b27.tar.gz",
+    "eterna-chat-wrapper": "https://github.com/eternagame/eterna-chat-wrapper/archive/0481f91973849587026dd4b575ea84d949bdec70.tar.gz",
     "vue": "^2.7.13",
     "vue-axios": "~3.2.4",
     "vue-router": "^3.5.1",
