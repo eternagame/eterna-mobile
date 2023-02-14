@@ -19,7 +19,11 @@
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_best_lab_practices').image)"
-                        @play="$router.push(`/quests/side_quest_best_lab_practices/${getAchAtCurrentLevel('side_quest_best_lab_practices').level}?search=%5BLab%20Tutorial%5D&sort=date`)"
+                        @play="$router.push(
+                            getCurrentPuzzle('side_quest_best_lab_practices')
+                            ? `/puzzles/${getCurrentPuzzle('side_quest_best_lab_practices')}`
+                            : `/quests/side_quest_best_lab_practices/${getAchAtCurrentLevel('side_quest_best_lab_practices').level}?search=%5BLab%20Tutorial%5D&sort=date`
+                        )"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna100').image)"
@@ -27,11 +31,19 @@
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_switch_puzzles').image)"
-                        @play="$router.push(`/quests/side_quest_switch_puzzles/${getAchAtCurrentLevel('side_quest_switch_puzzles').level}?switch=true&search=switch&sort=date`)"
+                        @play="$router.push(
+                            getCurrentPuzzle('side_quest_switch_puzzles')
+                            ? `/puzzles/${getCurrentPuzzle('side_quest_switch_puzzles')}`
+                            : `/quests/side_quest_switch_puzzles/${getAchAtCurrentLevel('side_quest_switch_puzzles').level}?switch=true&search=switch&sort=date`
+                        )"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_just_for_fun').image)"
-                        @play="$router.push(`/quests/side_quest_just_for_fun/${getAchAtCurrentLevel('side_quest_just_for_fun').level}?search=Fun&sort=date`)"
+                        @play="$router.push(
+                            getCurrentPuzzle('side_quest_just_for_fun')
+                            ? `/puzzles/${getCurrentPuzzle('side_quest_just_for_fun')}`
+                            : `/quests/side_quest_just_for_fun/${getAchAtCurrentLevel('side_quest_just_for_fun').level}?search=Fun&sort=date`
+                        )"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('ten_tools').image)"
@@ -110,6 +122,9 @@ export default Vue.extend({
             const allLevels = this.roadmap.filter(a => a.key === key);
             if (+allLevels[0].current_level === +allLevels[0].maxlevel) return allLevels.find(a => +a.level === +a.current_level)!;
             return allLevels.find(a => a.level === +a.current_level + 1)!;
+        },
+        getCurrentPuzzle(key: string) {
+            return this.getAchAtCurrentLevel(key).current_puzzle
         }
     }
 });
