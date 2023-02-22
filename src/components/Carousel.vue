@@ -32,8 +32,9 @@
                     <template #img>
                         <div class="img-overlay"></div>
                         <img
+                            v-if="lab.banner_image"
                             class="d-block img-fluid w-100"
-                            :src="lab.banner_image"
+                            :src="getBannerImage(lab.banner_image)"
                             alt="image slot"
                         >
                     </template>
@@ -51,11 +52,6 @@
                     <template #img>
                         <div class="img-overlay"></div>
                         <img class="image" :src="`https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${potw.nid}.svg`" :alt="potw.title">
-                        <img
-                            class="d-block img-fluid w-100"
-                            src="https://eternagame.org/img/hero-sunburst.d2ff31bb.png"
-                            alt="image slot"
-                        >
                     </template>
                 </b-carousel-slide>
             </b-carousel>
@@ -121,6 +117,10 @@ export default Vue.extend({
                 d.getSeconds() > 9 ? d.getSeconds() : `0${d.getSeconds()}`,
             ].join(':')}`;
         },
+        getBannerImage(url: string) {
+            if (url.startsWith('http')) return url;
+            return `${process.env.APP_SERVER_URL}/${url}`;
+        }
     },
     components: {
         FlipCountdown,
