@@ -198,7 +198,8 @@ export interface LabData {
       synthesized_count: number,
       mail_notification: boolean,
       news_notification: boolean,
-      achievements: {}
+      achievements: {},
+      debug_access: boolean,
   }
 
 export const Action = {
@@ -406,6 +407,7 @@ export default function createStore(http: AxiosInstance) {
                     const { user, achievements } = (await http.get(`/get/?type=user&uid=${id}&tab_type=about`)).data.data;
                     const mail_notification = user["Mail notification"] === "on" ? true : false;
                     const news_notification = user["News mail notification"] === "on" ? true : false;
+                    const debug_access = user["Mobile Debug Access"] === "1" ? true : false;
 
                     commit('setUserData', {
                         mail: user.mail,
@@ -414,9 +416,10 @@ export default function createStore(http: AxiosInstance) {
                         rank: user.rank,
                         lab_access: user.is_lab_member,
                         synthesized_count: user.synthesized_count,
-                        mail_notification: mail_notification,
-                        news_notification: news_notification,
-                        achievements
+                        mail_notification,
+                        news_notification,
+                        achievements,
+                        debug_access
                     });
                 } catch(e) {
                     console.error(e);

@@ -19,6 +19,9 @@
               <b-form-checkbox v-model="notifications" inline>Private Messages</b-form-checkbox>
               <b-form-checkbox v-model="news" inline>News Posts</b-form-checkbox>
             </b-form-group>
+            <b-form-group label="Debug Mode" v-if="$store.state.user.debug_access">
+              <b-button style="margin: 5px 0;" variant="primary" @click="promptLoadPuzzle">Load puzzle</b-button>
+            </b-form-group>
           </b-col>
           <b-col>
             <b-form-group
@@ -165,6 +168,10 @@ export default Vue.extend({
       } catch (e: any) {
         if (e instanceof Error) this.error = e.message;
       }
+    },
+    promptLoadPuzzle() {
+      const id = prompt('Please enter a puzzle ID');
+      if (id !== null) this.$router.push(`/game/${id}`);
     }
   },
 })
