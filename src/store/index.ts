@@ -200,6 +200,7 @@ export interface LabData {
       news_notification: boolean,
       achievements: {},
       debug_access: boolean,
+      survey: string;
   }
 
 export const Action = {
@@ -419,7 +420,8 @@ export default function createStore(http: AxiosInstance) {
                         mail_notification,
                         news_notification,
                         achievements,
-                        debug_access
+                        debug_access,
+                        survey: user.Survey,
                     });
                 } catch(e) {
                     console.error(e);

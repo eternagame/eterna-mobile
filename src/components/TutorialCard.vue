@@ -54,6 +54,7 @@ export default Vue.component('tutorial-card', {
     padding: 0;
     border: solid;
     border-color: #21508C;
+    transition: transform 0.2s;
 }
 
 .puzzle-card-locked {

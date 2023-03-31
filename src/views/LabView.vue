@@ -2,10 +2,10 @@
     <div v-if="isLoading">
         <b-spinner class="loading-spinner" />
     </div>
-    <div v-else class="puzzle-view-container">
+    <div v-else class="page-container">
         <HeaderBar></HeaderBar>
-        <div class="content">
-            <div class="left-block left-aligned">
+        <div class="page-content">
+            <div class="page-left-block">
                 <div class="lab-description">
                     <p>
                         <strong>
@@ -20,12 +20,12 @@
                     <div class="lab-description-more">
                         <b-button block v-b-modal.full-description-modal>Read More</b-button>
                             <b-modal
-                            id="full-description-modal"
-                            ref="modal"
-                            size="xl"
-                            header-border-variant="primary"
-                            hide-header
-                            hide-footer
+                                id="full-description-modal"
+                                ref="modal"
+                                size="xl"
+                                header-border-variant="primary"
+                                hide-header
+                                hide-footer
                             >
                             <div class="modal_container">
                                 <div class="modal_header">
@@ -59,8 +59,8 @@
             </div>
         </div>
 
-        <b-container id="puzzle-scroll">
-            <div id="puzzle-card-wrapper">
+        <b-container id="page-scroll-content">
+            <div id="scroll-card-wrapper">
                 <LabPuzzleCard
                     v-for="(puzzle, index) in puzzles"
                     :key="index"
@@ -89,7 +89,7 @@
                 </button>
             </template>
             <template v-slot:right>
-                <div @click="openChat" class="puzzle-view-chat-button" />
+                <div @click="openChat" class="nav-button-chat" />
             </template>
         </NavBar>
         <div id="chat-container" class="chat hidden"></div>
@@ -226,8 +226,8 @@ export default Vue.extend({
             this.$forceUpdate();
         },
         scrollToPuzzleIndex(index : number) {
-            var scroll = document.getElementById('puzzle-scroll');
-            var wrapper = document.getElementById('puzzle-card-wrapper');
+            var scroll = document.getElementById('page-scroll-content');
+            var wrapper = document.getElementById('scroll-card-wrapper');
             if (scroll !== null && wrapper !== null) {
                 // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
@@ -236,7 +236,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .modal_container {
   height: calc(100vh - 3.5rem);
   padding-bottom: 2rem;
@@ -287,14 +287,6 @@ export default Vue.extend({
     }
 }
 
-.loading-spinner {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
 .modal-title{
     width: 100%;
     font-size: 6vmin;
@@ -304,16 +296,15 @@ export default Vue.extend({
     height: 40vmin;
     top: -1vmin;
 }
-.modal-body{
+::v-deep .modal-body{
     padding: 0vmin;
 }
-.modal-header {
-  display:none;
-}
+
 .lab-description{
     position: relative;
     top: -1vmin;
     overflow: hidden !important;
+    height: 100%;
 
     &::after {
         // Horrible hack to add fade-out to bottom of description
@@ -355,8 +346,11 @@ export default Vue.extend({
     margin-right: 2vmin;
   }
 .status-text {
+    font-size: 0.6875rem;
+    font-style: normal;
+    font-weight: 700;
+
     --margin-left: 16px;
-    font-size: 2vmin;
     position: relative;
     margin: 0 0 var(--margin-left) var(--margin-left);
 
@@ -381,165 +375,6 @@ export default Vue.extend({
     }
     &.phase_4::before {
         background-color: blue;
-    }
-}
-.puzzle-view-container {
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    touch-action: none;
-}
-
-#puzzle-view-header {
-    height: 30vh;
-    padding-top: 3vmin;
-    margin-left: 3vmin;
-    margin-right: 3vmin;
-}
-
-#puzzle-scroll {
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: y mandatory;
-    padding-right: calc(50% - 22.5vmin);
-    padding-left: 25px;
-    margin-top: 0vmin;
-    max-width: unset;
-}
-
-#puzzle-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-#puzzle-view-footer {
-    margin-left: 3vmin;
-    margin-right: 3vmin;
-}
-
-#puzzle-card-wrapper {
-    position: relative;
-    display: inline-block;
-    scroll-margin: 0 50vw;
-}
-
-.puzzle-card-container {
-    transition: transform 0.2s;
-}
-
-.puzzle-view-button {
-    font-size: 1.5vw;
-}
-
-.puzzle-view-chat-button {
-    background: url('../assets/Chat.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    width: 9vmin;
-    height: 8vmin;
-}
-.puzzle-view-about-button {
-    background: url('../assets/noun_info.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    width: 6vmin;
-    height: 6vmin;
-}
-
-.puzzle-view-icon-people {
-    background-image: url('../assets/DefaultIcon.svg');
-    background-position: center top; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
-    width: 6vmin;
-    height: 6vmin;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.puzzle-card-popover {
-    font-size: 1.5vw;
-    max-width: 300px;
-}
-
-.finish-card {
-    position: absolute;
-    top: 0;
-    display: inline-flex;
-    width: 30vw;
-    height: 45vmin;
-    margin: 3vmin 1vmin 3vmin 1vmin;
-    text-align: center;
-    white-space: normal;
-    vertical-align: middle;
-
-    > div {
-        margin: auto;
-
-        p {
-            font-size: 1.5vw;
-        }
-        strong {
-            font-size: larger;
-        }
-    }
-}
-
-.left-aligned {
-    text-align: left;
-}
-
-.chat {
-    text-align: left;
-    box-sizing: content-box;
-    width: 230px;
-    height: 340px;
-    position: absolute;
-    top: 140px;
-    right: 10px;
-    border: 1px solid rgba(47, 148, 209, 0.9);
-    border-radius: 5px;
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    z-index: 1000;
-
-    * {
-        box-sizing: content-box;
-    }
-    button, img {
-        padding: 0;
-    }
-}
-
-@media (max-height: 510px) {
-    .chat {
-        width: 30%;
-        min-width: 230px;
-        height: 85%;
-        top: 5px;
-        right: 5px;
-    }
-}
-.hidden{
-  opacity: 0;
-}
-
-.back-button {
-    background-color: transparent;
-    border: none;
-    padding: 0px;
-
-    svg {
-        width: 6vmin;
-        height: 6vmin;
-        fill: none;
-        stroke: white;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
     }
 }
 

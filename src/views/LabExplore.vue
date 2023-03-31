@@ -2,10 +2,10 @@
     <div v-if="isLoading">
         <b-spinner class="loading-spinner" />
     </div>
-    <div v-else class="puzzle-view-container">
+    <div v-else class="page-container">
         <HeaderBar></HeaderBar>
-        <div class="content">
-            <div class="left-block left-aligned">
+        <div class="page-content">
+            <div class="page-left-block">
                  <div>
                         <p>
                             <strong>
@@ -17,12 +17,12 @@
                         </p>
                     </div>
             </div>
-            <div class="right-block">
+            <div class="page-right-block">
                 <FilterBar 
                     v-bind:filters="availableFilters"
                     @filter="fetchNewLabs"/>
-                <b-container id="puzzle-scroll">
-                    <div id="puzzle-card-wrapper">
+                <b-container id="page-scroll-content">
+                    <div id="scroll-card-wrapper">
                         <LabCard
                             v-for="(lab, index) in labs"
                             :key="index"
@@ -32,14 +32,14 @@
                             :imgSrc="lab.banner_image ? getAbsUrl(lab.banner_image) : defaultLabImage"
                             @link_lab="link_lab(lab.nid)"
                         />
-                        <button v-if="moreLabsAvailable" class="btn btn-secondary fetch-labs-btn" @click="fetchMoreLabs">Load More Labs</button>
+                        <button v-if="moreLabsAvailable" class="btn btn-secondary fetch-more-button" @click="fetchMoreLabs">Load More Labs</button>
                     </div>
                 </b-container>
             </div>
         </div>
         <NavBar>
             <template v-slot:right>
-                <div @click="openChat" class="puzzle-view-chat-button" />
+                <div @click="openChat" class="nav-button-chat" />
             </template>
         </NavBar>
         <div id="chat-container" class="chat hidden"></div>
@@ -174,8 +174,8 @@ export default Vue.extend({
             }
         },
         scrollToPuzzleIndex(index : number) {
-            var scroll = document.getElementById('puzzle-scroll');
-            var wrapper = document.getElementById('puzzle-card-wrapper');
+            var scroll = document.getElementById('page-scroll-content');
+            var wrapper = document.getElementById('scroll-card-wrapper');
             if (scroll !== null && wrapper !== null) {
                 scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
@@ -184,222 +184,4 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-.loading-spinner {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.right-block {
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
-}
-
-.puzzle-view-container {
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    touch-action: none;
-}
-
-#puzzle-view-header {
-    height: 18vh;
-    padding-top: 3vmin;
-    margin-left: 3vmin;
-    margin-right: 3vmin;
-}
-
-#puzzle-scroll {
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    padding-right: 0px;
-    padding-left: 25px;
-    margin-top: 0vmin;
-    max-width: unset;
-}
-
-#puzzle-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-#puzzle-view-footer {
-    margin-left: 3vmin;
-    margin-right: 3vmin;
-}
-
-#puzzle-card-wrapper {
-    position: relative;
-    display: inline-block;
-    scroll-margin: 0 50vw;
-}
-
-.puzzle-card-container {
-    transition: transform 0.2s;
-}
-
-.puzzle-view-button {
-    font-size: 1.5vw;
-}
-
-.puzzle-view-chat-button {
-    background: url('../assets/Chat.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    width: 9vmin;
-    height: 8vmin;
-}
-.puzzle-view-about-button {
-    background: url('../assets/noun_info.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    width: 6vmin;
-    height: 6vmin;
-}
-
-.puzzle-view-icon-people {
-    background-image: url('../assets/DefaultIcon.svg');
-    background-position: center top; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
-    width: 6vmin;
-    height: 6vmin;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.puzzle-card-popover {
-    font-size: 1.5vw;
-    max-width: 300px;
-}
-
-.finish-card {
-    position: absolute;
-    top: 0;
-    display: inline-flex;
-    width: 30vw;
-    height: 45vmin;
-    margin: 3vmin 1vmin 3vmin 1vmin;
-    text-align: center;
-    white-space: normal;
-    vertical-align: middle;
-
-    > div {
-        margin: auto;
-
-        p {
-            font-size: 1.5vw;
-        }
-        strong {
-            font-size: larger;
-        }
-    }
-}
-
-.left-aligned {
-    text-align: left;
-}
-
-.chat {
-    text-align: left;
-    box-sizing: content-box;
-    width: 230px;
-    height: 340px;
-    position: absolute;
-    top: 140px;
-    right: 10px;
-    border: 1px solid rgba(47, 148, 209, 0.9);
-    border-radius: 5px;
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    z-index: 1000;
-
-    * {
-        box-sizing: content-box;
-    }
-    button, img {
-        padding: 0;
-    }
-}
-
-@media (max-height: 510px) {
-    .chat {
-        width: 30%;
-        min-width: 230px;
-        height: 85%;
-        top: 5px;
-        right: 5px;
-    }
-}
-.hidden{
-  opacity: 0;
-}
-
-.content {
-    display: flex;
-    height: calc(64vh - 15px);
-}
-
-.left-block {  
-    overflow: auto;
-    overflow: overlay;
-    overflow-wrap: break-word;
-    max-height: 100%;
-    position: relative;
-    display: flex;
-    flex: 0 0 40vw;
-    padding-right: 25px;
-    padding-left: 50px;
-
-    .status-text {
-        font-size: 0.6875rem;
-        font-style: normal;
-        font-weight: 700;
-    }
-        > div {
-        margin: auto;
-
-        p {
-            font-size: 1.7vw;
-        }
-        strong {
-            font-size: larger;
-        }
-    }
-
-    border-right: 2px solid #2F94D1;
-}
-
-.fetch-labs-btn {
-    width: 45vmin;
-    height: 45vmin;
-    display: inline-block;
-    border-radius: 2vmin;
-    background-color: #008cff15;
-    scroll-snap-align: center;
-    text-align: center;
-    margin-top: 3vmin;
-    margin-bottom: 3vmin;
-    margin-left: 1vmin;
-    margin-right: 1vmin;
-    padding: 0;
-    border: solid;
-    border-color: #21508C;
-
-    // Removes Bootstrap's defaults, which cause sticky active style issue on mobile
-    // https://github.com/eternagame/eterna-mobile/issues/29
-    &:focus {
-        background-color: inherit;
-        border-color: #21508C;
-    }
-}
-</style>
+<style lang="scss" scoped></style>

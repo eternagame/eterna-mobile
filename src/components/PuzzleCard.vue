@@ -148,6 +148,7 @@ export default Vue.component('puzzle-card', {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    transition: transform 0.2s;
 }
 
 .puzzle-card-locked {
@@ -217,10 +218,7 @@ export default Vue.component('puzzle-card', {
 .button-position{
     width: 100%;
 }
-.status-text{
-    margin-top: .08vmin;
-    margin-left: 1vmin;
-}
+
 .chemical-bond{
     background: url('../assets/chemical_bond.svg');
     background-repeat: no-repeat;

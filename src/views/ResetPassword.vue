@@ -68,18 +68,4 @@ export default Vue.extend({
     width: 80vw;
     max-width: 300px;
 }
-
-.alert-container {
-    padding-top: 10px;
-    width: 80vw;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-.close-button {
-    position: fixed;
-    right: 3vmin;
-    top: 3vmin;
-    margin: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
-}
 </style>

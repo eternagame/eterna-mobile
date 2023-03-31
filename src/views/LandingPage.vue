@@ -2,13 +2,14 @@
     <div v-if="isLoading">
         <b-spinner class="loading-spinner" />
     </div>
-    <div v-else class="puzzle-view-container">
+    <div v-else class="page-container">
+        <SurveyModal v-if="$store.state.loggedIn"></SurveyModal>
         <HeaderBar></HeaderBar>
-        <div class="content" v-if="lab_access">
+        <div class="page-content" v-if="lab_access">
             <Carousel />
         </div>
-        <div class="content" v-else>
-            <div class="left-block ">
+        <div class="page-content" v-else>
+            <div class="page-left-block ">
                 <div v-if="playablePuzzleIndex < roadmap.length">
                     <p><strong>Welcome to Eterna, a game where you design RNAs for research by solving puzzles.</strong></p>
                     <p>Complete these puzzles to unlock access to advanced lab challenges.</p>
@@ -20,8 +21,8 @@
                     <p><strong>Let's go!</strong></p>
                 </div>
             </div>
-             <b-container id="puzzle-scroll">
-                <div id="puzzle-card-wrapper">
+             <b-container id="page-scroll-content">
+                <div id="scroll-card-wrapper">
                 <TutorialCard
                     v-for="(quest, index) in roadmap"
                     :key="index"
@@ -56,7 +57,7 @@
                 <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
             </template>
             <template v-slot:right>
-                <div @click="openChat" class="puzzle-view-chat-button" />
+                <div @click="openChat" class="nav-button-chat" />
             </template>
         </NavBar>
         <div id="chat-container" class="chat hidden"></div>
@@ -70,7 +71,7 @@ import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import TutorialCard from '../components/TutorialCard.vue'
-
+import SurveyModal from '../components/SurveyModal.vue';
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
 
@@ -100,6 +101,7 @@ export default Vue.extend({
         NavBar,
         ProgressBar,
         TutorialCard,
+        SurveyModal,
     },
     computed: {
         isLoading(): boolean {
@@ -135,8 +137,8 @@ export default Vue.extend({
             this.$forceUpdate();
         },
         scrollToPuzzleIndex(index : number) {
-            var scroll = document.getElementById('puzzle-scroll');
-            var wrapper = document.getElementById('puzzle-card-wrapper');
+            var scroll = document.getElementById('page-scroll-content');
+            var wrapper = document.getElementById('scroll-card-wrapper');
             if (scroll !== null && wrapper !== null) {
                 // scroll.scrollLeft = Math.floor(index) * (wrapper.clientWidth / (this.roadmap.length + 1));
             }
@@ -146,97 +148,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.loading-spinner {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.puzzle-view-container {
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    touch-action: none;
-}
-
-#puzzle-view-header {
-    height: 18vh !important;
-    margin-bottom: 15px;
-    padding-top: 0 !important;
-    margin-left: 3vmin;
-    margin-right: 3vmin;
-}
-
-#puzzle-scroll {
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-    padding-right: calc(50% - 22.5vmin);
-    padding-left: 25px;
-    margin-top: 0vmin;
-    max-width: unset;
-}
-
-#puzzle-scroll::-webkit-scrollbar {
-    display: none;
-}
-
-
-#puzzle-view-footer {
-    height: 18vh !important;
-    display: flex;
-    align-items: center;
-    margin-left: 3vmin;
-    margin-right: 3vmin;
-}
-
-#puzzle-card-wrapper {
-    position: relative;
-    display: inline-block;
-    scroll-margin: 0 50vw;
-}
-
-.puzzle-card-container {
-    transition: transform 0.2s;
-}
-
-.puzzle-view-button {
-    font-size: 1.5vw;
-}
-
-.puzzle-view-chat-button {
-    background: url('../assets/Chat.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    width: 9vmin;
-    height: 8vmin;
-}
-.puzzle-view-about-button {
-    background: url('../assets/noun_info.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    width: 6vmin;
-    height: 6vmin;
-}
-
-.puzzle-view-icon-people {
-    background-image: url('../assets/DefaultIcon.svg');
-    background-position: center top; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
-    width: 6vmin;
-    height: 6vmin;
-    display: inline-block;
-    vertical-align: middle;
-}
-
 .puzzle-card-popover {
     font-size: 1.5vw;
     max-width: 300px;
@@ -263,48 +174,5 @@ export default Vue.extend({
             font-size: larger;
         }
     }
-}
-
-.left-aligned {
-    text-align: left;
-}
-
-.chat {
-    text-align: left;
-    box-sizing: content-box;
-    width: 230px;
-    height: 340px;
-    position: absolute;
-    top: 140px;
-    right: 10px;
-    border: 1px solid rgba(47, 148, 209, 0.9);
-    border-radius: 5px;
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    z-index: 1000;
-
-    * {
-        box-sizing: content-box;
-    }
-    button, img {
-        padding: 0;
-    }
-}
-
-@media (max-height: 510px) {
-    .chat {
-        width: 30%;
-        min-width: 230px;
-        height: 85%;
-        top: 5px;
-        right: 5px;
-    }
-}
-.hidden{
-  opacity: 0;
-}
-.header-logo {
-    max-width: 100%;
-    height: 100%;
 }
 </style>

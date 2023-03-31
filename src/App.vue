@@ -69,12 +69,6 @@ body {
     padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
 }
 
-.close-button {
-    background: url('assets/close-button.png') no-repeat center;
-    width: 13px;
-    height: 13px;
-}
-
 .update-text {
     height: 45vmin;
     margin: 10vmin 5vmin;

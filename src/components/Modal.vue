@@ -1,11 +1,11 @@
 <template>
     <b-modal
-    id="id"
-    ref="modal"
-    size="xl"
-    header-border-variant="primary"
-    hide-header
-    hide-footer
+        id="id"
+        ref="modal"
+        size="xl"
+        header-border-variant="primary"
+        hide-header
+        hide-footer
     >
     <div class="readmore-scroll">
         <b-img  class="puzzle-card-image" :src="imgSrc" />
@@ -43,7 +43,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #readmore-scroll {
     white-space: nowrap;
     overflow-y: scroll;
@@ -70,12 +70,10 @@ export default Vue.extend({
     height: 40vmin;
     top: -1vmin;
 }
-.modal-body{
+::v-deep .modal-body{
     padding: 0vmin;
 }
-.modal-header {
-  display:none;
-}
+
 .puzzle-card-image {
     width: 100%;
     height: 40vmin;

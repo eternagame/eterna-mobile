@@ -134,6 +134,7 @@ export default Vue.component('puzzle-card', {
     padding: 0;
     border: solid;
     border-color: #21508C;
+    transition: transform 0.2s;
 }
 
 .puzzle-card-locked {
@@ -213,10 +214,6 @@ export default Vue.component('puzzle-card', {
     @media screen and (min-height: 400px) {
         bottom: 40px;
     }
-}
-.status-text{
-    margin-top: .08vmin;
-    margin-left: 1vmin;
 }
 .test-tube{
     background: url('../assets/test-tube.svg');

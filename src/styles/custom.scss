@@ -1,57 +1,182 @@
-.page-container {
-  width: 100%;
-  max-width: 100%;
+/**** NOTE: This is different from the main website's custom.scss, since the custom components and layout we use in the app are completely different. Sigh. ****/
+
+.hidden{
+  opacity: 0;
 }
 
-@include media-breakpoint-up(xl) {
-  .page-container,
-  .navbar-container {
-    max-width: map-get($grid-breakpoints, 'xl');
-    width: 100%;
+.fetch-more-button {
+  width: 45vmin;
+  height: 45vmin;
+  display: inline-block;
+  border-radius: 2vmin;
+  background-color: #008cff15;
+  scroll-snap-align: center;
+  text-align: center;
+  margin-top: 3vmin;
+  margin-bottom: 3vmin;
+  margin-left: 1vmin;
+  margin-right: 1vmin;
+  padding: 0;
+  border: solid;
+  border-color: #21508C;
+
+  // Removes Bootstrap's defaults, which cause sticky active style issue on mobile
+  // https://github.com/eternagame/eterna-mobile/issues/29
+  &:focus {
+      background-color: inherit;
+      border-color: #21508C;
   }
 }
 
-.gray-header {
-  font-weight: bold;
-  color: $gray;
+/**** Nav, etc ****/
+.back-button {
+  background-color: transparent;
+  border: none;
+  padding: 0px;
+
+  svg {
+      width: 6vmin;
+      height: 6vmin;
+      fill: none;
+      stroke: white;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+  }
 }
 
-.top-border {
-  border-top-color: $light-blue;
-  margin-top: 2.5em;
-  margin-bottom: 2.5em;
+.chat {
+  text-align: left;
+  box-sizing: content-box;
+  width: 230px;
+  height: 340px;
+  position: absolute;
+  top: 140px;
+  right: 10px;
+  border: 1px solid rgba(47, 148, 209, 0.9);
+  border-radius: 5px;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+
+  * {
+      box-sizing: content-box;
+  }
+  button, img {
+      padding: 0;
+  }
 }
 
-.arrow_right {
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  border-left: 5px solid white;
-  display: inline-block;
-  margin-right: 10px;
+@media (max-height: 510px) {
+  .chat {
+      width: 30%;
+      min-width: 230px;
+      height: 85%;
+      top: 5px;
+      right: 5px;
+  }
+}
+
+.loading-spinner {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.nav-button-chat {
+  background: url('assets/Chat.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: none;
+  width: 9vmin;
+  height: 8vmin;
+}
+
+.close-button {
+  background: url('assets/close-button.png') no-repeat center;
+  width: 13px;
+  height: 13px;
+  position: fixed;
+  right: 3vmin;
+  top: 3vmin;
+  margin: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-right, 0);
+}
+
+.alert-container {
+  padding-top: 10px;
+  width: 80vw;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/**** Page content layout ****/
+.page-container {
+  padding: 0;
+  margin: 0;
+  touch-action: none;
 }
 
 .page-content {
-  border-radius: 5px;
-  background-color: $med-dark-blue;
-  padding: 12.3px;
+  display: flex;
+  height: calc(64vh - 15px);
 }
 
-.unread {
-  width: 10px;
-  height: 10px;
-  background-color: $red;
-  border-radius: 10px;
-  position: absolute;
-  margin-left: 15px;
+.page-right-block {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
 }
 
-.local-search {
-  border: solid 1px $med-blue;
-  background-color: #021e46;
-  padding: 8px;
-  width: 100%;
-  font-size: 14px;
-  height: 36px;
-  border-radius: 5px;
-  color: white;
+.page-left-block {
+  overflow: auto;
+  overflow: overlay;
+  overflow-wrap: break-word;
+  max-height: 100%;
+  position: relative;
+  display: flex;
+  flex: 0 0 40vw;
+  padding-right: 25px;
+  padding-left: 50px;
+
+  > div {
+    margin: auto;
+    padding-top: 3vmin;
+    overflow-y: scroll;
+    font-size: 1.8vw;
+
+    p {
+      font-size: 1.7vw;
+    }
+
+    strong {
+      font-size: larger;
+    }
+  }
+
+  border-right: 2px solid #2F94D1;
+}
+
+#page-scroll-content {
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  padding-right: 0px;
+  padding-left: 25px;
+  margin-top: 0vmin;
+  max-width: unset;
+}
+
+#page-scroll-content::-webkit-scrollbar {
+  display: none;
+}
+
+#scroll-card-wrapper {
+  position: relative;
+  display: inline-block;
+  scroll-margin: 0 50vw;
 }

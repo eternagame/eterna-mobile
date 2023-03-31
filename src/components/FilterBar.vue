@@ -47,7 +47,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .filter-bar {
     display: flex;
     padding-left: 15px;
@@ -65,7 +65,7 @@ export default Vue.extend({
     overflow-y: scroll;
   }
 
-  .filter-checkboxes .custom-control-inline {
+  .filter-checkboxes ::v-deep .custom-control-inline {
     display: inline;
     white-space: nowrap;
   }

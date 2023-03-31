@@ -25,7 +25,7 @@
         </slot>
         <div class="nav-button">
             <slot name="right">
-                <div class="puzzle-view-chat-btn" />
+                <div class="nav-button-chat" />
             </slot>
         </div>
     </section>
@@ -101,15 +101,6 @@ section.nav-bar {
     border: none;
     width: 6vmin;
     height: 6vmin;
-}
-
-.puzzle-view-chat-btn {
-    background: url('../assets/Chat.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    width: 9vmin;
-    height: 8vmin;
 }
 
 button:disabled,

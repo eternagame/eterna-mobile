@@ -1,6 +1,6 @@
 <template>
-<div class="puzzle-view-container">
-    <b-row id="puzzle-view-header">
+<div class="page-container">
+    <b-row id="header">
         <b-col>
             <b-img :src="logoSourcePng" />
         </b-col>
@@ -58,6 +58,14 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+#header {
+    height: 18vh;
+    padding-top: 3vmin;
+    margin-left: 3vmin;
+    margin-right: 3vmin;
+    margin-bottom: 3vmin;
+}
+
 #about-content {
     margin-left: 0;
     margin-right: 0;

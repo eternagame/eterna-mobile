@@ -4,7 +4,7 @@
     <div v-if="isLoading">
         <b-spinner class="loading-spinner" />
     </div>
-    <div v-else class="content">
+    <div v-else class="page-content">
       <div class="user-data">
         <div class="user-avatar">
           <img :src="avatarUrl" alt="Profile Picture" class="r">
@@ -27,8 +27,8 @@
       </div>
       <div class="user-achievements">
         <h1>Achievements</h1>
-          <b-container id="puzzle-scroll">
-            <ul id="puzzle-card-wrapper">
+          <b-container id="page-scroll-content">
+            <ul id="scroll-card-wrapper">
               <li v-for="item in achievements" :key="`${item.title} (${item.level})`" class="achievement-card">
                 <img :src="resolveUrl(item.image)" :alt="item.desc"/>
                 <h3 class="achievement-title">{{item.title}}</h3>
@@ -119,17 +119,13 @@ export default Vue.extend({
   position: relative;
 }
 
-.content {
-  display: flex;
-}
-
 .user-data {
   width: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 16px;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .user-avatar {
@@ -184,11 +180,11 @@ h1, h2 {
   width: 60%;
   height: 100%;
 
-  #puzzle-scroll {
+  #page-scroll-content {
     padding-left: 0;
   }
 
-  #puzzle-card-wrapper {
+  #scroll-card-wrapper {
     padding: 0;
     margin: 0;
   }
@@ -199,6 +195,7 @@ h1, h2 {
   padding: 0;
   display: inline-flex;
   flex-direction: column;
+  vertical-align: middle;
   height: 100%;
   width: 45vmin;
   height: 45vmin;
