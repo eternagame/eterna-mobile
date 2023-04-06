@@ -44,7 +44,8 @@ export default Vue.extend({
             );
             // To reload user profile
             this.$store.dispatch('GET_PROFILE', {id: this.$store.state.uid});
-            window.open('https://stanfordmedicine.qualtrics.com/jfe/form/SV_26otHCclO1zC850', '_blank');
+            // @ts-expect-error Cordova type is missing
+            cordova.InAppBrowser.open('https://stanfordmedicine.qualtrics.com/jfe/form/SV_26otHCclO1zC850', '_blank');
         },
         async handleNo() {
             await this.$http.post(
