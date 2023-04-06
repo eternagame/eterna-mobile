@@ -75,7 +75,7 @@ export default Vue.extend({
     },
     computed: {
         shown() {
-            const entries = this.$store.state.user.survey.split(',');
+            const entries = this.$store.state.user?.survey?.split(',') ?? [];
             if (entries.includes('DIV_SURVEY_2023_DISMISSED')) return false;
             const delays = entries
                 .filter((entry: string) => entry.startsWith('DIV_SURVEY_2023_DELAY:'))
