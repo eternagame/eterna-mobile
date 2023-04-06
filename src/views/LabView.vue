@@ -19,14 +19,14 @@
                     </div>
                     <div class="lab-description-more">
                         <b-button block v-b-modal.full-description-modal>Read More</b-button>
-                            <b-modal
-                                id="full-description-modal"
-                                ref="modal"
-                                size="xl"
-                                header-border-variant="primary"
-                                hide-header
-                                hide-footer
-                            >
+                        <b-modal
+                            id="full-description-modal"
+                            ref="modal"
+                            size="xl"
+                            header-border-variant="primary"
+                            hide-header
+                            hide-footer
+                        >
                             <div class="modal_container">
                                 <div class="modal_header">
                                 <b-img  class="img-fluid" :src="getBanner" />
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="modal_body" v-html="description"/>
                             </div>
-                            </b-modal>
+                        </b-modal>
                         <b-button block v-b-modal.lab-updates-modal v-if="labUpdates">Lab Updates</b-button>
                         <b-modal
                             id="lab-updates-modal"
@@ -44,15 +44,12 @@
                             hide-header
                             hide-footer
                             >
-                            <div class="readmore-scroll">
-                                <b-img  class="puzzle-card-image" :src="getBanner" />
-                                <div style="padding: 2vmin;">
-                                        <div class="modal-title">
-                                                Lab Updates!
-                                        </div>
-                                        <div  style="font-size: 2vmin;" v-html="labUpdates">
-                                        </div>
+                            <div class="modal_container">
+                                <div class="modal_header">
+                                <b-img  class="img-fluid" :src="getBanner" />
+                                <div class="modal_title">Lab Updates!</div>
                                 </div>
+                                <div class="modal_body" v-html="labUpdates"/>
                             </div>
                         </b-modal>
                     </div>
@@ -65,11 +62,11 @@
                     v-for="(puzzle, index) in puzzles"
                     :key="index"
                     :title="puzzle.title"
-                    :leftNum="puzzle.num_slots"
+                    :numSlots="puzzle.num_slots"
                     :numSynths="puzzle.num_synthesized"
                     :mySolutions="puzzle.num_solutions"
                     :maxSubmissions="puzzle.player_max_submissions"
-                    :rightNum="puzzle.submitted"
+                    :numSubmitted="puzzle.submitted"
                     :imgSrc="getPuzImg(puzzle.nid)"
                     @play="play(parseInt(puzzle.nid, 10))"
                     @review="review(parseInt(puzzle.nid, 10))"
@@ -101,7 +98,6 @@ import Vue from 'vue'
 import DOMPurify from 'dompurify';
 import HeaderBar from '../components/HeaderBar.vue'
 import LabPuzzleCard from '../components/LabPuzzleCard.vue'
-import Modal from '../components/Modal.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import PuzzleCard from '../components/TutorialCard.vue'
@@ -130,7 +126,6 @@ export default Vue.extend({
     components: {
         HeaderBar,
         LabPuzzleCard,
-        Modal,
         NavBar,
         ProgressBar,
         PuzzleCard

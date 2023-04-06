@@ -16,22 +16,22 @@
                     </slot>
                 {{numSynths}}
                 </div>
-                <div class="left-col">
+                <div class="left-col" v-else>
                     <slot name="left-icon">
                         <div class="test-tube">
                         </div>
                         
                     </slot>
-                {{leftNum}}
+                {{numSlots}}
                 </div>
             </b-col>
             <b-col cols="6" >
-                <div class="right-col" style="margin-right: 2vmin;" v-if="rightNum">
+                <div class="right-col" style="margin-right: 2vmin;" v-if="numSubmitted">
                     <slot name="right-icon">
                         <div class="noun-globe">
                         </div>
                     </slot>
-                {{rightNum}}
+                {{numSubmitted}}
                 </div>
             </b-col>
         </b-row>
@@ -83,7 +83,7 @@ export default Vue.component('puzzle-card', {
         title:{
             type: String
         },
-        leftNum:{
+        numSlots:{
             type: Number
         },
         numSynths:{
@@ -95,7 +95,7 @@ export default Vue.component('puzzle-card', {
         maxSubmissions:{
             type: Number,
         },
-        rightNum:{
+        numSubmitted:{
             type: Number,
         },
     },
@@ -212,7 +212,7 @@ export default Vue.component('puzzle-card', {
     bottom: 36px;
 
     @media screen and (min-height: 400px) {
-        bottom: 40px;
+        bottom: 8vmin;
     }
 }
 .test-tube{
