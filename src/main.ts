@@ -6,9 +6,7 @@ import App from './App.vue';
 import router from './router';
 import createStore from './store';
 
-declare const cordova: Cordova;
-
-// @ts-expect-error Technically a different type, but convenient and good enough for us
+// @ts-expect-error Yes, this actually exists
 window.open = cordova.InAppBrowser.open;
 
 Vue.use(BootstrapVue);
