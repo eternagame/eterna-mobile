@@ -23,6 +23,9 @@ declare var StatusBar: any;
 declare var wkWebView: any;
 
 document.addEventListener('deviceready', () => {
+    // @ts-expect-error Yes, this actually exists
+    window.open = cordova.InAppBrowser.open;
+
     window.navigationbar.setUp(true);
     StatusBar.hide();
 
