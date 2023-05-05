@@ -75,6 +75,7 @@ export default Vue.component('puzzle-view-progress-bar', {
     font-size: 3.5vmin;
     padding-top: 0.4vmin;
     z-index: 0;
+    text-align: center;
 }
 
 .circle-glow {
