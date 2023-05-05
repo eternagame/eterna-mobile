@@ -15,8 +15,12 @@
             Help us understand who we are by participating in our newly revised survey!
             Results of the Eterna Player Profile Survey will be shared with the Eterna
             community.
-            Would you like to participate?
         </div>
+        <div style="text-align: center;">
+            <br/>
+            The survey will close Sunday, May 14th.
+            <br/>
+            Would you like to participate?</div>
         <template #modal-footer>
             <div class="d-flex" style="gap: 10px;">
                 <b-button variant="primary" @click="handleYes">Yes</b-button>
@@ -77,6 +81,7 @@ export default Vue.extend({
         shown() {
             const entries = this.$store.state.user?.survey?.split(',') ?? [];
             if (entries.includes('DIV_SURVEY_2023_DISMISSED')) return false;
+            if (Date.now() > Date.UTC(2023, 4, 15, 12, 0)) return false
             const delays = entries
                 .filter((entry: string) => entry.startsWith('DIV_SURVEY_2023_DELAY:'))
                 .map((entry: string) => parseInt(entry.split(':')[1], 10))
