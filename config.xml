@@ -45,6 +45,9 @@
         <allow-intent href="itms-apps:*" />
         <preference name="allowFileAccessFromFileURLs" value="true" />
         <preference name="allowUniversalAccessFromFileURLs" value="true" />
+        <edit-config file="*-Info.plist" mode="add" target="ITSAppUsesNonExemptEncryption">
+            <false/>
+        </edit-config>
     </platform>
     <platform name="browser">
         <preference name="SplashScreen" value="/res/Default@2x~universal~anyany.png" />
