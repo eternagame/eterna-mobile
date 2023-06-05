@@ -45,6 +45,7 @@
         <allow-intent href="itms-apps:*" />
         <preference name="allowFileAccessFromFileURLs" value="true" />
         <preference name="allowUniversalAccessFromFileURLs" value="true" />
+        <preference name="InspectableWebview" value="true" />
         <edit-config file="*-Info.plist" mode="add" target="ITSAppUsesNonExemptEncryption">
             <false/>
         </edit-config>
