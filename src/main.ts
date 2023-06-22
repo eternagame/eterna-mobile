@@ -18,9 +18,10 @@ declare global {
     interface Window {
         navigationbar: any;
     }
+    var device: Device;
+    var StatusBar: StatusBar;
+    var wkWebView: any;
 }
-declare var StatusBar: any;
-declare var wkWebView: any;
 
 document.addEventListener('deviceready', () => {
     // @ts-expect-error Yes, this actually exists
