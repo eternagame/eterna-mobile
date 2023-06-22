@@ -101,6 +101,20 @@ const router = new VueRouter({
 
 router.afterEach(( to, from ) => {
     ga('send', 'pageview', to.path);
+    plausible('pageview', {
+        u: to.path,
+        props: {
+            logged_in: router.app.$store.state.loggedIn,
+            // Platform and version should be available already parsed from the UA string, but
+            // we'll also include them here in case it winds up being more accurate (or stops
+            // being reported in UA strings like is happening with newer desktop OS versions)
+            'device/platform': device.platform,
+            'device/version': device.version,
+            'device/manufacturer': device.manufacturer,
+            'device/model': device.model,
+            'device/is_virtual': device.isVirtual
+        }
+    });
 });
 
 export default router;

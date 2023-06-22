@@ -58,6 +58,7 @@ module.exports = function(mode, eternajs_copy) {
                 meta: {
                     viewport: 'initial-scale=1, maximum-scale=1, user-scalable=0, width=device-width, viewport-fit=cover',
                 },
+                templateParameters: { mode }
             }),
             new VueLoaderPlugin(),
             new CopyPlugin({patterns: [
