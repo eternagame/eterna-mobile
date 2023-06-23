@@ -114,7 +114,13 @@ router.afterEach(( to, from ) => {
             'device/version': device.version,
             'device/manufacturer': device.manufacturer,
             'device/model': device.model,
-            'device/is_virtual': device.isVirtual
+            'device/is_virtual': device.isVirtual,
+            'device/resolution/screen': `${window.screen.width}x${window.screen.height}`,
+            'device/resolution/screen/width': window.screen.width,
+            'device/resolution/screen/height': window.screen.height,
+            'device/resolution/page': `${window.innerWidth}x${window.innerHeight}`,
+            'device/resolution/page/width': window.innerWidth,
+            'device/resolution/page/height': window.innerHeight,
         }
     });
 });
