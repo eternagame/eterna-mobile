@@ -1,6 +1,6 @@
 {
   "name": "eterna-mobile",
-  "version": "1.7.16",
+  "version": "1.7.17",
   "private": true,
   "scripts": {
     "postinstall": "shx mkdir -p www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
