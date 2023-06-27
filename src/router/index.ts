@@ -102,7 +102,6 @@ const router = new VueRouter({
 declare var device: any;
 
 router.afterEach(( to, from ) => {
-    ga('send', 'pageview', to.path);
     plausible('pageview', {
         u: to.path,
         props: {
