@@ -14,7 +14,7 @@
             your identifying information will be removed and your contributions will be anonymized
             (though we cannot retroactively remove names that may have been included in
             scientific publications). If you have used our forum or wiki, you will also need to separately
-            delete your forum account at <a href="https://forum.eternagame.org/">https://forum.eternagame.org/</a>
+            delete those accounts at <a href="https://forum.eternagame.org/">https://forum.eternagame.org/</a>
             and <a href="https://wiki.eternagame.org/">https://wiki.eternagame.org/</a> respectively.
         </p>
         <p>
