@@ -102,28 +102,30 @@ const router = new VueRouter({
 declare var device: any;
 
 router.afterEach(( to, from ) => {
-    plausible('pageview', {
-        u: to.path,
-        props: {
-            logged_in: router.app.$store.state.loggedIn,
-            // Platform and version should be available already parsed from the UA string, but
-            // we'll also include them here in case it winds up being more accurate (or stops
-            // being reported in UA strings like is happening with newer desktop OS versions)
-            'device/platform': device.platform,
-            'device/version': device.version,
-            'device/manufacturer': device.manufacturer,
-            'device/model': device.model,
-            'device/is_virtual': device.isVirtual,
-            'device/resolution/screen': `${window.screen.width}x${window.screen.height}`,
-            'device/resolution/screen/width': window.screen.width,
-            'device/resolution/screen/height': window.screen.height,
-            'device/resolution/page': `${window.innerWidth}x${window.innerHeight}`,
-            'device/resolution/page/width': window.innerWidth,
-            'device/resolution/page/height': window.innerHeight,
-            'language/browser': window.navigator.language,
-            'language/browser-fallback': window.navigator.languages.join(',')
-        }
-    });
+    if ('plausible' in window) {
+        plausible('pageview', {
+            u: to.path,
+            props: {
+                logged_in: router.app.$store.state.loggedIn,
+                // Platform and version should be available already parsed from the UA string, but
+                // we'll also include them here in case it winds up being more accurate (or stops
+                // being reported in UA strings like is happening with newer desktop OS versions)
+                'device/platform': device.platform,
+                'device/version': device.version,
+                'device/manufacturer': device.manufacturer,
+                'device/model': device.model,
+                'device/is_virtual': device.isVirtual,
+                'device/resolution/screen': `${window.screen.width}x${window.screen.height}`,
+                'device/resolution/screen/width': window.screen.width,
+                'device/resolution/screen/height': window.screen.height,
+                'device/resolution/page': `${window.innerWidth}x${window.innerHeight}`,
+                'device/resolution/page/width': window.innerWidth,
+                'device/resolution/page/height': window.innerHeight,
+                'language/browser': window.navigator.language,
+                'language/browser-fallback': window.navigator.languages.join(',')
+            }
+        });
+    }
 });
 
 export default router;
