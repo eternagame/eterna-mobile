@@ -82,7 +82,7 @@ export default Vue.extend({
 #login-container {
     width: 100vw;
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     text-align: center;
     padding-top: 10vh !important;
 }

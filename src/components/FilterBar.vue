@@ -62,7 +62,8 @@ export default Vue.extend({
   }
   
   .filter-checkboxes {
-    overflow-y: scroll;
+    overflow: auto;
+    white-space: nowrap;
   }
 
   .filter-checkboxes ::v-deep .custom-control-inline {

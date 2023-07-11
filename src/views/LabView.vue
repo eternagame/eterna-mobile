@@ -263,7 +263,7 @@ export default Vue.extend({
 
 .modal_body {
   font-size: 3vmin;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 60%;
   padding: 0rem 1rem;
   margin-right: 1rem;

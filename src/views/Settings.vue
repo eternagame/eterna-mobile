@@ -187,7 +187,7 @@ export default Vue.extend({
 .settings-form {
   padding: 0px 32px;
   max-height: 64vh;
-  overflow: scroll;
+  overflow: auto;
 
   .notifications-checkbox {
     padding-right: 4px;

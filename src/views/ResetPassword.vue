@@ -54,7 +54,7 @@ export default Vue.extend({
 #reset-password-container {
     width: 100vw;
     height: 100vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     text-align: center;
     padding-top: 25vh !important;
 }

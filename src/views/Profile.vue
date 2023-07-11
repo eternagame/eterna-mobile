@@ -125,7 +125,7 @@ export default Vue.extend({
   flex-direction: column;
   align-items: center;
   padding: 16px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .user-avatar {
