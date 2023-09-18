@@ -124,7 +124,7 @@ export default Vue.extend({
         getPuzImg(nid: string | null){
             return (
             nid &&
-            `https://renderv2-prod-renderv2bucket86ab868d-1aq5x6e32xf92.s3.amazonaws.com/puzzle_mid_thumbnails/thumbnail${nid}.svg`
+            `https://s3.amazonaws.com/website-prod-puzzlethumbnails758d7a84-1fjijvlzx9v5u/puzzle_mid_thumbnails/thumbnail${nid}.svg`
             );
         },
         play(id: number) {
