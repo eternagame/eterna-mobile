@@ -4,11 +4,8 @@
   "private": true,
   "scripts": {
     "postinstall": "shx mkdir -p www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
-    "prebuild:dev": "npm run clean && cd eternajs && npm run build:dev",
     "build:dev": "webpack --config webpack.config.dev.js",
-    "prebuild:prod": "npm run clean && cd eternajs && npm run build:prod",
     "build:prod": "webpack --config webpack.config.prod.js",
-    "clean": "shx rm -r www/* || true",
     "start": "npx cordova run browser"
   },
   "author": "Eternagame",
