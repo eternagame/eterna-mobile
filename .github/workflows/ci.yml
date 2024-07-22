@@ -1,0 +1,153 @@
+name: CI
+
+on:
+  push:
+    branches: [ci]
+
+permissions: {}
+
+env:
+  API_DOMAIN: eternagame.org
+  NODE_VERSION: 18.x
+
+jobs:
+  build-eternajs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-${{ hashFiles('./eternajs/package-lock.json') }}
+      - name: Create GitHub App token for built engine access
+        uses: actions/create-github-app-token@v1
+        id: engines-app-token
+        with:
+          app-id: ${{ secrets.BUILT_ENGINE_CLIENT_ID }}
+          private-key: ${{ secrets.BUILT_ENGINE_APP_PRIVATE_KEY }}
+          owner: eternagame
+          repositories: eternajs-folding-engines
+      - name: Set GitHub App token authentication for built engine access
+        run: git config url.https://x-access-token:${{ steps.engines-app-token.outputs.token }}@github.com/eternagame/eternajs-folding-engines.insteadOf ssh://git@github.com/eternagame/eternajs-folding-engines
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./eternajs
+      - name: Build
+        run: npm run build
+        working-directory: ./eternajs
+        env:
+          APP_SERVER_URL: https://${{ env.API_DOMAIN }}
+          MOBILE_APP: true
+          DEBUG: false
+          ENGINE_LOCATION: package
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: eternajs
+          path: ./eternajs/dist/prod
+  
+  build-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-${{ hashFiles('./package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: build
+        run: npm run build:prod
+        env:
+          NODE_ENV: prod
+          PARALLEL_BUILD: true
+          APP_SERVER_URL: https://${{ env.API_DOMAIN }}
+          INJECT_COOKIE_DOMAIN: .${{ env.API_DOMAIN }}
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: ./www
+
+  build-ios:
+    runs-on: macos-latest
+
+    needs: [build-eternajs, build-app]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v4
+        with:
+          name: app
+          path: ./www
+      - uses: actions/download-artifact@v4
+        with:
+          name: eternajs
+          path: ./www/eternajs
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-${{ hashFiles('./eternajs/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npx cordova build ios --release --device
+        env:
+          NODE_ENV: prod
+          PARALLEL_BUILD: true
+          CORDOVA_PLATFORM: ios
+  
+  build-android:
+    runs-on: ubuntu-latest
+
+    needs: [build-eternajs, build-app]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v4
+        with:
+          name: app
+          path: ./www
+      - uses: actions/download-artifact@v4
+        with:
+          name: eternajs
+          path: ./www/eternajs
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-${{ hashFiles('./eternajs/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npx cordova build android --release --device
+        env:
+          NODE_ENV: prod
+          PARALLEL_BUILD: true
+          
