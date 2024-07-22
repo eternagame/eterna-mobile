@@ -62,7 +62,7 @@ module.exports = function(mode, eternajs_copy) {
             }),
             new VueLoaderPlugin(),
             new CopyPlugin({patterns: [
-                process.env.PARALLEL_BUILD ? {} : { context: eternajs_copy, from: '**/*', to: 'eternajs/'},
+                ...(process.env.PARALLEL_BUILD ? [] : [{ context: eternajs_copy, from: '**/*', to: 'eternajs/'}]),
                 { from: 'src/assets/favicon.ico', to: 'favicon.ico'},
             ]}),
         ],
