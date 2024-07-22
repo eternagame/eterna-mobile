@@ -38,6 +38,7 @@ jobs:
           repositories: eternajs-folding-engines
       - name: Set GitHub App token authentication for built engine access
         run: git config url.https://x-access-token:${{ steps.engines-app-token.outputs.token }}@github.com/eternagame/eternajs-folding-engines.insteadOf ssh://git@github.com/eternagame/eternajs-folding-engines
+        working-directory: ./eternajs
       - name: Install dependencies
         run: npm ci
         working-directory: ./eternajs
