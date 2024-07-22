@@ -65,6 +65,9 @@ module.exports = function(mode, eternajs_copy) {
                 ...(process.env.PARALLEL_BUILD ? [] : [{ context: eternajs_copy, from: '**/*', to: 'eternajs/'}]),
                 { from: 'src/assets/favicon.ico', to: 'favicon.ico'},
             ]}),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify(mode)
+            })
         ],
     };
 };

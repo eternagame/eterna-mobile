@@ -220,7 +220,7 @@ const MAX_LEVEL = 8;
 
 export default function createStore(http: AxiosInstance) {
     return new Vuex.Store({
-        strict: process.env.NODE_ENV !== 'production',
+        strict: process.env.NODE_ENV !== 'prod',
         state: {
             isLoadingCount: 0,
             loggedIn: false,
