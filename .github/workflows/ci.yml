@@ -137,6 +137,12 @@ jobs:
         run: npx cordova platform add ${{ matrix.target }}
         env:
           PARALLEL_BUILD: true
+      - uses: actions/setup-java@v4
+        if: ${{ matrix.target == 'android' }}
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
       - name: Build
         run: npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device
         env:
