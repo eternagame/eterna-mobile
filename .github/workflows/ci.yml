@@ -160,7 +160,7 @@ jobs:
         if: ${{ matrix.target == 'ios' }}
         run: |
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
-            --automaticProvisioning --authenticationKeyPath "${{ github.workspace }}/authkey.p8" \
-            --authenticationKeyID ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --packageType ${{ matrix.packageType }}
+            --automaticProvisioning --authenticationKeyPath="${{ github.workspace }}/authkey.p8" \
+            --authenticationKeyID=${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --packageType=${{ matrix.packageType }}
         env:
           PARALLEL_BUILD: true
