@@ -155,11 +155,12 @@ jobs:
           PARALLEL_BUILD: true
 
       - name: Set up App Store Connect API key
+        if: ${{ matrix.target == 'ios' }}
         env:
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
         run: echo $APP_STORE_CONNECT_API_KEY > "${{ github.workspace }}/authkey.p8"
       - name: Build iOS
-        if: ${{ matrix.target == 'android' }}
+        if: ${{ matrix.target == 'ios' }}
         run: |
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
             --automaticProvisioning --authenticationKeyPath "${{ github.workspace }}/authkey.p8" \
