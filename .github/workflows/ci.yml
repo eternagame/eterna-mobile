@@ -101,6 +101,10 @@ jobs:
         include:
           - runner: macos-latest
             target: ios
+            packageType: development
+          - runner: macos-latest
+            target: ios
+            packageType: app-store
           - runner: ubuntu-latest
             target: android
     
@@ -137,13 +141,28 @@ jobs:
         run: npx cordova platform add ${{ matrix.target }}
         env:
           PARALLEL_BUILD: true
+
       - uses: actions/setup-java@v4
         if: ${{ matrix.target == 'android' }}
         with:
           distribution: 'temurin'
           java-version: '17'
           cache: 'gradle'
-      - name: Build
+      - name: Build Android
+        if: ${{ matrix.target == 'android' }}
         run: npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device
+        env:
+          PARALLEL_BUILD: true
+
+      - name: Set up App Store Connect API key
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+        run: echo $APP_STORE_CONNECT_API_KEY > "${{ github.workspace }}/authkey.p8"
+      - name: Build iOS
+        if: ${{ matrix.target == 'android' }}
+        run: |
+          npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
+            --automaticProvisioning --authenticationKeyPath "${{ github.workspace }}/authkey.p8" \
+            --authenticationKeyID ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --packageType ${{ matrix.packageType }}
         env:
           PARALLEL_BUILD: true
