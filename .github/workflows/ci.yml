@@ -135,6 +135,8 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Setup cordova platform
         run: npx cordova platform add ${{ matrix.target }}
+        env:
+          PARALLEL_BUILD: true
       - name: Build
         run: npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device
         env:
