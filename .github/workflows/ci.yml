@@ -51,11 +51,15 @@ jobs:
           MOBILE_APP: true
           DEBUG: false
           ENGINE_LOCATION: package
+      # Due to licensed components, we don't want the intermediate build of EternaJS available for download
+      - name: Encrypt build
+        run: gpgtar --encrypt --output eternajs-bundle --symmetric --gpg-args "--passphrase ${{ secrets.ARTIFACT_ENCRYPTION_KEY }} --batch" *
+        working-directory: ./eternajs/dist/prod
       - name: Upload build
         uses: actions/upload-artifact@v4
         with:
           name: eternajs
-          path: ./eternajs/dist/${{ env.BUILD_TYPE }}
+          path: ./eternajs/dist/prod/eternajs-bundle
   
   build-wrapper:
     runs-on: ubuntu-latest
@@ -112,6 +116,12 @@ jobs:
         with:
           name: eternajs
           path: ./www/eternajs
+      - name: Decrypt eternajs artifact
+        run: |
+          gpgtar --decrypt --gpg-args "--passphrase ${{ secrets.ARTIFACT_ENCRYPTION_KEY }} --batch" eternajs
+          rm eternajs
+          mv eternajs_1_ eternajs
+        working-directory: ./www
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
