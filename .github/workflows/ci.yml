@@ -99,16 +99,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: macos-latest
-            target: ios
+          - target: ios
             packageType: development
-          - runner: macos-latest
-            target: ios
+          - target: ios
             packageType: app-store
-          - runner: ubuntu-latest
-            target: android
+          - target: android
     
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.target == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
 
     steps:
       - uses: actions/checkout@v4
