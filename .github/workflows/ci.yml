@@ -161,6 +161,7 @@ jobs:
         run: |
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
             --automaticProvisioning --authenticationKeyPath="${{ github.workspace }}/authkey.p8" \
-            --authenticationKeyID=${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --packageType=${{ matrix.packageType }}
+            --authenticationKeyID=${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --authenticationKeyIssuerID="${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}"
+            --packageType=${{ matrix.packageType }}
         env:
           PARALLEL_BUILD: true
