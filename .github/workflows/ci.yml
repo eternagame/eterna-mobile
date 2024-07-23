@@ -99,12 +99,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runner: "macos-latest"
-            target: "ios"
-          - platform: "ubuntu-latest"
+          - runner: macos-latest
+            target: ios
+          - runner: ubuntu-latest
             target: android
     
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - uses: actions/checkout@v4
