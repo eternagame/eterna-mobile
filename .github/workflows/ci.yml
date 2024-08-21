@@ -178,12 +178,12 @@ jobs:
         if: ${{ matrix.target == 'ios' }}
         env:
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
-        run: echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > "${{ github.workspace }}/authkey.p8"
+        run: echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > "$RUNNER_TEMP/app_store_connect.p8"
       - name: Build iOS
         if: ${{ matrix.target == 'ios' }}
         run: |
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
-            --automaticProvisioning --authenticationKeyPath="${{ github.workspace }}/authkey.p8" \
+            --automaticProvisioning --authenticationKeyPath="$RUNNER_TEMP/app_store_connect.p8" \
             --authenticationKeyID=${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --authenticationKeyIssuerID="${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}" \
             --developmentTeam="${{ secrets.APP_STORE_CONNECT_TEAM_ID }}" --codeSignIdentity="Apple Development" \
             --packageType="${{ matrix.packageType }}"
