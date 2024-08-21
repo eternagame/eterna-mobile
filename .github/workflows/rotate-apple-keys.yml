@@ -1,8 +1,6 @@
 name: 'Rotate Apple Keys'
 
 on:
-  push:
-    branches: [ci]
   workflow_dispatch: {}
   schedule:
       # We'll run this twice a year
