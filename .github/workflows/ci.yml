@@ -151,6 +151,27 @@ jobs:
         env:
           PARALLEL_BUILD: true
 
+      - name: Set up signing key
+        if: ${{ matrix.target == 'ios' }}
+        env:
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+
+          npm ci
+          node src/index.js retrieve ${{ matrix.packageType == 'development' && 'IOS_DEVELOPMENT' || 'IOS_DISTRIBUTION' }} ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_SIGNING_PRIVATE_KEY }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+        working-directory: ./.github/workflows/setup-apple-signing
       - name: Set up App Store Connect API key
         if: ${{ matrix.target == 'ios' }}
         env:
@@ -162,7 +183,7 @@ jobs:
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
             --automaticProvisioning --authenticationKeyPath="${{ github.workspace }}/authkey.p8" \
             --authenticationKeyID=${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --authenticationKeyIssuerID="${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}" \
-            --developmentTeam="${{ secrets.APP_STORE_CONNECT_TEAM_ID }}" --codeSignIdentity="iPhone Developer" \
+            --developmentTeam="${{ secrets.APP_STORE_CONNECT_TEAM_ID }}" --codeSignIdentity="iPhone ${{ matrix.packageType == 'development' && 'Developer' || 'Distribution' }}" \
             --packageType="${{ matrix.packageType }}"
         env:
           PARALLEL_BUILD: true
