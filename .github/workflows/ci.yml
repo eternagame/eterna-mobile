@@ -100,9 +100,9 @@ jobs:
       matrix:
         include:
           - target: ios
-            packageType: development
+            packageType: debugging
           - target: ios
-            packageType: app-store
+            packageType: app-store-connect
           - target: android
     
     runs-on: ${{ matrix.target == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
