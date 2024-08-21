@@ -160,7 +160,7 @@ jobs:
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
 
           npm ci
-          node src/index.js retrieve ${{ matrix.packageType == 'development' && 'IOS_DEVELOPMENT' || 'IOS_DISTRIBUTION' }} ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH
+          node src/index.js retrieve ${{ matrix.packageType == 'development' && 'IOS_DEVELOPMENT' || 'IOS_DISTRIBUTION' }} ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH
 
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
