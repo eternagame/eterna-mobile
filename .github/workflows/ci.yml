@@ -163,8 +163,7 @@ jobs:
           brew link --overwrite openssl@3
 
           npm ci
-          node src/index.js retrieve IOS_DEVELOPMENT ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH $P12_PASSWORD
-
+          node src/index.js retrieve ${{ matrix.packageType == 'development' && 'DEVELOPMENT' || 'DISTRIBUTION' }} ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH $P12_PASSWORD
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
@@ -186,7 +185,7 @@ jobs:
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
             --automaticProvisioning --authenticationKeyPath="${{ github.workspace }}/authkey.p8" \
             --authenticationKeyID=${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --authenticationKeyIssuerID="${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}" \
-            --developmentTeam="${{ secrets.APP_STORE_CONNECT_TEAM_ID }}" --codeSignIdentity="iPhone Developer" \
+            --developmentTeam="${{ secrets.APP_STORE_CONNECT_TEAM_ID }}" --codeSignIdentity="Apple ${{ matrix.packageType == 'development' && 'Development' || 'Distribution' }}" \
             --packageType="${{ matrix.packageType }}"
         env:
           PARALLEL_BUILD: true
