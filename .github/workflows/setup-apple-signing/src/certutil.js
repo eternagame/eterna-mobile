@@ -34,7 +34,9 @@ export async function createP12(cer, key, password) {
     await writeFile(`${TEMPDIR}/signing.cer`, cer);
 
     await exec(`openssl x509 -in ${TEMPDIR}/signing.cer -inform DER -out ${TEMPDIR}/signing.pem -outform PEM`);
-    await exec(`openssl pkcs12 -export -inkey ${TEMPDIR}/signing.key -in ${TEMPDIR}/signing.pem -out ${TEMPDIR}/signing.p12 -passout pass:${password}`);
+    // Annoyingly Apple keychain doesn't properly support OpenSSL 3's defaults
+    const legacyParams = '-certpbe PBE-SHA1-3DES -keypbe PBE-SHA1-3DES -macalg sha1';
+    await exec(`openssl pkcs12 -export -inkey ${TEMPDIR}/signing.key -in ${TEMPDIR}/signing.pem -out ${TEMPDIR}/signing.p12 -passout pass:${password} ${legacyParams}`);
 
     const p12Content = await readFile(`${TEMPDIR}/signing.p12`);
 
