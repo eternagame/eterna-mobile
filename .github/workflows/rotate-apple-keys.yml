@@ -1,10 +1,12 @@
 name: 'Rotate Apple Keys'
 
 on:
-    workflow_dispatch: {}
-    schedule:
-        # We'll run this twice a year
-        - cron: '00 14 1 2,8 *'
+  push:
+    branches: [ci]
+  workflow_dispatch: {}
+  schedule:
+      # We'll run this twice a year
+      - cron: '00 14 1 2,8 *'
 
 permissions: {}
 
