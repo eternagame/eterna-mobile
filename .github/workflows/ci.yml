@@ -159,6 +159,8 @@ jobs:
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
 
+          brew unlink openssl@3
+          brew link --overwrite openssl@3
           npm ci
           node src/index.js retrieve ${{ matrix.packageType == 'development' && 'IOS_DEVELOPMENT' || 'IOS_DISTRIBUTION' }} ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH $P12_PASSWORD
 
