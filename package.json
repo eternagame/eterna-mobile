@@ -3,7 +3,7 @@
   "version": "1.7.22",
   "private": true,
   "scripts": {
-    "postinstall": "shx mkdir -p www && (is-ci && cd eternajs && npm ci) || (is-ci || cd eternajs && npm install)",
+    "postinstall": "shx mkdir -p www && (is-ci || (cd eternajs && npm install))",
     "build:dev": "webpack --config webpack.config.dev.js",
     "build:prod": "webpack --config webpack.config.prod.js",
     "start": "npx cordova run browser"
