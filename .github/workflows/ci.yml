@@ -100,8 +100,6 @@ jobs:
       matrix:
         include:
           - target: ios
-            packageType: debugging
-          - target: ios
             packageType: app-store-connect
           - target: android
     
