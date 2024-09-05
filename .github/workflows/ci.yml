@@ -187,3 +187,14 @@ jobs:
             --packageType="${{ matrix.packageType }}"
         env:
           PARALLEL_BUILD: true
+
+      # Due to licensed components, we're avoiding distribution this way. If we decide we do want to
+      # do that in the future, eg to be able to directly download builds for testing without uploading
+      # to app stores, we'd need to make sure we add a license file with the downloads
+      - name: Encrypt build
+        run: gpg --output release-${{ matrix.target }} --symmetric --passphrase ${{ secrets.ARTIFACT_ENCRYPTION_KEY }} --batch ${{ matrix.target == 'android' && 'platforms/android/app/build/outputs/bundle/release/app-release.aab' || 'platforms/ios/build/Release-iphoneos/Eterna.ipa' }}
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.target }}
+          path: ./release-${{ matrix.target }}
