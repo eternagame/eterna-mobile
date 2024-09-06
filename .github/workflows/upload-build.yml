@@ -1,0 +1,60 @@
+name: 'Upload Build'
+
+on:
+  workflow_dispatch:
+    inputs:
+      run-id:
+        description: 'GitHub Actions run ID to use artifacts from'
+        required: true
+        type: number
+
+permissions:
+  actions: read
+
+jobs:
+  upload-ios:
+    runs-on: macos-latest
+  
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-ios
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.run-id }}
+      - name: Decrypt build
+        run: gpg --decrypt --output=./Eterna.ipa --passphrase ${{ secrets.ARTIFACT_ENCRYPTION_KEY }} --batch release-ios
+      - name: Set up App Store Connect API key
+        env:
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        run: echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > "$RUNNER_TEMP/AuthKey_${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}.p8"
+      - name: Extract ipa
+        run: unzip -q Eterna.ipa
+      - name: Upload to App Store
+        run: |
+          API_PRIVATE_KEYS_DIR=$RUNNER_TEMP xcrun altool --upload-package Eterna.ipa --type ios \
+            --apiIssuer ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} --apiKey ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} \
+            --apple-id 1513216417 --bundle-id eternagame --bundle-version $(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" Payload/Eterna.app/Info.plist) --bundle-short-version-string $(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" Payload/Eterna.app/Info.plist)
+    
+  upload-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ci
+          submodules: false
+          persist-credentials: false
+          sparse-checkout: .github/**/*
+          sparse-checkout-cone-mode: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-android
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.run-id }}
+      - name: Decrypt build
+        run: gpg --decrypt --output=./app-release.aab --passphrase ${{ secrets.ARTIFACT_ENCRYPTION_KEY }} --batch release-android
+      - name: Install dependencies for upload script
+        run: npm ci
+        working-directory: ./.github/workflows/google-play
+      - name: Upload to Google Play
+        run: node ./.github/workflows/google-play/src/index.js upload ${{ secrets.GOOGLE_PLAY_DEVELOPER_API_KEY }} ./app-release.aab

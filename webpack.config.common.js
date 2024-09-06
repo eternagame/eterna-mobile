@@ -3,6 +3,7 @@ const DotEnv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const webpack = require('webpack');
 
 module.exports = function(mode, eternajs_copy) {
     return {
@@ -62,9 +63,12 @@ module.exports = function(mode, eternajs_copy) {
             }),
             new VueLoaderPlugin(),
             new CopyPlugin({patterns: [
-                { context: eternajs_copy, from: '**/*', to: 'eternajs/'},
+                ...(process.env.PARALLEL_BUILD ? [] : [{ context: eternajs_copy, from: '**/*', to: 'eternajs/'}]),
                 { from: 'src/assets/favicon.ico', to: 'favicon.ico'},
             ]}),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify(mode)
+            })
         ],
     };
 };

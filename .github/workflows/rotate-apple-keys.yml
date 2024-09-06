@@ -1,0 +1,37 @@
+name: 'Rotate Apple Keys'
+
+on:
+  workflow_dispatch: {}
+  schedule:
+      # We'll run this twice a year
+      - cron: '00 14 1 2,8 *'
+
+permissions: {}
+
+env:
+  NODE_VERSION: 20.x
+
+jobs:
+  rotate-keys:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-${{ hashFiles('./.github/workflows/setup-apple-signing/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./.github/workflows/setup-apple-signing
+      - name: Rotate development key
+        run: node src/index.js rotate DEVELOPMENT ${{ secrets.APPLE_APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        working-directory: ./.github/workflows/setup-apple-signing
