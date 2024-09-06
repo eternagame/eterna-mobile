@@ -41,8 +41,12 @@ export class PlayStoreApi {
         body: new URLSearchParams({
           grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
           assertion: authToken
-        }).toString()
+        }).toString(),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
       });
+      console.log('Access token:', res.status, res.statusText);
       const parsed = await res.json();
       return new PlayStoreApi(parsed['access_token']);
     }
@@ -58,6 +62,7 @@ export class PlayStoreApi {
           Authorization: `Bearer ${this.accessToken}`
         }
       });
+      console.log('Edit insert:', res.status, res.statusText);
       const parsed = await res.json();
       return parsed['id'];
     }
@@ -69,7 +74,7 @@ export class PlayStoreApi {
      */
     async uploadBundle(packageName, editId, bundlePath) {
       const bundle = await readFile(bundlePath);
-      await fetch(`https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/${packageName}/edits/${editId}/bundles?uploadType=media`, {
+      const res = await fetch(`https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/${packageName}/edits/${editId}/bundles?uploadType=media`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${this.accessToken}`,
@@ -78,14 +83,17 @@ export class PlayStoreApi {
         },
         body: bundle
       });
+      if (res.status === 403) console.log(await res.json())
+      console.log('Edit upload bundle:', res.status, res.statusText);
     }
 
     async commitEdit(packageName, editId) {
-      await fetch(`https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${packageName}/edits/${editId}:commit`, {
+      const res = await fetch(`https://androidpublisher.googleapis.com/androidpublisher/v3/applications/${packageName}/edits/${editId}:commit`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${this.accessToken}`,
         },
       });
+      console.log('Edit commit:', res.status, res.statusText);
     }
 }

@@ -152,7 +152,7 @@ jobs:
         if: ${{ matrix.target == 'android' }}
         run: |
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
-            --keystore="$RUNNER_TEMP/keystore.jks" --storePassword=${{ secrets.GOOGLE_PLAY_KEYSTORE_PASSWORD }} --alias=upload --password=${{ secrets.GOOGLE_PLAY_UPLOAD_KEY_PASSWORD }}
+            -- --keystore="$RUNNER_TEMP/keystore.jks" --storePassword=${{ secrets.GOOGLE_PLAY_KEYSTORE_PASSWORD }} --alias=upload --password=${{ secrets.GOOGLE_PLAY_UPLOAD_KEY_PASSWORD }}
         env:
           PARALLEL_BUILD: true
 
@@ -187,7 +187,7 @@ jobs:
         if: ${{ matrix.target == 'ios' }}
         run: |
           npx cordova build ${{ matrix.target }} --${{ env.BUILD_TYPE == 'prod' && 'release' || 'debug' }} --device \
-            --automaticProvisioning --authenticationKeyPath="$RUNNER_TEMP/app_store_connect.p8" \
+            -- --automaticProvisioning --authenticationKeyPath="$RUNNER_TEMP/app_store_connect.p8" \
             --authenticationKeyID=${{ secrets.APP_STORE_CONNECT_API_KEY_ID }} --authenticationKeyIssuerID="${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}" \
             --developmentTeam="${{ secrets.APP_STORE_CONNECT_TEAM_ID }}" --codeSignIdentity="Apple Development" \
             --packageType="${{ matrix.packageType }}"
