@@ -21,6 +21,8 @@ jobs:
           name: release-ios
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ inputs.run-id }}
+      - name: Decrypt build
+        run: gpg --decrypt --output=./Eterna.ipa --passphrase ${{ secrets.ARTIFACT_ENCRYPTION_KEY }} --batch release-ios
     
   upload-android:
     runs-on: ubuntu-latest
@@ -31,4 +33,5 @@ jobs:
           name: release-android
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ inputs.run-id }}
-            
+      - name: Decrypt build
+        run: gpg --decrypt --output=./app-release.aab --passphrase ${{ secrets.ARTIFACT_ENCRYPTION_KEY }} --batch release-android
