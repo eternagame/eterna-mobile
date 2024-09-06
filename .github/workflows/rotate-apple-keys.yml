@@ -33,5 +33,5 @@ jobs:
         run: npm ci
         working-directory: ./.github/workflows/setup-apple-signing
       - name: Rotate development key
-        run: node src/index.js rotate DEVELOPMENT ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        run: node src/index.js rotate DEVELOPMENT ${{ secrets.APPLE_APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
         working-directory: ./.github/workflows/setup-apple-signing

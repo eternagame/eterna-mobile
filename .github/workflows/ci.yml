@@ -33,7 +33,7 @@ jobs:
         uses: actions/create-github-app-token@v1
         id: engines-app-token
         with:
-          app-id: ${{ secrets.BUILT_ENGINE_CLIENT_ID }}
+          app-id: ${{ secrets.BUILT_ENGINE_APP_CLIENT_ID }}
           private-key: ${{ secrets.BUILT_ENGINE_APP_PRIVATE_KEY }}
           owner: eternagame
           repositories: eternajs-folding-engines
@@ -168,7 +168,7 @@ jobs:
           brew link --overwrite openssl@3
 
           npm ci
-          node src/index.js retrieve DEVELOPMENT ${{ secrets.APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH $P12_PASSWORD
+          node src/index.js retrieve DEVELOPMENT ${{ secrets.APPLE_APP_SIGNING_PRIVATE_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}  ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }} $CERTIFICATE_PATH $P12_PASSWORD
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
