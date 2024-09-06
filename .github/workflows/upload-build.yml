@@ -41,7 +41,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ci
           submodules: false
           persist-credentials: false
           sparse-checkout: .github/**/*

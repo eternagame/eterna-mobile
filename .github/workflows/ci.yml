@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ci]
+    branches: [master]
 
 permissions: {}
 
