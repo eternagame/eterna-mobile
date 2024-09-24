@@ -46,6 +46,7 @@ export interface ClearedPuzzle {
 export interface PuzzleList {
     puzzles: PuzzleItem[];
     cleared: ClearedPuzzle[];
+    num_puzzles: number;
 }
 
 
@@ -212,6 +213,7 @@ export const Action = {
     GET_LABS: 'GET_LABS',
     GET_LAB: 'GET_LAB',
     GET_PUZZLES: 'GET_PUZZLES',
+    GET_COLLECTION: 'GET_COLLECTION',
     GET_PUZZLE: 'GET_PUZZLE',
     GET_PROFILE: 'GET_PROFILE'
 };
@@ -377,6 +379,21 @@ export default function createStore(http: AxiosInstance) {
                     const { data } = (await http.get(`/get/?type=project&nid=${id}`)).data;
                     const labdata = <LabData>data;
                     commit('setCurrentLab', labdata);
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_COLLECTION]({ commit }, { id }: { id: string}) {
+                commit('pushIsLoading');
+                try{
+                    const { data: collectionData } = (await http.get(`/get/?type=collection&nid=${id}`)).data;
+                    const { data: clearedData } = (await http.get(`/get/?type=puzzle&nid=${collectionData.puzzles[0].id}`)).data;
+                    commit('setPuzzles', {
+                        puzzles: collectionData.puzzles,
+                        num_puzzles: collectionData.puzzles.length,
+                        cleared: clearedData?.cleared ?? [],
+                    });
                 }
                 finally{
                     commit('popIsLoading');

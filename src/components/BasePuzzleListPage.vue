@@ -99,7 +99,6 @@ export default Vue.extend({
                 this.availableFilters = [
                     { value: 'notcleared', text: 'Uncleared' },
                 ];
-                if (!this.$route.query.switch) this.availableFilters.push({ value: 'single', text: 'Single State' });
             } else {
                 this.availableFilters = [
                     { value: 'challenge', text: 'Challenges' },
@@ -140,24 +139,27 @@ export default Vue.extend({
                     cleared: puzzleList.cleared ? puzzleList.cleared.some(cleared => cleared.nid === puzzle.id) : false,
                 }));
 
+                // When we are displaying a collection, the API does not have a filter for uncleared puzzles, so we do that here
+                const filters = `${this.$route.query.filters}`.split(',');
+                const filteredPuzzles = filters.includes("notcleared") ? puzzlesWithCleared.filter((puz) => !puz.cleared) : puzzlesWithCleared;
+
                 if (this.$route.query.progression) {
                     // Sort such that puzzle A which specifies its next puzzle is puzzle B is sorted before puzzle A
                     // The first puzzle is the one that has no other puzzle pointing to it
                     const orderedPuzzles: (PuzzleItem & {cleared: boolean})[] = [];
-                    let puzzle = puzzlesWithCleared.find(
-                        candidatePuzzle => !puzzlesWithCleared.some(otherPuzzle => otherPuzzle['next-puzzle'] === candidatePuzzle.id)
+                    let puzzle = filteredPuzzles.find(
+                        candidatePuzzle => !filteredPuzzles.some(otherPuzzle => otherPuzzle['next-puzzle'] === candidatePuzzle.id)
                     );
                     while (puzzle) {
                         orderedPuzzles.push(puzzle);
                         const nextPuzzle = puzzle['next-puzzle'];
-                        puzzle = puzzlesWithCleared.find(candidatePuzzle => candidatePuzzle.id === nextPuzzle);
+                        puzzle = filteredPuzzles.find(candidatePuzzle => candidatePuzzle.id === nextPuzzle);
                     }
                     // Add any additional puzzles not part of the next puzzle "chain"
-                    orderedPuzzles.push(...puzzlesWithCleared.filter(candidatePuzzle => !orderedPuzzles.includes(candidatePuzzle)));
+                    orderedPuzzles.push(...filteredPuzzles.filter(candidatePuzzle => !orderedPuzzles.includes(candidatePuzzle)));
                     return orderedPuzzles;
                 } else {
-                    console.log('unordered');
-                    return puzzlesWithCleared;
+                    return filteredPuzzles;
                 }
             } else {
                 return [];
@@ -167,7 +169,7 @@ export default Vue.extend({
             return this.$store.state.user.lab_access;
         },
         morePuzzlesAvailable(): boolean {
-            return this.numberOfPuzzles < parseInt(this.$store.state.puzzle_list.num_puzzles);
+            return this.$store.state.puzzle_list.puzzles.length < parseInt(this.$store.state.puzzle_list.num_puzzles);
         },
         firstQuest(): boolean {
             return !!this.$route.query.firstQuest;
@@ -176,33 +178,37 @@ export default Vue.extend({
     methods: {
         async fetchNewPuzzles() {
             // Get filters from query, then convert to API's expected parameters
-            // Will change with Eterna-Next API
             const query = this.$route.query;
-            const filters = `${query.filters}`.split(',');
 
-            const queryParams = new URLSearchParams({type: 'puzzles'});
+            if (query.collection) {
+                await this.$store.dispatch(Action.GET_COLLECTION, {id: query.collection});
+            } else {
+                const queryParams = new URLSearchParams({type: 'puzzles'});
+                
+                const filters = `${query.filters}`.split(',');
             
-            if (filters.includes("challenge") && !filters.includes("player")) queryParams.append('puzzle_type', 'Challenge');
-            else if (filters.includes("player")    && !filters.includes("challenge")) queryParams.append('puzzle_type', 'PlayerPuzzle');
-            else if (query.progression) queryParams.append('puzzle_type', 'Progression');
-            else queryParams.append('puzzle_type', 'AllChallengesPuzzle')
-            
-            if (filters.includes("single")) queryParams.append('single', 'checked');
-            if (query.switch) queryParams.append('switch', 'checked');
-            
-            if(filters.includes("notcleared")) queryParams.append('notcleared', 'true');
+                if (filters.includes("challenge") && !filters.includes("player")) queryParams.append('puzzle_type', 'Challenge');
+                else if (filters.includes("player")    && !filters.includes("challenge")) queryParams.append('puzzle_type', 'PlayerPuzzle');
+                else if (query.progression) queryParams.append('puzzle_type', 'Progression');
+                else queryParams.append('puzzle_type', 'AllChallengesPuzzle')
+                
+                if (filters.includes("single")) queryParams.append('single', 'checked');
+                if (query.switch) queryParams.append('switch', 'checked');
+                
+                if (filters.includes("notcleared")) queryParams.append('notcleared', 'true');
 
-            if (this.$store.state.uid) queryParams.append('uid', this.$store.state.uid);
+                if (this.$store.state.uid) queryParams.append('uid', this.$store.state.uid);
 
-            if (query.tags) queryParams.append('tags', query.tags as string);
+                if (query.tags) queryParams.append('tags', query.tags as string);
 
-            if (query.search) queryParams.append('search', query.search as string);
-            
-            queryParams.append('sort', query.sort ? query.sort as string : 'date');
+                if (query.search) queryParams.append('search', query.search as string);
+                
+                queryParams.append('sort', query.sort ? query.sort as string : 'date');
 
-            if (!query.progression) queryParams.append('size', this.numberOfPuzzles.toString(10));
+                if (!query.progression) queryParams.append('size', this.numberOfPuzzles.toString(10));
 
-            await this.$store.dispatch(Action.GET_PUZZLES, queryParams.toString());
+                await this.$store.dispatch(Action.GET_PUZZLES, queryParams.toString());
+            }
         },
         async fetchMorePuzzles() {
             this.numberOfPuzzles += 9;

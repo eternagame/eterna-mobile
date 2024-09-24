@@ -14,8 +14,12 @@
             <b-container id="page-scroll-content">
                 <div id="scroll-card-wrapper">
                     <TutorialCard
-                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna3d_expo').image)"
-                        @play="$router.push(`/quests/side_quest_eterna3d_expo/${getAchAtCurrentLevel('side_quest_eterna3d_expo').level}?search=:Eterna3D Expo&sort=date_asc`)"
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_welcome_to_the_lab').image)"
+                        @play="$router.push(
+                            getCurrentPuzzle('side_quest_welcome_to_the_lab')
+                            ? `/puzzles/${getCurrentPuzzle('side_quest_welcome_to_the_lab')}`
+                            : `/quests/side_quest_welcome_to_the_lab/${getAchAtCurrentLevel('side_quest_welcome_to_the_lab').level}?collection=11366123`
+                        )"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_best_lab_practices').image)"
@@ -24,6 +28,10 @@
                             ? `/puzzles/${getCurrentPuzzle('side_quest_best_lab_practices')}`
                             : `/quests/side_quest_best_lab_practices/${getAchAtCurrentLevel('side_quest_best_lab_practices').level}?search=%5BLab%20Tutorial%5D&sort=date`
                         )"
+                    />
+                    <TutorialCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna3d_expo').image)"
+                        @play="$router.push(`/quests/side_quest_eterna3d_expo/${getAchAtCurrentLevel('side_quest_eterna3d_expo').level}?search=:Eterna3D Expo&sort=date_asc`)"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna100').image)"
