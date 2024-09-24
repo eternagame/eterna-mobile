@@ -82,6 +82,10 @@ export default Vue.extend({
         quest: {
             type: Object,
             default: null
+        },
+        collection: {
+            type: String,
+            default: null
         }
     },
     data() {
@@ -180,8 +184,8 @@ export default Vue.extend({
             // Get filters from query, then convert to API's expected parameters
             const query = this.$route.query;
 
-            if (query.collection) {
-                await this.$store.dispatch(Action.GET_COLLECTION, {id: query.collection});
+            if (this.collection) {
+                await this.$store.dispatch(Action.GET_COLLECTION, {id: this.collection});
             } else {
                 const queryParams = new URLSearchParams({type: 'puzzles'});
                 

@@ -49,7 +49,6 @@ export interface PuzzleList {
     num_puzzles: number;
 }
 
-
 export interface Puzzle {
     title: string;
     created: string;
@@ -87,6 +86,24 @@ export interface Puzzle {
     // "hint": null,
     // "coauthor": "[\"Eterna100\"]",
     // "max-votes": 0
+}
+
+export interface Collection {
+    nid: string;
+    desc: string;
+    title: string;
+    userpicture: string;
+    username: string;
+    puzzles: string;
+    quest: string;
+    achievement: string;
+    created: string;
+    image: string;
+}
+
+export interface CollectionList {
+    collections: Collection[];
+    num_collections: string;
 }
 
 export interface LabCardData {
@@ -212,8 +229,9 @@ export const Action = {
     GET_QUEST_ACHIEVEMENT_ROADMAP: 'GET_QUEST_ACHIEVEMENT_ROADMAP',
     GET_LABS: 'GET_LABS',
     GET_LAB: 'GET_LAB',
-    GET_PUZZLES: 'GET_PUZZLES',
+    GET_QUESTS: 'GET_QUESTS',
     GET_COLLECTION: 'GET_COLLECTION',
+    GET_PUZZLES: 'GET_PUZZLES',
     GET_PUZZLE: 'GET_PUZZLE',
     GET_PROFILE: 'GET_PROFILE'
 };
@@ -236,6 +254,7 @@ export default function createStore(http: AxiosInstance) {
             current_lab: <LabData | null>null,
             puzzle_list: <PuzzleList | null> null, 
             current_puzzle: <(Puzzle & { cleared: boolean }) | null>null,
+            quests: <CollectionList | null>null,
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -286,6 +305,9 @@ export default function createStore(http: AxiosInstance) {
             },
             setUserData(state, user) {
                 state.user = user
+            },
+            setQuests(state, quests) {
+                state.quests = quests
             }
         },
         actions: {
@@ -379,6 +401,16 @@ export default function createStore(http: AxiosInstance) {
                     const { data } = (await http.get(`/get/?type=project&nid=${id}`)).data;
                     const labdata = <LabData>data;
                     commit('setCurrentLab', labdata);
+                }
+                finally{
+                    commit('popIsLoading');
+                }
+            },
+            async [Action.GET_QUESTS]({ commit }) {
+                commit('pushIsLoading');
+                try{
+                    const { data } =  (await http.get('/get/?type=collections&quest=true&sort=title&size=30')).data;
+                    commit('setQuests', data);
                 }
                 finally{
                     commit('popIsLoading');

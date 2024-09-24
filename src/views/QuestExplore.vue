@@ -15,11 +15,7 @@
                 <div id="scroll-card-wrapper">
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_welcome_to_the_lab').image)"
-                        @play="$router.push(
-                            getCurrentPuzzle('side_quest_welcome_to_the_lab')
-                            ? `/puzzles/${getCurrentPuzzle('side_quest_welcome_to_the_lab')}`
-                            : `/quests/side_quest_welcome_to_the_lab/${getAchAtCurrentLevel('side_quest_welcome_to_the_lab').level}?collection=11366123`
-                        )"
+                        @play="$router.push(`/quests/side_quest_welcome_to_the_lab/${getAchAtCurrentLevel('side_quest_welcome_to_the_lab').level}`)"
                     />
                     <TutorialCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_best_lab_practices').image)"
