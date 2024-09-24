@@ -96,6 +96,7 @@ export default Vue.extend({
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
+            firstLoad: true
         };
     },
     async mounted() {
@@ -212,7 +213,8 @@ export default Vue.extend({
 
                 if (!query.progression) queryParams.append('size', this.numberOfPuzzles.toString(10));
 
-                await this.$store.dispatch(Action.GET_PUZZLES, {queryString: queryParams.toString(), loadMore: this.numberOfPuzzles > PAGE_SIZE});
+                await this.$store.dispatch(Action.GET_PUZZLES, {queryString: queryParams.toString(), firstLoad: this.firstLoad});
+                this.firstLoad = false;
             }
         },
         async fetchMorePuzzles() {

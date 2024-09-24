@@ -71,7 +71,8 @@ export default Vue.extend({
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
-            defaultLabImage: DefaultLabHero
+            defaultLabImage: DefaultLabHero,
+            firstLoad: true
         };
     },
     async mounted() {
@@ -116,7 +117,8 @@ export default Vue.extend({
             let labFilter = requestString;
             if (filters.includes("active") && !filters.includes("inactive")) {labFilter = `${requestString}&filters=active`}
             if (filters.includes("inactive") && !filters.includes("active")) {labFilter = `${requestString}&filters=inactive`}
-            await this.$store.dispatch(Action.GET_LABS, {queryString: labFilter, loadMore: this.numberOfLabs > PAGE_SIZE});
+            await this.$store.dispatch(Action.GET_LABS, {queryString: labFilter, firstLoad: this.firstLoad});
+            this.firstLoad = false;
         },
         async fetchMoreLabs() {
             this.numberOfLabs += PAGE_SIZE;
