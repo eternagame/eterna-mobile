@@ -384,15 +384,15 @@ export default function createStore(http: AxiosInstance) {
                     commit('popIsLoading');
                 }
             },
-            async [Action.GET_LABS]({ commit }, queryString: string){
-                // commit('pushIsLoading');
+            async [Action.GET_LABS]({ commit }, { queryString, firstLoad }: { queryString: string; firstLoad?: boolean}){
+                if (firstLoad) commit('pushIsLoading');
                 try{
                     const { data } = (await http.get(`/get/?${queryString}`)).data;
                     commit('setLabTotal', parseInt(data.num_labs));
                     commit('setLabs', data.labs);
                 }
                 finally{
-                    // commit('popIsLoading');
+                    if (firstLoad) commit('popIsLoading');
                 }
             },
             async [Action.GET_LAB]({ commit }, { id }: { id: string}){
@@ -431,14 +431,14 @@ export default function createStore(http: AxiosInstance) {
                     commit('popIsLoading');
                 }
             },
-            async [Action.GET_PUZZLES]({ commit }, queryString: string){
-                // commit('pushIsLoading');
+            async [Action.GET_PUZZLES]({ commit }, { queryString, firstLoad }: { queryString: string; firstLoad?: boolean}){
+                if (firstLoad) commit('pushIsLoading');
                 try{
                     const { data } = (await http.get(`/get/?${queryString}`)).data;
                     commit('setPuzzles', data);
                 }
                 finally{
-                    // commit('popIsLoading');
+                    if (firstLoad) commit('popIsLoading');
                 }
             },
             async [Action.GET_PUZZLE]({ commit }, { id }: { id: string}){

@@ -58,6 +58,8 @@ import { Action, Achievement, LabData } from '../store';
 import ChatManager from '../ChatManager';
 import DefaultLabHero from '../assets/slides/hero-lab-default.png';
 
+const PAGE_SIZE = 9;
+
 export default Vue.extend({
     data() {
         return {
@@ -65,11 +67,12 @@ export default Vue.extend({
                 { value: 'active', text: 'Active' },
                 { value: 'inactive', text: 'Inactive' }
             ],
-            numberOfLabs: 9,
+            numberOfLabs: PAGE_SIZE,
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
-            defaultLabImage: DefaultLabHero
+            defaultLabImage: DefaultLabHero,
+            firstLoad: true
         };
     },
     async mounted() {
@@ -114,10 +117,11 @@ export default Vue.extend({
             let labFilter = requestString;
             if (filters.includes("active") && !filters.includes("inactive")) {labFilter = `${requestString}&filters=active`}
             if (filters.includes("inactive") && !filters.includes("active")) {labFilter = `${requestString}&filters=inactive`}
-            await this.$store.dispatch(Action.GET_LABS, labFilter);
+            await this.$store.dispatch(Action.GET_LABS, {queryString: labFilter, firstLoad: this.firstLoad});
+            this.firstLoad = false;
         },
         async fetchMoreLabs() {
-            this.numberOfLabs += 9;
+            this.numberOfLabs += PAGE_SIZE;
             await this.fetchNewLabs();
         },
         async logout() {
