@@ -75,6 +75,7 @@ import PuzzleCard from '../components/PuzzleCard.vue'
 import { Action, Achievement, PuzzleItem, PuzzleList } from '../store';
 import ChatManager from '../ChatManager';
 
+const PAGE_SIZE = 9;
 
 export default Vue.extend({
     props: {
@@ -91,7 +92,7 @@ export default Vue.extend({
     data() {
         return {
             availableFilters: [] as {value: string; text: string}[],
-            numberOfPuzzles: 9,
+            numberOfPuzzles: PAGE_SIZE,
             playablePuzzleIndex: 0,
             chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
@@ -211,11 +212,11 @@ export default Vue.extend({
 
                 if (!query.progression) queryParams.append('size', this.numberOfPuzzles.toString(10));
 
-                await this.$store.dispatch(Action.GET_PUZZLES, queryParams.toString());
+                await this.$store.dispatch(Action.GET_PUZZLES, {queryString: queryParams.toString(), loadMore: this.numberOfPuzzles > PAGE_SIZE});
             }
         },
         async fetchMorePuzzles() {
-            this.numberOfPuzzles += 9;
+            this.numberOfPuzzles += PAGE_SIZE;
             await this.fetchNewPuzzles();
         },
         async logout() {
