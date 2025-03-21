@@ -31,7 +31,7 @@ export default Vue.extend({
             const { data } = (await this.$http.get('/get/?type=mobile_version')).data;
             // If we want to force mobile users to update their app, increment this number and the
             // respective value in the backend
-            if (data.latest_build > 8) this.needsUpdate = true;
+            if (data.latest_build > 9) this.needsUpdate = true;
             this.isLoading = false;
         }
     }
