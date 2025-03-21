@@ -42,6 +42,7 @@ export class AppStoreApi {
     async getCertificateForKey(certificateType, key) {
         const currentCerts = await this.getCertificates(certificateType);
         const keyModulus = await  getModulus('rsa', key);
+        if (!currentCerts) return null;
         for (const cert of currentCerts) {
             const certContent = Buffer.from(cert.attributes.certificateContent, 'base64');
             const certModulus = await getModulus('x509', certContent);
