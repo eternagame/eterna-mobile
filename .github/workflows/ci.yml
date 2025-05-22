@@ -103,7 +103,7 @@ jobs:
             packageType: app-store-connect
           - target: android
     
-    runs-on: ${{ matrix.target == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.target == 'ios' && 'macos-15' || 'ubuntu-latest' }}
 
     steps:
       - uses: actions/checkout@v4
