@@ -8,12 +8,12 @@ module.exports = async context => {
     console.log(`Running build scripts for env ${env}`);
     await runScript({
         event: `build:${env}`,
-        path: '.',
+        path: './eternajs',
         stdio: 'inherit',
     });
     await runScript({
         event: `build:${env}`,
-        path: './eternajs',
+        path: '.',
         stdio: 'inherit',
     });
 };
