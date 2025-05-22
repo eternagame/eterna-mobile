@@ -16,7 +16,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default Vue.component('tutorial-card', {
+export default Vue.component('quest-card', {
     props: {
         highlight: {
             type: Boolean,

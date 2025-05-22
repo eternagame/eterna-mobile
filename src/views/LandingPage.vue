@@ -23,7 +23,7 @@
             </div>
              <b-container id="page-scroll-content">
                 <div id="scroll-card-wrapper">
-                <TutorialCard
+                <QuestCard
                     v-for="(quest, index) in roadmap"
                     :key="index"
                     :highlight="index === Math.floor(playablePuzzleIndex)"
@@ -37,7 +37,7 @@
                         boundary: 'viewport'
                     }"
                 />
-                <TutorialCard
+                <QuestCard
                     key="lab"
                     :highlight="lab_access"
                     :imgSrc="getAbsUrl('/puzzle-progression/badges/badge_lab_unlocked.png')"
@@ -70,7 +70,7 @@ import Carousel from '../components/Carousel.vue'
 import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import TutorialCard from '../components/TutorialCard.vue'
+import QuestCard from '../components/QuestCard.vue'
 import SurveyModal from '../components/SurveyModal.vue';
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
@@ -100,7 +100,7 @@ export default Vue.extend({
         HeaderBar,
         NavBar,
         ProgressBar,
-        TutorialCard,
+        QuestCard,
         SurveyModal,
     },
     computed: {

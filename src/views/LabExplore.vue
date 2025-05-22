@@ -53,7 +53,6 @@ import HeaderBar from '../components/HeaderBar.vue'
 import LabCard from '../components/LabCard.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import PuzzleCard from '../components/TutorialCard.vue'
 import { Action, Achievement, LabData } from '../store';
 import ChatManager from '../ChatManager';
 import DefaultLabHero from '../assets/slides/hero-lab-default.png';
@@ -89,8 +88,7 @@ export default Vue.extend({
         HeaderBar,
         LabCard,
         NavBar,
-        ProgressBar,
-        PuzzleCard
+        ProgressBar
     },
     computed: {
         isLoading(): boolean {

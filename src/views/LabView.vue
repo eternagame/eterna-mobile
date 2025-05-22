@@ -100,7 +100,6 @@ import HeaderBar from '../components/HeaderBar.vue'
 import LabPuzzleCard from '../components/LabPuzzleCard.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import PuzzleCard from '../components/TutorialCard.vue'
 import { Action, Achievement, PuzzleData } from '../store';
 import ChatManager from '../ChatManager';
 
@@ -128,7 +127,6 @@ export default Vue.extend({
         LabPuzzleCard,
         NavBar,
         ProgressBar,
-        PuzzleCard
     },
     computed: {
         isLoading(): boolean {

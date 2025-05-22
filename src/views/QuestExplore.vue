@@ -13,11 +13,11 @@
             </div>
             <b-container id="page-scroll-content">
                 <div id="scroll-card-wrapper">
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_welcome_to_the_lab').image)"
                         @play="$router.push(`/quests/side_quest_welcome_to_the_lab/${getAchAtCurrentLevel('side_quest_welcome_to_the_lab').level}`)"
                     />
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_best_lab_practices').image)"
                         @play="$router.push(
                             getCurrentPuzzle('side_quest_best_lab_practices')
@@ -25,15 +25,15 @@
                             : `/quests/side_quest_best_lab_practices/${getAchAtCurrentLevel('side_quest_best_lab_practices').level}?search=%5BLab%20Tutorial%5D&sort=date`
                         )"
                     />
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna3d_expo').image)"
                         @play="$router.push(`/quests/side_quest_eterna3d_expo/${getAchAtCurrentLevel('side_quest_eterna3d_expo').level}?search=:Eterna3D Expo&sort=date_asc`)"
                     />
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna100').image)"
                         @play="$router.push(`/quests/side_quest_eterna100/${getAchAtCurrentLevel('side_quest_eterna100').level}?search=:Eterna100&sort=solved`)"
                     />
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_switch_puzzles').image)"
                         @play="$router.push(
                             getCurrentPuzzle('side_quest_switch_puzzles')
@@ -41,7 +41,7 @@
                             : `/quests/side_quest_switch_puzzles/${getAchAtCurrentLevel('side_quest_switch_puzzles').level}?switch=true&search=switch&sort=date`
                         )"
                     />
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_just_for_fun').image)"
                         @play="$router.push(
                             getCurrentPuzzle('side_quest_just_for_fun')
@@ -49,11 +49,11 @@
                             : `/quests/side_quest_just_for_fun/${getAchAtCurrentLevel('side_quest_just_for_fun').level}?search=Fun&sort=date`
                         )"
                     />
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('ten_tools').image)"
                         @play="$router.push(`/quests/category/ten_tools`)"
                     />
-                    <TutorialCard
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('eterna_essentials').image)"
                         @play="$router.push(`/quests/category/eterna_essentials`)"
                     />
@@ -75,7 +75,7 @@ import Carousel from '../components/Carousel.vue'
 import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import TutorialCard from '../components/TutorialCard.vue'
+import QuestCard from '../components/QuestCard.vue'
 
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
@@ -101,7 +101,7 @@ export default Vue.extend({
         HeaderBar,
         NavBar,
         ProgressBar,
-        TutorialCard,
+        QuestCard,
     },
     computed: {
         isLoading(): boolean {

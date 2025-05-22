@@ -13,7 +13,7 @@
             </div>
             <b-container id="page-scroll-content">
                 <div id="scroll-card-wrapper">
-                    <TutorialCard
+                    <QuestCard
                         v-for="ach in roadmap"
                         :key="ach.title"
                         :imgSrc="resolveUrl(ach.image)"
@@ -46,7 +46,7 @@ import Carousel from '../components/Carousel.vue'
 import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
-import TutorialCard from '../components/TutorialCard.vue'
+import QuestCard from '../components/QuestCard.vue'
 
 import { Action, Achievement } from '../store';
 import ChatManager from '../ChatManager';
@@ -72,7 +72,7 @@ export default Vue.extend({
         HeaderBar,
         NavBar,
         ProgressBar,
-        TutorialCard,
+        QuestCard,
     },
     computed: {
         isLoading(): boolean {
