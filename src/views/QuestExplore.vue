@@ -18,6 +18,14 @@
                         @play="$router.push(`/quests/side_quest_welcome_to_the_lab/${getAchAtCurrentLevel('side_quest_welcome_to_the_lab').level}`)"
                     />
                     <QuestCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_rnet_study').image)"
+                        @play="$router.push(`/quests/side_quest_rnet_study/${getAchAtCurrentLevel('side_quest_rnet_study').level}`)"
+                    />
+                    <QuestCard
+                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna100').image)"
+                        @play="$router.push(`/quests/side_quest_eterna100/${getAchAtCurrentLevel('side_quest_eterna100').level}?search=:Eterna100&sort=solved`)"
+                    />
+                    <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_best_lab_practices').image)"
                         @play="$router.push(
                             getCurrentPuzzle('side_quest_best_lab_practices')
@@ -28,10 +36,6 @@
                     <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna3d_expo').image)"
                         @play="$router.push(`/quests/side_quest_eterna3d_expo/${getAchAtCurrentLevel('side_quest_eterna3d_expo').level}?search=:Eterna3D Expo&sort=date_asc`)"
-                    />
-                    <QuestCard
-                        :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_eterna100').image)"
-                        @play="$router.push(`/quests/side_quest_eterna100/${getAchAtCurrentLevel('side_quest_eterna100').level}?search=:Eterna100&sort=solved`)"
                     />
                     <QuestCard
                         :imgSrc="resolveUrl(getAchAtCurrentLevel('side_quest_switch_puzzles').image)"
