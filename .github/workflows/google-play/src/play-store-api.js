@@ -94,6 +94,7 @@ export class PlayStoreApi {
           Authorization: `Bearer ${this.accessToken}`,
         },
       });
+      if (res.status === 403) console.log(await res.json())
       console.log('Edit commit:', res.status, res.statusText);
     }
 }
