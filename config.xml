@@ -49,6 +49,13 @@
         <edit-config file="*-Info.plist" mode="add" target="ITSAppUsesNonExemptEncryption">
             <false/>
         </edit-config>
+        <!--
+            We have to force fullscreen while we lock to landscape, as otherwise we get a validation
+            error on upload that ipad multitasking requires all orientations to be allowed
+        -->
+        <edit-config file="*-Info.plist" mode="add" target="UIRequiresFullScreen">
+            <true/>
+        </edit-config>
     </platform>
     <platform name="browser">
         <preference name="SplashScreen" value="/res/Default@2x~universal~anyany.png" />
