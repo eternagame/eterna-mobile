@@ -1,6 +1,6 @@
 {
   "name": "eterna-mobile",
-  "version": "1.12.1",
+  "version": "1.12.2",
   "private": true,
   "scripts": {
     "postinstall": "shx mkdir -p www && (is-ci || (cd eternajs && npm install))",
@@ -13,9 +13,9 @@
     "axios": "^1.12.2",
     "boostrap": "^2.0.0",
     "bootstrap-vue": "^2.21.2",
-    "cordova-android": "^13.0.0",
+    "cordova-android": "^14.0.1",
     "cordova-browser": "^7.0.0",
-    "cordova-ios": "^7.1.0",
+    "cordova-ios": "^8.0.0",
     "cordova-plugin-ionic-keyboard": "2.2.0",
     "cordova-plugin-navigationbar": "^1.0.31",
     "cordova-plugin-splashscreen": "^6.0.2",
