@@ -39,10 +39,6 @@ document.addEventListener('deviceready', () => {
         wkWebView.injectCookie(cookies);
     }
     
-    window.addEventListener('keyboardDidShow', () => setTimeout(() => {
-        document.activeElement?.scrollIntoView();
-    }, 0));
-
     // Initialize Vue after cordova is fully loaded
     new Vue({
         router,
