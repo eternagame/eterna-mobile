@@ -3,6 +3,12 @@ name: CI
 on:
   push:
     branches: [master]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref to checkout'
+        required: true
+        type: string
 
 permissions: {}
 
@@ -18,6 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.ref }}
           submodules: true
           persist-credentials: false
       - name: Use Node.js ${{ env.NODE_VERSION }}
@@ -67,6 +74,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.ref }}
           fetch-depth: 0
           submodules: true
       - name: Use Node.js ${{ env.NODE_VERSION }}
@@ -100,13 +108,15 @@ jobs:
       matrix:
         include:
           - target: ios
-            packageType: app-store-connect
+            packageType: ${{ github.ref == 'master' && 'app-store-connect' || 'debugging' }}
           - target: android
     
     runs-on: ${{ matrix.target == 'ios' && 'macos-15' || 'ubuntu-latest' }}
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/download-artifact@v4
         with:
           name: wrapper
