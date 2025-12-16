@@ -108,7 +108,7 @@ jobs:
       matrix:
         include:
           - target: ios
-            packageType: ${{ inputs.ref && 'app-store-connect' || 'debugging' }}
+            packageType: ${{ inputs.ref && 'debugging' || 'app-store-connect' }}
           - target: android
     
     runs-on: ${{ matrix.target == 'ios' && 'macos-15' || 'ubuntu-latest' }}
