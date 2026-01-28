@@ -22,9 +22,10 @@ export default Vue.extend({
             needsUpdate: false
         }
     },
-    mounted() {
-        this.$store.dispatch(Action.AUTHENTICATE);
-        this.checkVersion();
+    async mounted() {
+        await this.$store.dispatch(Action.FETCH_CSRF_TOKEN);
+        await this.$store.dispatch(Action.AUTHENTICATE);
+        await this.checkVersion();
     },
     methods: {
         async checkVersion() {

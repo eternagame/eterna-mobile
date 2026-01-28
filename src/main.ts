@@ -12,6 +12,15 @@ const http = Axios.create({
     baseURL: process.env.APP_SERVER_URL,
     withCredentials: true,
 });
+const store = createStore(http);
+const csrfHostname = new URL(process.env.APP_SERVER_URL ?? '', window.location.toString()).hostname;
+http.interceptors.request.use((config) => {
+    if (config.url && new URL(config.url, window.location.toString()).hostname === csrfHostname) {
+        config.headers = config.headers || {};
+        config.headers['x-csrf-token'] = store.state.csrfToken;
+    }
+    return config;
+});
 Vue.use(VueAxios, http);
 
 declare global {
@@ -42,7 +51,7 @@ document.addEventListener('deviceready', () => {
     // Initialize Vue after cordova is fully loaded
     new Vue({
         router,
-        store: createStore(http),
+        store,
         render: h => h(App),
     }).$mount('#app');
 });

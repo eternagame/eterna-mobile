@@ -233,7 +233,8 @@ export const Action = {
     GET_COLLECTION: 'GET_COLLECTION',
     GET_PUZZLES: 'GET_PUZZLES',
     GET_PUZZLE: 'GET_PUZZLE',
-    GET_PROFILE: 'GET_PROFILE'
+    GET_PROFILE: 'GET_PROFILE',
+    FETCH_CSRF_TOKEN: 'FETCH_CSRF_TOKEN',
 };
 
 const MAX_LEVEL = 8;
@@ -255,6 +256,7 @@ export default function createStore(http: AxiosInstance) {
             puzzle_list: <PuzzleList | null> null, 
             current_puzzle: <(Puzzle & { cleared: boolean }) | null>null,
             quests: <CollectionList | null>null,
+            csrfToken: '',
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -308,9 +310,21 @@ export default function createStore(http: AxiosInstance) {
             },
             setQuests(state, quests) {
                 state.quests = quests
+            },
+            setCsrfToken(state, csrfToken) {
+                state.csrfToken = csrfToken
             }
         },
         actions: {
+            async [Action.FETCH_CSRF_TOKEN]({ commit }) {
+                commit('pushIsLoading');
+                try {
+                    const csrfToken = (await http.get('/get/csrf-token')).data.token;
+                    commit('setCsrfToken', csrfToken);
+                } finally {
+                    commit('popIsLoading');
+                }
+            },
             async [Action.AUTHENTICATE]({ commit }) {
                 commit('pushIsLoading');
                 try {
@@ -342,6 +356,7 @@ export default function createStore(http: AxiosInstance) {
                     });
                     const { data } = (await http.post('/login/', loginData)).data;
                     if (data.success) {
+                        await dispatch(Action.FETCH_CSRF_TOKEN);
                         if (!await dispatch(Action.AUTHENTICATE)) {
                             throw new Error('Login succeeded, but authentication failed');
                         }
@@ -351,11 +366,12 @@ export default function createStore(http: AxiosInstance) {
                     commit('popIsLoading');
                 }
             },
-            async [Action.LOGOUT]({ commit }) {
+            async [Action.LOGOUT]({ commit, dispatch }) {
                 commit('pushIsLoading');
                 try {
                     await http.get('/eterna_logout.php');
                     commit('setLoggedIn', {loggedIn: false, uid: null, username: null});
+                    await dispatch(Action.FETCH_CSRF_TOKEN);
                 } finally {
                     commit('popIsLoading');
                 }

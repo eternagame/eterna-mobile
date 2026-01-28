@@ -59,6 +59,7 @@ export default Vue.extend({
                 });
                 const {data} = (await this.$http.post('/login/', params)).data;
                 if (data.success) {
+                    await this.$store.dispatch(Action.FETCH_CSRF_TOKEN);
                     await this.doLogin();
                 } else {
                     console.error('Error:', data.error);
