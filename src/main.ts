@@ -15,7 +15,7 @@ const http = Axios.create({
 const store = createStore(http);
 const csrfHostname = new URL(process.env.APP_SERVER_URL ?? '', window.location.toString()).hostname;
 http.interceptors.request.use((config) => {
-    if (config.url && new URL(config.url, window.location.toString()).hostname === csrfHostname) {
+    if (config.url && new URL(config.url, process.env.APP_SERVER_URL ?? window.location.toString()).hostname === csrfHostname) {
         config.headers = config.headers || {};
         config.headers['x-csrf-token'] = store.state.csrfToken;
     }
