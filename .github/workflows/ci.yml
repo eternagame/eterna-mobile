@@ -93,7 +93,7 @@ jobs:
         env:
           PARALLEL_BUILD: true
           APP_SERVER_URL: https://${{ env.API_DOMAIN }}
-          INJECT_COOKIE_DOMAIN: .${{ env.API_DOMAIN }}
+          INJECT_COOKIE_DOMAIN: ${{ env.API_DOMAIN }}
       - name: Upload build
         uses: actions/upload-artifact@v4
         with:
