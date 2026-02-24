@@ -38,16 +38,6 @@ document.addEventListener('deviceready', () => {
     window.navigationbar.setUp(true);
     StatusBar.hide();
 
-    // This syncs the cookies on iOS devices when the app initializes.
-    // This ensures that the login response cookie will be sent with all subsequent requests.
-    if (typeof wkWebView !== 'undefined' && process.env.INJECT_COOKIE_DOMAIN) {
-        const cookies = [{
-            domain: process.env.INJECT_COOKIE_DOMAIN,
-            name: 'foo', value: 'bar',
-        }];
-        wkWebView.injectCookie(cookies);
-    }
-    
     // Initialize Vue after cordova is fully loaded
     new Vue({
         router,

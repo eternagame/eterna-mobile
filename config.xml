@@ -46,6 +46,7 @@
         <preference name="allowFileAccessFromFileURLs" value="true" />
         <preference name="allowUniversalAccessFromFileURLs" value="true" />
         <preference name="InspectableWebview" value="true" />
+        <preference name="hostname" value="eternagame.org"/>
         <edit-config file="*-Info.plist" mode="add" target="ITSAppUsesNonExemptEncryption">
             <false/>
         </edit-config>
