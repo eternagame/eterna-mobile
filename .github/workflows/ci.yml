@@ -110,7 +110,7 @@ jobs:
             packageType: ${{ inputs.ref && 'debugging' || 'app-store-connect' }}
           - target: android
     
-    runs-on: ${{ matrix.target == 'ios' && 'macos-15' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.target == 'ios' && 'macos-26' || 'ubuntu-latest' }}
 
     steps:
       - uses: actions/checkout@v4
