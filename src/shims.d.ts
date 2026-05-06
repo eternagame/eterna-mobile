@@ -12,3 +12,9 @@ declare module 'vue2-flip-countdown' {
 }
 
 declare function plausible(eventName: string, options?: {u?: string, props: Record<string, string | number | boolean>}): void;
+
+declare module 'vue-password-strength-meter' {
+  import { ExtendedVue } from 'vue/types/vue';
+  const Password: ExtendedVue<Vue, {}, {}, {}, {}>;
+  export default Password;
+}
