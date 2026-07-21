@@ -14,7 +14,7 @@ permissions: {}
 
 env:
   API_DOMAIN: eternagame.org
-  NODE_VERSION: 20.x
+  NODE_VERSION: 24.x
   BUILD_TYPE: prod
 
 jobs:

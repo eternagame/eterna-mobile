@@ -9,7 +9,7 @@ on:
 permissions: {}
 
 env:
-  NODE_VERSION: 20.x
+  NODE_VERSION: 24.x
 
 jobs:
   rotate-keys:
