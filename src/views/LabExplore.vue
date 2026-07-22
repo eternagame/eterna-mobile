@@ -42,7 +42,6 @@
                 <div @click="openChat" class="nav-button-chat" />
             </template>
         </NavBar>
-        <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 
@@ -54,7 +53,6 @@ import LabCard from '../components/LabCard.vue'
 import NavBar from '../components/NavBar.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import { Action, Achievement, LabData } from '../store';
-import ChatManager from '../ChatManager';
 import DefaultLabHero from '../assets/slides/hero-lab-default.png';
 
 const PAGE_SIZE = 9;
@@ -68,7 +66,6 @@ export default Vue.extend({
             ],
             numberOfLabs: PAGE_SIZE,
             playablePuzzleIndex: 0,
-            chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
             defaultLabImage: DefaultLabHero,
             firstLoad: true
@@ -78,7 +75,6 @@ export default Vue.extend({
         try {
             await this.fetchNewLabs();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-            this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
             console.error(error);
         }
@@ -134,9 +130,7 @@ export default Vue.extend({
             this.$router.push(`/labs/${nid}`);
         },
         openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
+            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
         getAbsUrl(relUrl: string) {
             if (relUrl.startsWith('http')) {

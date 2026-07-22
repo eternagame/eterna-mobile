@@ -62,7 +62,6 @@
                 <div @click="openChat" class="nav-button-chat" />
             </template>
         </NavBar>
-        <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 <script lang="ts">
@@ -72,15 +71,12 @@ import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue';
 import { Achievement, Action, Puzzle } from '../store';
-import ChatManager from '../ChatManager';
-
 
 export default Vue.extend({
     data() {
         return {
             logoSourcePng: require('../assets/logo_eterna.svg'),
             playablePuzzleIndex: 0,
-            chat: <ChatManager | null>null
         };
     },
     components: {
@@ -131,15 +127,12 @@ export default Vue.extend({
             this.$router.push(`/game/${id}`);
         },
         openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
+            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
     },
     async mounted() {
         try {
             await this.$store.dispatch(Action.GET_PUZZLE, {id: this.$route.params.id});
-            this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
             console.log(error);
         }

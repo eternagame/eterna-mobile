@@ -235,6 +235,7 @@ export const Action = {
     GET_PUZZLE: 'GET_PUZZLE',
     GET_PROFILE: 'GET_PROFILE',
     FETCH_CSRF_TOKEN: 'FETCH_CSRF_TOKEN',
+    TOGGLE_CHAT_VISIBILITY: 'TOGGLE_CHAT_VISIBILITY'
 };
 
 const MAX_LEVEL = 8;
@@ -257,6 +258,7 @@ export default function createStore(http: AxiosInstance) {
             current_puzzle: <(Puzzle & { cleared: boolean }) | null>null,
             quests: <CollectionList | null>null,
             csrfToken: '',
+            chatVisible: false,
         },
         getters: {
             isLoading({isLoadingCount}) {
@@ -313,6 +315,9 @@ export default function createStore(http: AxiosInstance) {
             },
             setCsrfToken(state, csrfToken) {
                 state.csrfToken = csrfToken
+            },
+            toggleChatVisibility(state) {
+              state.chatVisible = !state.chatVisible;
             }
         },
         actions: {
@@ -495,6 +500,9 @@ export default function createStore(http: AxiosInstance) {
                     commit('popIsLoading');
                 }
             },
+            [Action.TOGGLE_CHAT_VISIBILITY]({ commit }) {
+              commit('toggleChatVisibility')
+            }
         },
         modules: {
         },

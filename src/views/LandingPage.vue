@@ -60,7 +60,6 @@
                 <div @click="openChat" class="nav-button-chat" />
             </template>
         </NavBar>
-        <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 
@@ -73,14 +72,12 @@ import ProgressBar from '../components/ProgressBar.vue'
 import QuestCard from '../components/QuestCard.vue'
 import SurveyModal from '../components/SurveyModal.vue';
 import { Action, Achievement } from '../store';
-import ChatManager from '../ChatManager';
 
 
 export default Vue.extend({
     data() {
         return {
             playablePuzzleIndex: 0,
-            chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
         };
     },
@@ -90,7 +87,6 @@ export default Vue.extend({
             await this.$store.dispatch('GET_PROFILE', {id: this.$store.state.uid});
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-            this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
             console.error(error);
         }
@@ -125,9 +121,7 @@ export default Vue.extend({
             return Math.max(min, Math.min(max, x));
         },
         openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
+            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;

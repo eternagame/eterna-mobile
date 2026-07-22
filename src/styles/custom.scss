@@ -45,38 +45,6 @@
   }
 }
 
-.chat {
-  text-align: left;
-  box-sizing: content-box;
-  width: 230px;
-  height: 340px;
-  position: absolute;
-  top: 140px;
-  right: 10px;
-  border: 1px solid rgba(47, 148, 209, 0.9);
-  border-radius: 5px;
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  z-index: 1000;
-
-  * {
-      box-sizing: content-box;
-  }
-  button, img {
-      padding: 0;
-  }
-}
-
-@media (max-height: 510px) {
-  .chat {
-      width: 30%;
-      min-width: 230px;
-      height: 85%;
-      top: 5px;
-      right: 5px;
-  }
-}
-
 .loading-spinner {
   position: absolute;
   margin: auto;

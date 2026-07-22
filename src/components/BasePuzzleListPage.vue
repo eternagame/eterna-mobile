@@ -62,7 +62,6 @@
                 <div @click="openChat" class="nav-button-chat" />
             </template>
         </NavBar>
-        <div id="chat-container" class="chat hidden"></div>
     </div>
 </template>
 
@@ -73,7 +72,6 @@ import HeaderBar from '../components/HeaderBar.vue'
 import NavBar from '../components/NavBar.vue'
 import PuzzleCard from '../components/PuzzleCard.vue'
 import { Action, Achievement, PuzzleItem, PuzzleList } from '../store';
-import ChatManager from '../ChatManager';
 
 const PAGE_SIZE = 9;
 
@@ -94,7 +92,6 @@ export default Vue.extend({
             availableFilters: [] as {value: string; text: string}[],
             numberOfPuzzles: PAGE_SIZE,
             playablePuzzleIndex: 0,
-            chat: <ChatManager | null>null,
             logoSourcePng: require('../assets/logo_eterna.svg'),
             firstLoad: true
         };
@@ -119,7 +116,6 @@ export default Vue.extend({
             await this.fetchNewPuzzles();
             this.setProgressFromRoadmap();
             this.scrollToPuzzleIndex(this.playablePuzzleIndex);
-            this.chat = new ChatManager('chat-container', this.$store);
         } catch (error) {
             console.error(error);
         }
@@ -234,9 +230,7 @@ export default Vue.extend({
             this.$router.push(`/game/${id}`);
         },
         openChat() {
-            if (this.chat) {
-                this.chat.toggleVisibility();
-            }
+            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;

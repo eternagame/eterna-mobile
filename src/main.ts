@@ -2,9 +2,12 @@ import Axios from 'axios';
 import { BootstrapVue }  from 'bootstrap-vue';
 import Vue from 'vue';
 import VueAxios from 'vue-axios';
+import { register as registerEternaChatElement } from '@eternagame/chat';
 import App from './App.vue';
 import router from './router';
 import createStore from './store';
+
+registerEternaChatElement();
 
 Vue.use(BootstrapVue);
 

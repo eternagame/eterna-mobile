@@ -8,6 +8,12 @@
     </div>
     <div v-else>
         <router-view />
+        <eterna-chat
+            :username.prop="$store.state.username ?? 'Anonymous'" :uid.prop="`${$store.state.uid ?? 0}`" :appContext.prop="'app'"
+            :defaultX.prop="defaultChatSize.x" :defaultY.prop="defaultChatSize.y"
+            :defaultWidth.prop="defaultChatSize.width" :defaultHeight.prop="defaultChatSize.height"
+            v-if="$store.state.chatVisible"
+        />
     </div>
 </div>
 </template>
@@ -35,6 +41,22 @@ export default Vue.extend({
             if (data.latest_build > 13) this.needsUpdate = true;
             this.isLoading = false;
         }
+    },
+    computed: {
+      windowSize() {
+        return {
+          width: window.innerWidth,
+          height: window.innerHeight
+        };
+      },
+      defaultChatSize() {
+        return {
+          width: Math.min(window.innerWidth - 60, 400),
+          height: Math.min(window.innerHeight - 60, 350),
+          x: window.innerWidth - Math.min(window.innerWidth - 60, 400) - 30,
+          y: window.innerHeight - Math.min(window.innerHeight - 60, 350) - 30,
+        }
+      }
     }
 });
 </script>
@@ -75,5 +97,10 @@ body {
     margin: 10vmin 5vmin;
     text-align: center;
     font-size: 10vh;
+}
+
+eterna-chat::part(chat-window) {
+    box-shadow: 1px 1px 4px #000;
+    border: 2px solid rgba(47,148,209,.6);
 }
 </style>
