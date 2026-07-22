@@ -473,6 +473,10 @@ export default function createStore(http: AxiosInstance) {
                 }
             },
             async [Action.GET_PROFILE]({ commit }, { id }: { id: string}){
+                if (id === null) {
+                  commit('setUserData', {});
+                  return;
+                }
                 commit('pushIsLoading');
                 try{
                     const { user, achievements } = (await http.get(`/get/?type=user&uid=${id}&tab_type=about`)).data.data;
