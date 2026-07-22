@@ -37,11 +37,7 @@
                 </b-container>
             </div>
         </div>
-        <NavBar>
-            <template v-slot:right>
-                <div @click="openChat" class="nav-button-chat" />
-            </template>
-        </NavBar>
+        <NavBar />
     </div>
 </template>
 
@@ -126,11 +122,8 @@ export default Vue.extend({
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
         },
-        link_lab(nid: String) {
+        link_lab(nid: string) {
             this.$router.push(`/labs/${nid}`);
-        },
-        openChat() {
-            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
         getAbsUrl(relUrl: string) {
             if (relUrl.startsWith('http')) {

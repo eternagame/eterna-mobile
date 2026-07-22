@@ -12,7 +12,7 @@
             :username.prop="$store.state.username ?? 'Anonymous'" :uid.prop="`${$store.state.uid ?? 0}`" :appContext.prop="'app'"
             :defaultX.prop="defaultChatSize.x" :defaultY.prop="defaultChatSize.y"
             :defaultWidth.prop="defaultChatSize.width" :defaultHeight.prop="defaultChatSize.height"
-            v-if="$store.state.chatVisible"
+            v-if="$store.state.chatVisible && $route.meta.chat"
         />
     </div>
 </div>

@@ -58,9 +58,6 @@
                 Home
                 </b-button>
             </template>
-            <template v-slot:right>
-                <div @click="openChat" class="nav-button-chat" />
-            </template>
         </NavBar>
     </div>
 </template>
@@ -228,9 +225,6 @@ export default Vue.extend({
         },
         play(id: number) {
             this.$router.push(`/game/${id}`);
-        },
-        openChat() {
-            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;

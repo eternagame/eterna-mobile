@@ -53,7 +53,6 @@
           Home
         </b-button>
       </template>
-      <template v-slot:right><div></div></template>
     </NavBar>
   </section>
 </template>

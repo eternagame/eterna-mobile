@@ -32,9 +32,6 @@
                     </svg>
                 </button>
             </template>
-            <template v-slot:right>
-                <div @click="openChat" class="nav-button-chat" />
-            </template>
         </NavBar>
     </div>
 </template>
@@ -89,9 +86,6 @@ export default Vue.extend({
         }
     },
     methods: {
-        openChat() {
-            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
-        },
         resolveUrl(path: string) {
             if (path.startsWith('http')) return path;
             if (path.startsWith('/')) return process.env.APP_SERVER_URL + path;

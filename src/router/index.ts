@@ -44,6 +44,9 @@ const routes: Array<RouteConfig> = [
     {
         path: '/profile',
         component: Profile,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/settings',
@@ -60,22 +63,37 @@ const routes: Array<RouteConfig> = [
     {
         path: '/home',
         component: LandingPage,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/puzzles',
         component: PuzzleExplore,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/puzzles/:id',
         component: PuzzleView,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/labs',
         component: LabExplore,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/labs/:id',
         component: LabView,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/game/browse/:id',
@@ -83,15 +101,24 @@ const routes: Array<RouteConfig> = [
     },
     {
         path: '/quests',
-        component: QuestExplore
+        component: QuestExplore,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/quests/category/:id',
-        component: QuestCategory
+        component: QuestCategory,
+        meta: {
+            chat: true,
+        },
     },
     {
         path: '/quests/:id/:level',
-        component: Quest
+        component: Quest,
+        meta: {
+            chat: true,
+        },
     }
 ];
 

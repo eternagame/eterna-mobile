@@ -56,9 +56,6 @@
             <template v-if="!lab_access" v-slot:center>
                 <ProgressBar :value="playablePuzzleIndex" :max="roadmap.length" />
             </template>
-            <template v-slot:right>
-                <div @click="openChat" class="nav-button-chat" />
-            </template>
         </NavBar>
     </div>
 </template>
@@ -119,9 +116,6 @@ export default Vue.extend({
         },
         clamp(x: number, min: number, max: number) {
             return Math.max(min, Math.min(max, x));
-        },
-        openChat() {
-            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
         getAbsUrl(relUrl: string) {
             return process.env.APP_SERVER_URL + relUrl;

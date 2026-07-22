@@ -24,15 +24,16 @@
             </b-button>
         </slot>
         <div class="nav-button">
-            <slot name="right">
-                <div class="nav-button-chat" />
-            </slot>
+          <div @click="openChat" class="nav-button-chat" v-if="$route.meta.chat" />
         </div>
     </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+
+import { Action } from '../store';
+
 export default Vue.component('puzzle-view-progress-bar', {
     props: {
         value: {
@@ -77,6 +78,9 @@ export default Vue.component('puzzle-view-progress-bar', {
         },
         goToQuests() {
             this.$router.push('/quests');
+        },
+        openChat() {
+            this.$store.dispatch(Action.TOGGLE_CHAT_VISIBILITY);
         },
     }
 })
