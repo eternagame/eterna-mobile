@@ -13,6 +13,7 @@
             :defaultX.prop="defaultChatSize.x" :defaultY.prop="defaultChatSize.y"
             :defaultWidth.prop="defaultChatSize.width" :defaultHeight.prop="defaultChatSize.height"
             v-if="$store.state.chatVisible && $route.meta.chat"
+            :key="$store.state.uid"
         />
     </div>
 </div>
