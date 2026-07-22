@@ -99,6 +99,13 @@ body {
     font-size: 10vh;
 }
 
+eterna-chat {
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 eterna-chat::part(chat-window) {
     box-shadow: 1px 1px 4px #000;
     border: 2px solid rgba(47,148,209,.6);
