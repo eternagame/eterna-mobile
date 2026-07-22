@@ -12,8 +12,8 @@ module.exports = function(mode, eternajs_copy) {
         entry: './src/main.ts',
         output: {
             path: path.resolve(__dirname, 'www'),
-            filename: 'bundle.js?[chunkHash]',
-            chunkFilename: '[name].js?[chunkHash]',
+            filename: 'bundle.js?[chunkhash]',
+            chunkFilename: '[name].js?[chunkhash]',
             assetModuleFilename: '[name].[ext]?[hash]'
         },
         resolve: {
