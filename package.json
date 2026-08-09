@@ -20,7 +20,7 @@
     "cordova-plugin-navigationbar": "^1.0.31",
     "cordova-plugin-splashscreen": "^6.0.2",
     "cordova-plugin-statusbar": "^4.0.0",
-    "dompurify": "^3.4.12",
+    "dompurify": "^3.4.13",
     "es6-promise-plugin": "^4.2.2",
     "vue": "^2.7.13",
     "vue-axios": "~3.2.5",
